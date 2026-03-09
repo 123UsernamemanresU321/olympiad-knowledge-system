@@ -186,7 +186,7 @@ export function TopNavShell({
     notifications.push({
       id: 'validation',
       title: 'Validation issues',
-      detail: `${validationLogs.length} schema issue${validationLogs.length === 1 ? '' : 's'} detected in content/.`,
+      detail: `${validationLogs.length} schema issue${validationLogs.length === 1 ? '' : 's'} detected in the knowledge catalog.`,
       to: '/errors',
       tone: 'rose',
     });

@@ -202,7 +202,7 @@ export function SearchPage() {
             <div className="rounded-[8px] bg-[linear-gradient(135deg,#144bb8,#1d4ed8)] p-6">
               <h3 className="text-2xl font-bold text-white">Validated Local Library</h3>
               <p className="mt-3 text-sm leading-6 text-blue-100">
-                Every visible result on this screen comes from schema-checked JSON authored in the local knowledge base.
+                Every visible result on this screen comes from schema-checked bundled or uploaded knowledge JSON.
               </p>
               <Link
                 to="/import"
@@ -215,7 +215,7 @@ export function SearchPage() {
             <div className="rounded-[8px] bg-[linear-gradient(135deg,#1e293b,#111827)] p-6">
               <h3 className="text-2xl font-bold text-white">Browse the Library</h3>
               <p className="mt-3 text-sm leading-6 text-slate-200">
-                Results here are generated directly from the authored content folder and its validated knowledge graph.
+                Results here are generated directly from the validated knowledge graph assembled from bundled and uploaded entries.
               </p>
               <Link
                 to="/subjects"

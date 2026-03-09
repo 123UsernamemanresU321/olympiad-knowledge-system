@@ -1,27 +1,60 @@
-import { CheckCircle2, FileJson, Play, UploadCloud, XCircle } from 'lucide-react';
+import { CheckCircle2, FileJson, LoaderCircle, Play, UploadCloud, XCircle } from 'lucide-react';
 import { useRef, useState, type ChangeEvent, type DragEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { AppTopNav, SidebarNavLink, Surface } from '../components/layout/DesignShell';
+import { useKnowledgeData } from '../hooks/useKnowledgeData';
+import { dataIndex } from '../lib/dataIndex';
 import { validateImportedPayload } from '../lib/loader';
+import { upsertKnowledgeEntities } from '../lib/supabase';
 import { getImportPreviewRows } from '../lib/uiData';
+import type { KnowledgeEntity } from '../types';
 
-export function ImportPage() {
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [jsonContent, setJsonContent] = useState('');
-  const [selectedFileName, setSelectedFileName] = useState<string | null>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [validationState, setValidationState] = useState({
-    logs: [] as Array<{ level: 'error' | 'warning'; message: string }>,
-    previewRows: [] as ReturnType<typeof getImportPreviewRows>,
+type ValidationState = {
+  logs: Array<{ level: 'error' | 'warning'; message: string }>;
+  previewRows: ReturnType<typeof getImportPreviewRows>;
+  validEntries: KnowledgeEntity[];
+  validCount: number;
+  warningCount: number;
+  errorCount: number;
+};
+
+function createEmptyValidationState(): ValidationState {
+  return {
+    logs: [],
+    previewRows: [],
+    validEntries: [],
     validCount: 0,
     warningCount: 0,
     errorCount: 0,
-  });
+  };
+}
 
-  const runValidation = (rawContent: string) => {
+function getUploadSourceName(selectedFileName: string | null) {
+  if (selectedFileName) {
+    return selectedFileName;
+  }
+
+  const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+  return `manual-import-${stamp}.json`;
+}
+
+export function ImportPage() {
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const { isLoading: isKnowledgeLoading, lastSyncedAt, refreshKnowledgeData } = useKnowledgeData();
+  const [jsonContent, setJsonContent] = useState('');
+  const [selectedFileName, setSelectedFileName] = useState<string | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadFeedback, setUploadFeedback] = useState<{
+    tone: 'success' | 'error';
+    message: string;
+  } | null>(null);
+  const [validationState, setValidationState] = useState<ValidationState>(createEmptyValidationState);
+
+  const runValidation = (rawContent: string): ValidationState => {
     try {
       const parsed = JSON.parse(rawContent);
-      const result = validateImportedPayload(parsed);
+      const result = validateImportedPayload(parsed, dataIndex.getAllEntities());
       const logs = result.errors.flatMap((entry) =>
         entry.errors.map((error) => ({
           level: 'error' as const,
@@ -32,6 +65,7 @@ export function ImportPage() {
       return {
         logs,
         previewRows: getImportPreviewRows(result.entries),
+        validEntries: result.entries,
         validCount: result.entries.length,
         warningCount: 0,
         errorCount: logs.length,
@@ -39,8 +73,9 @@ export function ImportPage() {
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Invalid JSON.';
       return {
-        logs: [{ level: 'error' as const, message }],
+        logs: [{ level: 'error', message }],
         previewRows: [],
+        validEntries: [],
         validCount: 0,
         warningCount: 0,
         errorCount: 1,
@@ -49,7 +84,52 @@ export function ImportPage() {
   };
 
   const handleValidate = () => {
+    setUploadFeedback(null);
     setValidationState(runValidation(jsonContent));
+  };
+
+  const handleUpload = async () => {
+    setUploadFeedback(null);
+    const nextValidation = runValidation(jsonContent);
+    setValidationState(nextValidation);
+
+    if (nextValidation.errorCount > 0) {
+      setUploadFeedback({
+        tone: 'error',
+        message: 'Resolve the validation errors before uploading.',
+      });
+      return;
+    }
+
+    if (nextValidation.validEntries.length === 0) {
+      setUploadFeedback({
+        tone: 'error',
+        message: 'No valid top-level entities were found in this payload.',
+      });
+      return;
+    }
+
+    setIsUploading(true);
+
+    try {
+      const uploadedCount = await upsertKnowledgeEntities(
+        nextValidation.validEntries,
+        getUploadSourceName(selectedFileName),
+      );
+      await refreshKnowledgeData();
+      setUploadFeedback({
+        tone: 'success',
+        message: `${uploadedCount} ${uploadedCount === 1 ? 'entity' : 'entities'} uploaded and now live on the site.`,
+      });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Upload failed.';
+      setUploadFeedback({
+        tone: 'error',
+        message,
+      });
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   const handleFile = async (file: File) => {
@@ -61,11 +141,10 @@ export function ImportPage() {
 
     if (!isJsonFile) {
       setSelectedFileName(file.name);
+      setUploadFeedback(null);
       setValidationState({
+        ...createEmptyValidationState(),
         logs: [{ level: 'error', message: `Unsupported file type for ${file.name}. Please use a JSON file.` }],
-        previewRows: [],
-        validCount: 0,
-        warningCount: 0,
         errorCount: 1,
       });
       return;
@@ -73,11 +152,10 @@ export function ImportPage() {
 
     if (file.size > 10 * 1024 * 1024) {
       setSelectedFileName(file.name);
+      setUploadFeedback(null);
       setValidationState({
+        ...createEmptyValidationState(),
         logs: [{ level: 'error', message: `${file.name} exceeds the 10MB upload limit.` }],
-        previewRows: [],
-        validCount: 0,
-        warningCount: 0,
         errorCount: 1,
       });
       return;
@@ -86,6 +164,7 @@ export function ImportPage() {
     const text = await file.text();
     setSelectedFileName(file.name);
     setJsonContent(text);
+    setUploadFeedback(null);
     setValidationState(runValidation(text));
   };
 
@@ -127,11 +206,13 @@ export function ImportPage() {
           <div className="border-b border-base-600 bg-base-700/90">
             <div className="mx-auto flex w-full max-w-[1280px] items-center justify-between gap-6 px-6 py-4">
               <div>
-                <h1 className="text-2xl font-bold text-text-100">Import &amp; Validation</h1>
-                <p className="mt-1 text-sm text-text-500">Upload JSON, validate structure, and inspect the parsed preview.</p>
+                <h1 className="text-2xl font-bold text-text-100">Import &amp; Publish</h1>
+                <p className="mt-1 text-sm text-text-500">
+                  Upload JSON, validate it against the live graph, and persist the valid entities into Supabase.
+                </p>
               </div>
               <div className="rounded-full border border-base-500 bg-base-600/60 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-text-400">
-                Local validation only
+                {isKnowledgeLoading ? 'Syncing catalog...' : 'Live import enabled'}
               </div>
             </div>
           </div>
@@ -203,6 +284,7 @@ export function ImportPage() {
                   onChange={(event) => {
                     setJsonContent(event.target.value);
                     setSelectedFileName(null);
+                    setUploadFeedback(null);
                   }}
                   placeholder="Paste JSON here or load a .json file to validate it."
                   className="min-h-[320px] w-full resize-none bg-base-950/70 p-5 font-mono text-sm text-text-300 focus:outline-none"
@@ -211,15 +293,37 @@ export function ImportPage() {
               </Surface>
             </div>
 
-            <div className="flex justify-center border-b border-base-600 pb-8">
-              <button
-                type="button"
-                onClick={handleValidate}
-                className="inline-flex h-12 items-center gap-2 rounded-[8px] bg-primary-500 px-8 text-sm font-bold text-white shadow-[0_10px_20px_rgba(20,75,184,0.2)] transition-colors hover:bg-primary-400"
-              >
-                <Play className="h-4 w-4" />
-                Validate JSON Data
-              </button>
+            <div className="flex flex-col items-center gap-4 border-b border-base-600 pb-8">
+              <div className="flex flex-wrap justify-center gap-3">
+                <button
+                  type="button"
+                  onClick={handleValidate}
+                  className="inline-flex h-12 items-center gap-2 rounded-[8px] bg-primary-500 px-8 text-sm font-bold text-white shadow-[0_10px_20px_rgba(20,75,184,0.2)] transition-colors hover:bg-primary-400"
+                >
+                  <Play className="h-4 w-4" />
+                  Validate JSON Data
+                </button>
+                <button
+                  type="button"
+                  onClick={() => void handleUpload()}
+                  disabled={isUploading || isKnowledgeLoading}
+                  className="inline-flex h-12 items-center gap-2 rounded-[8px] border border-base-500 bg-base-900/70 px-8 text-sm font-bold text-text-100 transition-colors hover:border-primary-500/40 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {isUploading || isKnowledgeLoading ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <UploadCloud className="h-4 w-4" />}
+                  {isUploading ? 'Uploading...' : isKnowledgeLoading ? 'Refreshing...' : 'Upload to Website'}
+                </button>
+              </div>
+              {uploadFeedback ? (
+                <div
+                  className={`w-full rounded-[8px] border px-4 py-3 text-sm ${
+                    uploadFeedback.tone === 'success'
+                      ? 'border-success-500/30 bg-success-900/15 text-success-400'
+                      : 'border-rose-500/30 bg-rose-950/15 text-rose-300'
+                  }`}
+                >
+                  {uploadFeedback.message}
+                </div>
+              ) : null}
             </div>
 
             <div className="space-y-6">
@@ -341,8 +445,8 @@ export function ImportPage() {
 
               <div className="flex flex-col gap-3 border-t border-base-600 pt-6 text-sm text-text-500 sm:flex-row sm:items-center sm:justify-between">
                 <p>
-                  This workspace validates imported JSON locally. Browser actions do not write into
-                  `content/`.
+                  Uploads are written to Supabase and merged with bundled `content/` entries at runtime.
+                  {lastSyncedAt ? ` Last sync: ${new Date(lastSyncedAt).toLocaleString()}.` : ''}
                 </p>
                 <Link to="/errors" className="font-semibold text-primary-400">
                   Open validation feed

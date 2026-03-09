@@ -21,7 +21,7 @@ export function SubjectBrowser() {
                 Canonical Olympiad Tracks
               </h1>
               <p className="mt-2 max-w-3xl text-base text-text-400">
-                This workspace is currently scoped to the first playbook milestone: a validated Number Theory track with authored topic, entry, problem, and solution JSON.
+                This workspace browses the validated knowledge graph assembled from bundled content and any uploaded JSON entities.
               </p>
             </div>
             <Badge tone="blue">{subjects.length} subjects</Badge>

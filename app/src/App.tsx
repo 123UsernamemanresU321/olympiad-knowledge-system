@@ -15,9 +15,35 @@ import { LoginPage } from './pages/LoginPage';
 import { Layout } from './components/layout/Layout';
 import { Dashboard } from './pages/Dashboard';
 import { AuthProvider } from './hooks/useAuth';
-import { KnowledgeDataProvider } from './hooks/useKnowledgeData';
+import { KnowledgeDataProvider, useKnowledgeData } from './hooks/useKnowledgeData';
 import { ProgressProvider } from './hooks/useProgress';
 import { RequireAdmin } from './components/auth/RequireAdmin';
+
+function AppRoutes() {
+  const { lastSyncedAt } = useKnowledgeData();
+
+  return (
+    <Routes key={lastSyncedAt ?? 'bundled-content'}>
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/study" element={<TrainingPage />} />
+      <Route element={<Layout />}>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/progress" element={<ProgressPage />} />
+        <Route path="/subjects" element={<SubjectBrowser />} />
+        <Route path="/subjects/:subjectId" element={<SubjectOverview />} />
+        <Route path="/topics/:topicId" element={<TopicPage />} />
+        <Route path="/entries/:entryId" element={<EntryPage />} />
+        <Route path="/problems/:problemId" element={<ProblemPage />} />
+        <Route path="/search" element={<SearchPage />} />
+        <Route path="/review-queue" element={<ReviewQueuePage />} />
+        <Route element={<RequireAdmin />}>
+          <Route path="/errors" element={<ValidationErrorsPage />} />
+          <Route path="/import" element={<ImportPage />} />
+        </Route>
+      </Route>
+    </Routes>
+  );
+}
 
 function App() {
   return (
@@ -25,25 +51,7 @@ function App() {
       <AuthProvider>
         <KnowledgeDataProvider>
           <ProgressProvider>
-            <Routes>
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/study" element={<TrainingPage />} />
-              <Route element={<Layout />}>
-                <Route path="/" element={<Dashboard />} />
-                <Route path="/progress" element={<ProgressPage />} />
-                <Route path="/subjects" element={<SubjectBrowser />} />
-                <Route path="/subjects/:subjectId" element={<SubjectOverview />} />
-                <Route path="/topics/:topicId" element={<TopicPage />} />
-                <Route path="/entries/:entryId" element={<EntryPage />} />
-                <Route path="/problems/:problemId" element={<ProblemPage />} />
-                <Route path="/search" element={<SearchPage />} />
-                <Route path="/review-queue" element={<ReviewQueuePage />} />
-                <Route element={<RequireAdmin />}>
-                  <Route path="/errors" element={<ValidationErrorsPage />} />
-                  <Route path="/import" element={<ImportPage />} />
-                </Route>
-              </Route>
-            </Routes>
+            <AppRoutes />
           </ProgressProvider>
         </KnowledgeDataProvider>
       </AuthProvider>

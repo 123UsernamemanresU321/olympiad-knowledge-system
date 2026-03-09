@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { dataIndex } from '../lib/dataIndex';
 import { isSupabaseConfigured, listKnowledgeEntities } from '../lib/supabase';
 
@@ -15,7 +15,7 @@ export const KnowledgeDataProvider: React.FC<{ children: React.ReactNode }> = ({
   const [lastSyncedAt, setLastSyncedAt] = useState<string | null>(null);
   const [, setVersion] = useState(0);
 
-  const refreshKnowledgeData = async () => {
+  const refreshKnowledgeData = useCallback(async () => {
     if (!isSupabaseConfigured) {
       dataIndex.setRemoteEntries([]);
       setLastSyncedAt(null);
@@ -44,19 +44,19 @@ export const KnowledgeDataProvider: React.FC<{ children: React.ReactNode }> = ({
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     void refreshKnowledgeData().catch(() => {
       // The error is already logged; keep the app usable with bundled content.
     });
-  }, []);
+  }, [refreshKnowledgeData]);
 
   const value = useMemo<KnowledgeDataContextValue>(() => ({
     isLoading,
     lastSyncedAt,
     refreshKnowledgeData,
-  }), [isLoading, lastSyncedAt]);
+  }), [isLoading, lastSyncedAt, refreshKnowledgeData]);
 
   return (
     <KnowledgeDataContext.Provider value={value}>
@@ -65,6 +65,7 @@ export const KnowledgeDataProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useKnowledgeData() {
   const context = useContext(KnowledgeDataContext);
   if (!context) {

@@ -6,7 +6,6 @@ import type {
   ProblemEntity,
   SolutionEntity,
   SubjectId,
-  TopicEntity,
 } from '../types';
 import { isLearnableEntity } from '../types';
 

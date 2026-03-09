@@ -205,7 +205,7 @@ export function Dashboard() {
               </div>
             ) : (
               <p className="rounded-[8px] border border-base-600 bg-base-900/40 px-4 py-3 text-sm text-text-500">
-                No authored subjects were found in `content/`.
+                No authored subjects were found in the bundled or uploaded catalog.
               </p>
             )}
           </div>
@@ -228,8 +228,8 @@ export function Dashboard() {
                     Dashboard
                   </h1>
                   <p className="mt-2 max-w-2xl text-base text-text-400">
-                    Content, review state, and mastery metrics are rendered directly from the authored
-                    JSON in `content/` and your real local interactions.
+                    Content, review state, and mastery metrics are rendered from bundled JSON,
+                    uploaded Supabase entities, and your real local interactions.
                   </p>
                 </div>
               </div>
@@ -351,7 +351,7 @@ export function Dashboard() {
                       ))
                     ) : (
                       <div className="rounded-[8px] border border-dashed border-base-500 bg-base-900/40 p-5 text-sm text-text-500 md:col-span-2">
-                        No authored entries were found in `content/`.
+                        No authored entries were found in the current catalog.
                       </div>
                     )}
                   </div>
@@ -443,7 +443,7 @@ export function Dashboard() {
                       <>
                         <h3 className="mt-4 text-2xl font-black text-text-100">No subject selected</h3>
                         <p className="mt-2 text-sm leading-6 text-text-300">
-                          Add authored JSON to `content/` to populate the subject library.
+                          Upload JSON in the import workspace or add bundled entries to populate the subject library.
                         </p>
                       </>
                     )}

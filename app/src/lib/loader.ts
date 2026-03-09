@@ -55,6 +55,11 @@ interface CandidateEntry {
   entry: KnowledgeEntity;
 }
 
+interface ValidationOptions {
+  existingEntries?: KnowledgeEntity[];
+  allowCandidateIdOverrides?: boolean;
+}
+
 const TOPIC_FIELD_NAMES = [
   'primary_topic_id',
   'primary_topic_ids',
@@ -229,7 +234,38 @@ function validateGraph(entry: KnowledgeEntity, allEntityIds: Set<string>, canoni
   return errors;
 }
 
-function validateEntries(candidates: Array<{ path: string; data: unknown }>): LoadResult {
+function getKnownTopicIds(entries: Iterable<KnowledgeEntity>) {
+  const topicIds = getCanonicalTopicIds();
+
+  for (const entry of entries) {
+    if (entry.entity_type === 'topic') {
+      topicIds.add(entry.id);
+    }
+  }
+
+  return topicIds;
+}
+
+function mergeImportErrors(target: ImportError[], entry: ImportError) {
+  const existing = target.find((item) => item.path === entry.path);
+  if (!existing) {
+    target.push(entry);
+    return;
+  }
+
+  const seenMessages = new Set(existing.errors.map((error) => error.message));
+  for (const error of entry.errors) {
+    if (!seenMessages.has(error.message)) {
+      existing.errors.push(error);
+      seenMessages.add(error.message);
+    }
+  }
+}
+
+function validateEntries(
+  candidates: Array<{ path: string; data: unknown }>,
+  options: ValidationOptions = {},
+): LoadResult {
   const accepted: CandidateEntry[] = [];
   const errors: ImportError[] = [];
 
@@ -262,40 +298,135 @@ function validateEntries(candidates: Array<{ path: string; data: unknown }>): Lo
     }
   }
 
-  const canonicalTopicIds = getCanonicalTopicIds();
-  const allEntityIds = new Set(accepted.map((candidate) => candidate.entry.id));
-  const graphAccepted: KnowledgeEntity[] = [];
+  const existingEntries = options.existingEntries ?? [];
+  const allowCandidateIdOverrides = options.allowCandidateIdOverrides ?? false;
 
-  for (const candidate of accepted) {
-    const graphErrors = validateGraph(candidate.entry, allEntityIds, canonicalTopicIds);
-    if (graphErrors.length > 0) {
-      errors.push({ path: candidate.path, errors: graphErrors });
-      continue;
+  const candidateEntries = allowCandidateIdOverrides
+    ? accepted.reduce<CandidateEntry[]>((items, candidate) => {
+        const existingIndex = items.findIndex((item) => item.entry.id === candidate.entry.id);
+        if (existingIndex >= 0) {
+          items[existingIndex] = candidate;
+        } else {
+          items.push(candidate);
+        }
+        return items;
+      }, [])
+    : accepted;
+
+  if (!allowCandidateIdOverrides) {
+    const duplicatePathsById = new Map<string, string[]>();
+
+    for (const candidate of candidateEntries) {
+      const paths = duplicatePathsById.get(candidate.entry.id) ?? [];
+      paths.push(candidate.path);
+      duplicatePathsById.set(candidate.entry.id, paths);
     }
-    graphAccepted.push(candidate.entry);
+
+    const duplicateIds = new Set(
+      Array.from(duplicatePathsById.entries())
+        .filter(([, paths]) => paths.length > 1)
+        .map(([id]) => id),
+    );
+
+    for (const candidate of candidateEntries) {
+      if (!duplicateIds.has(candidate.entry.id)) {
+        continue;
+      }
+
+      mergeImportErrors(errors, {
+        path: candidate.path,
+        errors: [{ message: `Duplicate imported entity id "${candidate.entry.id}".` }],
+      });
+    }
+
+    if (duplicateIds.size > 0) {
+      for (let index = candidateEntries.length - 1; index >= 0; index -= 1) {
+        if (duplicateIds.has(candidateEntries[index].entry.id)) {
+          candidateEntries.splice(index, 1);
+        }
+      }
+    }
   }
 
-  return { entries: graphAccepted, errors };
+  const retained = new Map(candidateEntries.map((candidate) => [candidate.entry.id, candidate]));
+  let changed = true;
+
+  while (changed) {
+    changed = false;
+
+    const mergedEntries = new Map(existingEntries.map((entry) => [entry.id, entry]));
+    for (const candidate of retained.values()) {
+      mergedEntries.set(candidate.entry.id, candidate.entry);
+    }
+
+    const knownTopicIds = getKnownTopicIds(mergedEntries.values());
+    const allEntityIds = new Set(mergedEntries.keys());
+    const invalidIds: string[] = [];
+
+    for (const candidate of retained.values()) {
+      const graphErrors = validateGraph(candidate.entry, allEntityIds, knownTopicIds);
+      if (graphErrors.length === 0) {
+        continue;
+      }
+
+      mergeImportErrors(errors, { path: candidate.path, errors: graphErrors });
+      invalidIds.push(candidate.entry.id);
+    }
+
+    if (invalidIds.length > 0) {
+      changed = true;
+      for (const invalidId of invalidIds) {
+        retained.delete(invalidId);
+      }
+    }
+  }
+
+  const mergedEntries = new Map(existingEntries.map((entry) => [entry.id, entry]));
+  for (const candidate of retained.values()) {
+    mergedEntries.set(candidate.entry.id, candidate.entry);
+  }
+
+  return {
+    entries: Array.from(mergedEntries.values()),
+    errors,
+  };
 }
 
-export function loadAllContent(): LoadResult {
+export function loadAllContent(extraCandidates: Array<{ path: string; data: unknown }> = []): LoadResult {
   return validateEntries(
-    Object.entries(contentModules).map(([path, moduleValue]) => ({
-      path,
-      data: (moduleValue as { default?: unknown }).default,
-    })),
+    [
+      ...Object.entries(contentModules).map(([path, moduleValue]) => ({
+        path,
+        data: (moduleValue as { default?: unknown }).default,
+      })),
+      ...extraCandidates,
+    ],
+    { allowCandidateIdOverrides: true },
   );
 }
 
-export function validateImportedPayload(payload: unknown): LoadResult {
-  if (Array.isArray(payload)) {
-    return validateEntries(
-      payload.map((item, index) => ({
+export function validateImportedPayload(payload: unknown, existingEntries: KnowledgeEntity[] = []): LoadResult {
+  const candidates = Array.isArray(payload)
+    ? payload.map((item, index) => ({
         path: `input[${index}]`,
         data: item,
-      })),
-    );
+      }))
+    : [{ path: 'input[0]', data: payload }];
+
+  const result = validateEntries(candidates, { existingEntries });
+  const importedIds = new Set(candidates
+    .filter((candidate) => isPlainObject(candidate.data) && typeof candidate.data.id === 'string')
+    .map((candidate) => String(candidate.data.id)));
+
+  if (Array.isArray(payload)) {
+    return {
+      entries: result.entries.filter((entry) => importedIds.has(entry.id)),
+      errors: result.errors,
+    };
   }
 
-  return validateEntries([{ path: 'input[0]', data: payload }]);
+  return {
+    entries: result.entries.filter((entry) => importedIds.has(entry.id)),
+    errors: result.errors,
+  };
 }

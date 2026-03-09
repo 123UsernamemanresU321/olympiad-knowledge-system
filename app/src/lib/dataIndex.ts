@@ -17,6 +17,11 @@ type TopicContext = {
   subtopicName?: string;
 };
 
+type LoaderCandidate = {
+  path: string;
+  data: unknown;
+};
+
 const SUBJECT_FROM_PREFIX: Record<string, SubjectId> = {
   nt: 'number-theory',
   alg: 'algebra',
@@ -39,13 +44,24 @@ class DataIndex {
   private readonly relatedIdsById = new Map<string, string[]>();
   private readonly topicContextById = new Map<string, TopicContext>();
   private validationErrors: Array<{ path: string; errors: Array<{ message: string }> }> = [];
+  private remoteCandidates: LoaderCandidate[] = [];
 
   constructor() {
-    this.buildTopicContext();
     this.initialize();
   }
 
-  private buildTopicContext() {
+  private clearIndexes() {
+    this.entitiesById.clear();
+    this.entitiesByType.clear();
+    this.entitiesBySubject.clear();
+    this.entitiesByTopic.clear();
+    this.entitiesByTag.clear();
+    this.prerequisitesById.clear();
+    this.relatedIdsById.clear();
+    this.topicContextById.clear();
+  }
+
+  private buildTopicContextFromTaxonomy() {
     for (const subject of taxonomy?.subjects ?? []) {
       for (const topic of subject.topics) {
         this.topicContextById.set(topic.id, { subject, topic });
@@ -61,9 +77,38 @@ class DataIndex {
     }
   }
 
+  private buildTopicContextFromEntries(entries: KnowledgeEntity[]) {
+    for (const entry of entries) {
+      if (entry.entity_type !== 'topic' || this.topicContextById.has(entry.id)) {
+        continue;
+      }
+
+      const subject = this.getSubject(entry.subject_id);
+      if (!subject) {
+        continue;
+      }
+
+      this.topicContextById.set(entry.id, {
+        subject,
+        topic: {
+          id: entry.id,
+          slug: entry.slug,
+          name: entry.name,
+          level: entry.level,
+          display_order: entry.display_order,
+          subtopics: [],
+        },
+      });
+    }
+  }
+
   private initialize() {
-    const { entries, errors } = loadAllContent();
+    this.clearIndexes();
+    this.buildTopicContextFromTaxonomy();
+
+    const { entries, errors } = loadAllContent(this.remoteCandidates);
     this.validationErrors = errors;
+    this.buildTopicContextFromEntries(entries);
 
     for (const entry of entries) {
       this.entitiesById.set(entry.id, entry);
@@ -99,6 +144,11 @@ class DataIndex {
     for (const [subjectId, items] of this.entitiesBySubject) {
       items.sort((left, right) => this.compareEntities(left, right, subjectId));
     }
+  }
+
+  setRemoteEntries(candidates: LoaderCandidate[]) {
+    this.remoteCandidates = candidates;
+    this.initialize();
   }
 
   private compareEntities(left: KnowledgeEntity, right: KnowledgeEntity, subjectId?: SubjectId) {
@@ -387,13 +437,28 @@ class DataIndex {
   }
 
   getAuthoredTopics(subjectId: SubjectId) {
-    const authoredTopicIds = new Set(
-      (this.entitiesBySubject.get(subjectId) ?? [])
-        .filter((entity): entity is TopicEntity => entity.entity_type === 'topic')
-        .map((entity) => entity.id),
-    );
+    const topicsById = new Map<string, TaxonomyTopic>();
 
-    return (this.getSubject(subjectId)?.topics ?? []).filter((topic) => authoredTopicIds.has(topic.id));
+    for (const entity of this.entitiesBySubject.get(subjectId) ?? []) {
+      if (entity.entity_type !== 'topic') {
+        continue;
+      }
+
+      const context = this.getTopicContext(entity.id);
+      if (!context) {
+        continue;
+      }
+
+      topicsById.set(entity.id, context.topic);
+    }
+
+    return Array.from(topicsById.values()).sort((left, right) => {
+      if (left.display_order !== right.display_order) {
+        return left.display_order - right.display_order;
+      }
+
+      return left.name.localeCompare(right.name);
+    });
   }
 
   getEntitiesByType<T extends KnowledgeEntity = KnowledgeEntity>(type: EntityType) {

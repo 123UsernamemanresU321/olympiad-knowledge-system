@@ -1,9 +1,11 @@
 import { createClient, type Session, type User } from '@supabase/supabase-js';
+import type { EntityType, KnowledgeEntity } from '../types';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL?.trim() ?? '';
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY?.trim() ?? '';
 const progressTable = import.meta.env.VITE_SUPABASE_PROGRESS_TABLE?.trim() || 'progress_snapshots';
 const profileTable = import.meta.env.VITE_SUPABASE_PROFILE_TABLE?.trim() || 'profiles';
+const knowledgeTable = import.meta.env.VITE_SUPABASE_KNOWLEDGE_TABLE?.trim() || 'knowledge_entities';
 
 export const isSupabaseConfigured = Boolean(supabaseUrl && supabaseAnonKey);
 export const supabaseProgressSyncEnabled = import.meta.env.VITE_SUPABASE_PROGRESS_SYNC === 'true';
@@ -14,6 +16,16 @@ export interface AuthProfile {
   is_admin: boolean;
   created_at?: string;
   updated_at?: string;
+}
+
+export interface KnowledgeEntityRecord {
+  id: string;
+  entity_type: EntityType;
+  payload: KnowledgeEntity;
+  source_name: string | null;
+  uploaded_by: string | null;
+  created_at: string;
+  updated_at: string;
 }
 
 export const supabase = isSupabaseConfigured
@@ -157,4 +169,59 @@ export async function syncProgressSnapshot<T extends { learnerId: string }>(snap
   if (error) {
     throw error;
   }
+}
+
+export async function listKnowledgeEntities(): Promise<KnowledgeEntityRecord[]> {
+  if (!supabase) {
+    return [];
+  }
+
+  const { data, error } = await supabase
+    .from(knowledgeTable)
+    .select('id, entity_type, payload, source_name, uploaded_by, created_at, updated_at')
+    .order('updated_at', { ascending: false });
+
+  if (error) {
+    throw error;
+  }
+
+  return (data ?? []) as KnowledgeEntityRecord[];
+}
+
+export async function upsertKnowledgeEntities(entries: KnowledgeEntity[], sourceName?: string) {
+  if (entries.length === 0) {
+    return 0;
+  }
+
+  const client = requireClient();
+  const {
+    data: { user },
+    error: userError,
+  } = await client.auth.getUser();
+
+  if (userError) {
+    throw userError;
+  }
+
+  if (!user) {
+    throw new Error('You must be signed in as an admin to upload knowledge entities.');
+  }
+
+  const timestamp = new Date().toISOString();
+  const rows = entries.map((entry) => ({
+    id: entry.id,
+    entity_type: entry.entity_type,
+    payload: entry,
+    source_name: sourceName ?? null,
+    uploaded_by: user.id,
+    updated_at: timestamp,
+  }));
+
+  const { error } = await client.from(knowledgeTable).upsert(rows, { onConflict: 'id' });
+
+  if (error) {
+    throw error;
+  }
+
+  return rows.length;
 }

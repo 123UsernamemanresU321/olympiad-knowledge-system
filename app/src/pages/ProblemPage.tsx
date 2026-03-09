@@ -8,9 +8,10 @@ import {
 } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { MathContentView, asMathContent } from '../components/content/MathContentView';
 import { AppTopNav, Badge, Surface } from '../components/layout/DesignShell';
 import { useProgress } from '../hooks/useProgress';
-import { getCatalogItem, getKnowledgeEntity, getProblemEntity, getRelatedCatalogItems, readMathContent } from '../lib/uiData';
+import { getCatalogItem, getKnowledgeEntity, getProblemEntity, getRelatedCatalogItems } from '../lib/uiData';
 import type { SolutionEntity } from '../types';
 
 export function ProblemPage() {
@@ -39,14 +40,12 @@ export function ProblemPage() {
       title: problem.title ?? problem.short_label,
       collection,
       breadcrumbLabel: problem.short_label,
-      statement: readMathContent(problem.statement)
-        .split(/\n{2,}/)
-        .map((paragraph) => paragraph.trim())
-        .filter(Boolean),
-      hints: (problem.hint_blocks ?? []).map((item) => item.plain_text),
-      solutionSteps: primarySolution?.step_blocks?.map((step) => step.content.plain_text) ?? [],
-      solutionBody: primarySolution?.body.plain_text ?? 'Open the related entry pages if you need the full dependency chain.',
-      finalAnswer: primarySolution?.final_answer?.plain_text ?? problem.answer_key?.plain_text ?? 'No final answer recorded.',
+      statement: problem.statement,
+      hints: problem.hint_blocks ?? [],
+      solutionSteps: primarySolution?.step_blocks?.map((step) => step.content) ?? [],
+      solutionBody:
+        primarySolution?.body ?? asMathContent('Open the related entry pages if you need the full dependency chain.'),
+      finalAnswer: primarySolution?.final_answer ?? problem.answer_key ?? asMathContent('No final answer recorded.'),
       relatedEntries,
       topicTags: getCatalogItem(problem.id)?.tags ?? [],
     };
@@ -118,10 +117,8 @@ export function ProblemPage() {
               <FileText className="h-5 w-5 text-primary-400" />
               <h2 className="text-xl font-bold text-primary-400">Problem Statement</h2>
             </div>
-            <div className="space-y-5 text-lg leading-8 text-text-200">
-              {detail.statement.map((paragraph) => (
-                <p key={paragraph}>{paragraph}</p>
-              ))}
+            <div className="text-lg text-text-200">
+              <MathContentView content={detail.statement} />
             </div>
             <div className="mt-8 rounded-[8px] border-2 border-dashed border-base-500 bg-base-600/50 px-6 py-10 text-left">
               <div className="text-sm font-semibold uppercase tracking-[0.16em] text-text-500">Expected Response</div>
@@ -146,7 +143,10 @@ export function ProblemPage() {
                 <div className="text-xs font-bold uppercase tracking-[0.18em] text-warning-500">
                   Hint {Math.min(hintIndex, detail.hints.length)}
                 </div>
-                <p className="mt-3 text-sm leading-7 text-text-300">{detail.hints[Math.min(hintIndex, detail.hints.length) - 1]}</p>
+                <MathContentView
+                  content={detail.hints[Math.min(hintIndex, detail.hints.length) - 1]}
+                  className="mt-3 text-sm text-text-300"
+                />
               </Surface>
             ) : null}
 
@@ -155,17 +155,17 @@ export function ProblemPage() {
                 <div className="space-y-5 p-8 text-sm leading-7 text-text-300">
                   {detail.solutionSteps.length > 0 ? (
                     detail.solutionSteps.map((step, index) => (
-                      <div key={step}>
+                      <div key={`${index}-${step.plain_text}`}>
                         <div className="font-semibold text-primary-400">Step {index + 1}</div>
-                        <p className="mt-1">{step}</p>
+                        <MathContentView content={step} className="mt-1" />
                       </div>
                     ))
                   ) : (
-                    <p>{detail.solutionBody}</p>
+                    <MathContentView content={detail.solutionBody} />
                   )}
                   <div className="rounded-[8px] border border-success-500/30 bg-success-900/15 p-4">
                     <div className="text-xs font-bold uppercase tracking-[0.18em] text-success-400">Final Answer</div>
-                    <p className="mt-2">{detail.finalAnswer}</p>
+                    <MathContentView content={detail.finalAnswer} className="mt-2" />
                   </div>
                   <button
                     onClick={() => setShowSolution(false)}

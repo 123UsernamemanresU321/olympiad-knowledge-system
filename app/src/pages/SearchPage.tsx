@@ -1,14 +1,9 @@
 import { ChevronLeft, ChevronRight, Search, SlidersHorizontal, Tag } from 'lucide-react';
 import { useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
+import { LatexBlock } from '../components/content/MathContentView';
 import { AppTopNav, Surface } from '../components/layout/DesignShell';
-import { getTopTags, searchCatalog } from '../lib/uiData';
-
-const topContributors = [
-  { name: 'seed.bot', total: '24 validated entries' },
-  { name: 'schema.guard', total: '0 invalid references' },
-  { name: 'local.learner', total: 'active review state' },
-];
+import { getCatalogItems, getSubjects, getTopTags, getValidationLogs, searchCatalog } from '../lib/uiData';
 
 export function SearchPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -18,6 +13,11 @@ export function SearchPage() {
 
   const results = searchCatalog(query, filterType === 'topic' ? 'all' : filterType);
   const tagCloud = getTopTags(results.length > 0 ? results : searchCatalog('', 'all'));
+  const workspaceSnapshot = [
+    { name: 'Authored entries', total: `${getCatalogItems().length}` },
+    { name: 'Subjects', total: `${getSubjects().length}` },
+    { name: 'Validation errors', total: `${getValidationLogs().length}` },
+  ];
 
   const setType = (nextType: string) => {
     setSearchParams({ q: query, type: nextType });
@@ -30,10 +30,10 @@ export function SearchPage() {
       <div className="border-b border-base-600 bg-base-700/90">
         <div className="mx-auto flex w-full max-w-[1280px] items-center gap-3 overflow-x-auto px-6 py-3">
           {[
-            'Subject: Number Theory',
+            'Scope: Local library',
             `Type: ${filterType === 'all' ? 'All' : filterType}`,
-            'Difficulty: Any',
-            'Status: Published',
+            `Results: ${results.length}`,
+            `Tags: ${tagCloud.length}`,
           ].map((label) => (
             <button
               key={label}
@@ -128,8 +128,8 @@ export function SearchPage() {
                 </div>
                 <p className="mt-3 max-w-4xl text-sm leading-7 text-text-400">{result.description}</p>
                 {result.formula ? (
-                  <div className="mt-4 rounded-[4px] bg-base-600/70 px-4 py-3 text-center font-serif text-base italic text-text-200">
-                    {result.formula}
+                  <div className="mt-4 rounded-[4px] bg-base-600/70 px-4 py-3 text-center text-text-200">
+                    <LatexBlock latex={result.formula} />
                   </div>
                 ) : null}
                 <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-text-500">
@@ -187,16 +187,16 @@ export function SearchPage() {
           </Surface>
 
           <Surface className="p-5">
-            <div className="mb-4 text-sm font-bold text-text-100">Pipeline Status</div>
+            <div className="mb-4 text-sm font-bold text-text-100">Workspace Snapshot</div>
             <div className="space-y-4">
-              {topContributors.map((contributor) => (
-                <div key={contributor.name} className="flex items-center gap-3">
+              {workspaceSnapshot.map((item) => (
+                <div key={item.name} className="flex items-center gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-base-500 text-xs font-bold text-text-100">
-                    {contributor.name.slice(0, 2)}
+                    {item.name.slice(0, 2)}
                   </div>
                   <div>
-                    <div className="text-sm font-medium text-text-100">{contributor.name}</div>
-                    <div className="text-xs text-text-500">{contributor.total}</div>
+                    <div className="text-sm font-medium text-text-100">{item.name}</div>
+                    <div className="text-xs text-text-500">{item.total}</div>
                   </div>
                 </div>
               ))}

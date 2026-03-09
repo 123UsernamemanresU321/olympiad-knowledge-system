@@ -1,7 +1,13 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { dataIndex } from '../lib/dataIndex';
-import { isSupabaseConfigured, supabaseProgressSyncEnabled, syncProgressSnapshot } from '../lib/supabase';
+import {
+  isSupabaseConfigured,
+  loadProgressSnapshot,
+  supabaseProgressSyncEnabled,
+  syncProgressSnapshot,
+} from '../lib/supabase';
 import type { EntityType, ProblemEntity } from '../types';
+import { useAuth } from './useAuth';
 
 const STORAGE_KEY = 'olympiad_progress_v3';
 const REMOTE_SYNC_DEBOUNCE_MS = 1000;
@@ -140,6 +146,7 @@ function mergeState(raw: unknown): ProgressState {
 const ProgressContext = createContext<ProgressContextValue | null>(null);
 
 export const ProgressProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { user } = useAuth();
   const [state, setState] = useState<ProgressState>(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
@@ -149,13 +156,80 @@ export const ProgressProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       return createEmptyState();
     }
   });
+  const [hydratedLearnerId, setHydratedLearnerId] = useState<string | null>(null);
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   }, [state]);
 
   useEffect(() => {
-    if (!isSupabaseConfigured || !supabaseProgressSyncEnabled) {
+    if (!user) {
+      setHydratedLearnerId(null);
+      setState((previous) =>
+        previous.learnerId === 'local-learner'
+          ? previous
+          : {
+              ...previous,
+              learnerId: 'local-learner',
+            },
+      );
+      return undefined;
+    }
+
+    if (hydratedLearnerId === user.id) {
+      return undefined;
+    }
+
+    let active = true;
+
+    const hydrate = async () => {
+      try {
+        const snapshot =
+          isSupabaseConfigured && supabaseProgressSyncEnabled
+            ? await loadProgressSnapshot(user.id)
+            : null;
+
+        if (!active) {
+          return;
+        }
+
+        setState((previous) => {
+          const baseState = snapshot ? mergeState(snapshot) : previous;
+          if (baseState.learnerId === user.id) {
+            return baseState;
+          }
+
+          return {
+            ...baseState,
+            learnerId: user.id,
+          };
+        });
+        setHydratedLearnerId(user.id);
+      } catch (error) {
+        console.error('Failed to hydrate Supabase progress snapshot.', error);
+        if (active) {
+          setState((previous) =>
+            previous.learnerId === user.id
+              ? previous
+              : {
+                  ...previous,
+                  learnerId: user.id,
+                },
+          );
+          setHydratedLearnerId(user.id);
+        }
+      }
+    };
+
+    void hydrate();
+
+    return () => {
+      active = false;
+    };
+  }, [hydratedLearnerId, user]);
+
+  useEffect(() => {
+    if (!user || hydratedLearnerId !== user.id || !isSupabaseConfigured || !supabaseProgressSyncEnabled) {
       return undefined;
     }
 

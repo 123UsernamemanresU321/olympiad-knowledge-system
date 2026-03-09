@@ -1,7 +1,8 @@
 import type { LucideIcon } from 'lucide-react';
-import { Bell, Search, Sigma, User } from 'lucide-react';
+import { Bell, LoaderCircle, LogOut, Search, ShieldCheck, Sigma, User } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { Link, NavLink } from 'react-router-dom';
+import { useAuth } from '../../hooks/useAuth';
 
 export function cx(...parts: Array<string | false | null | undefined>): string {
   return parts.filter(Boolean).join(' ');
@@ -88,6 +89,9 @@ export function TopNavShell({
   className?: string;
   contentClassName?: string;
 }) {
+  const { isConfigured, isLoading, user, isAdmin, signOut } = useAuth();
+  const visibleNavItems = navItems.filter((item) => item.to !== '/import' || isAdmin);
+
   return (
     <header
       className={cx(
@@ -104,7 +108,7 @@ export function TopNavShell({
         <div className="flex items-center gap-8">
           <BrandLockup compact />
           <nav className="hidden items-center gap-6 lg:flex">
-            {navItems.map((item) => (
+            {visibleNavItems.map((item) => (
               <NavLink
                 key={item.label}
                 to={item.to}
@@ -129,12 +133,49 @@ export function TopNavShell({
           />
           {actions ?? (
             <div className="flex items-center gap-2">
-              <button className="flex h-10 w-10 items-center justify-center rounded-[4px] border border-base-500 bg-base-600 text-text-300 transition-colors hover:text-text-100">
+              <button className="hidden h-10 w-10 items-center justify-center rounded-[4px] border border-base-500 bg-base-600 text-text-300 transition-colors hover:text-text-100 sm:flex">
                 <Bell className="h-4 w-4" />
               </button>
-              <button className="flex h-10 w-10 items-center justify-center rounded-xl border border-primary-500/30 bg-primary-900/60 text-text-100 transition-colors hover:border-primary-400/50">
-                <User className="h-4 w-4" />
-              </button>
+              {!isConfigured ? (
+                <span className="inline-flex h-10 items-center rounded-[8px] border border-base-500 bg-base-600/60 px-3 text-xs font-semibold uppercase tracking-[0.16em] text-text-400">
+                  Offline
+                </span>
+              ) : isLoading ? (
+                <span className="inline-flex h-10 items-center gap-2 rounded-[8px] border border-base-500 bg-base-600/60 px-3 text-xs font-semibold uppercase tracking-[0.16em] text-text-400">
+                  <LoaderCircle className="h-4 w-4 animate-spin" />
+                  Auth
+                </span>
+              ) : user ? (
+                <>
+                  {isAdmin ? (
+                    <span className="hidden items-center gap-2 rounded-[8px] border border-success-500/30 bg-success-900/20 px-3 py-2 text-xs font-bold uppercase tracking-[0.16em] text-success-400 sm:inline-flex">
+                      <ShieldCheck className="h-3.5 w-3.5" />
+                      Admin
+                    </span>
+                  ) : null}
+                  <div className="hidden max-w-[220px] truncate rounded-[8px] border border-base-500 bg-base-600/60 px-3 py-2 text-sm text-text-200 sm:block">
+                    {user.email}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      void signOut();
+                    }}
+                    className="inline-flex h-10 items-center gap-2 rounded-[8px] border border-base-500 bg-base-600 px-3 text-sm font-medium text-text-200 transition-colors hover:text-text-100"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    Sign Out
+                  </button>
+                </>
+              ) : (
+                <Link
+                  to="/login"
+                  className="inline-flex h-10 items-center gap-2 rounded-[8px] border border-primary-500/30 bg-primary-900/40 px-4 text-sm font-semibold text-primary-400 transition-colors hover:border-primary-400/50 hover:text-primary-300"
+                >
+                  <User className="h-4 w-4" />
+                  Sign In
+                </Link>
+              )}
             </div>
           )}
         </div>

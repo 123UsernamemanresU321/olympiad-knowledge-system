@@ -1,9 +1,10 @@
 import { BarChart3, Brain, ChevronLeft, Eye, Info, Library, Repeat2 } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { MathContentView, asMathContent } from '../components/content/MathContentView';
 import { AppTopNav } from '../components/layout/DesignShell';
 import { useProgress } from '../hooks/useProgress';
-import { getKnowledgeEntity, getReviewQueueItems, readMathContent } from '../lib/uiData';
+import { getKnowledgeEntity, getReviewQueueItems } from '../lib/uiData';
 
 const ratingButtons = [
   { label: 'Again', hint: '< 1 day', border: 'hover:border-rose-500/50', text: 'text-rose-400', rating: 1 },
@@ -58,29 +59,29 @@ export function TrainingPage() {
     );
   }
 
-  const prompt = activeEntity.entity_type === 'problem'
-    ? readMathContent(activeEntity.statement)
+  const promptContent = activeEntity.entity_type === 'problem'
+    ? activeEntity.statement
     : activeEntity.entity_type === 'definition'
-      ? readMathContent(activeEntity.statement)
+      ? activeEntity.statement
       : activeEntity.entity_type === 'theorem'
-        ? readMathContent(activeEntity.statement)
+        ? activeEntity.statement
         : activeEntity.entity_type === 'technique'
-          ? readMathContent(activeEntity.summary)
+          ? activeEntity.summary
           : activeEntity.entity_type === 'example'
-            ? readMathContent(activeEntity.prompt)
-            : activeEntity.id;
+            ? activeEntity.prompt
+            : asMathContent(activeEntity.id);
 
-  const revealText = activeEntity.entity_type === 'problem'
-    ? activeEntity.answer_key?.plain_text ?? 'Open the full problem page for the worked solution.'
+  const revealContent = activeEntity.entity_type === 'problem'
+    ? activeEntity.answer_key ?? asMathContent('Open the full problem page for the worked solution.')
     : activeEntity.entity_type === 'definition'
-      ? activeEntity.statement.plain_text
+      ? activeEntity.statement
       : activeEntity.entity_type === 'theorem'
-        ? activeEntity.conclusion?.plain_text ?? activeEntity.statement.plain_text
+        ? activeEntity.conclusion ?? activeEntity.statement
         : activeEntity.entity_type === 'technique'
-          ? activeEntity.method_steps.map((step) => step.plain_text).join(' ')
+          ? asMathContent(activeEntity.method_steps.map((step) => step.markdown ?? step.plain_text).join('\n\n'))
           : activeEntity.entity_type === 'example'
-            ? activeEntity.final_result?.plain_text ?? 'Open the example entry for the final result.'
-            : activeEntity.id;
+            ? activeEntity.final_result ?? asMathContent('Open the example entry for the final result.')
+            : asMathContent(activeEntity.id);
 
   return (
     <div className="min-h-screen bg-base-700 text-text-100">
@@ -145,13 +146,13 @@ export function TrainingPage() {
                 <h1 className="text-[36px] font-bold tracking-[-0.04em] text-text-100">
                   {('title' in activeEntity && activeEntity.title) || ('term' in activeEntity && activeEntity.term) || ('name' in activeEntity && activeEntity.name) || activeEntity.id}
                 </h1>
-                <p className="mt-3 text-sm leading-6 text-text-500">{prompt}</p>
+                <MathContentView content={promptContent} className="mt-3 text-sm text-text-500" />
               </div>
 
               <div className="rounded-[8px] border border-dashed border-base-500 bg-base-900/60 p-8">
                 {revealed ? (
                   <div className="space-y-5">
-                    <div className="font-serif text-2xl italic text-primary-400">{revealText}</div>
+                    <MathContentView content={revealContent} className="font-serif text-2xl italic text-primary-400" />
                     <p className="text-sm leading-7 text-text-300">
                       Rate how well you recalled or reconstructed the key fact before revealing it.
                     </p>

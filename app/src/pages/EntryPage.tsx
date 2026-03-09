@@ -9,9 +9,10 @@ import {
 } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { LatexBlock, MathContentView, asMathContent } from '../components/content/MathContentView';
 import { AppTopNav, Badge, SectionTitle, Surface } from '../components/layout/DesignShell';
-import { getKnowledgeEntity, getPrerequisiteCatalogItems, getRelatedCatalogItems, readMathContent, resolveTopic } from '../lib/uiData';
-import type { DefinitionEntity, ExampleEntity, TechniqueEntity, TheoremEntity } from '../types';
+import { getKnowledgeEntity, getPrerequisiteCatalogItems, getRelatedCatalogItems, resolveTopic } from '../lib/uiData';
+import type { DefinitionEntity, ExampleEntity, MathContent, TechniqueEntity, TheoremEntity } from '../types';
 
 function titleCase(value: string) {
   return value.charAt(0).toUpperCase() + value.slice(1).replace(/_/g, ' ');
@@ -48,14 +49,14 @@ export function EntryPage() {
     const relatedEntries = getRelatedCatalogItems(entry.id);
     const prerequisiteEntries = getPrerequisiteCatalogItems(entry.id);
 
-    const statement =
+    const statementContent =
       entry.entity_type === 'definition'
-        ? readMathContent(entry.statement)
+        ? entry.statement
         : entry.entity_type === 'theorem'
-          ? readMathContent(entry.statement)
+          ? entry.statement
           : entry.entity_type === 'technique'
-            ? readMathContent(entry.summary)
-            : readMathContent(entry.prompt);
+            ? entry.summary
+            : entry.prompt;
 
     const formulas = [
       entry.entity_type === 'definition' ? entry.statement.latex : undefined,
@@ -63,20 +64,25 @@ export function EntryPage() {
       entry.entity_type === 'example' ? entry.final_result?.latex : undefined,
     ].filter(Boolean) as string[];
 
-    const proofSteps =
+    const proofSteps: MathContent[] =
       entry.entity_type === 'theorem'
-        ? (entry.proof_outline_steps ?? []).map((item) => item.plain_text)
+        ? (entry.proof_outline_steps ?? []).map((item) => item)
         : entry.entity_type === 'technique'
-          ? entry.method_steps.map((item) => item.plain_text)
-          : entry.entity_type === 'definition'
-            ? [
-                ...(entry.assumptions ?? []).map((item) => item.plain_text),
+          ? entry.method_steps
+        : entry.entity_type === 'definition'
+          ? [
+              ...(entry.assumptions ?? []),
+              asMathContent(
                 'Pair the definition with the linked theorem or technique before using it in a problem.',
-              ]
-            : [
-                entry.objective?.plain_text ?? 'Understand the target pattern in the example before copying the algebra.',
-                entry.final_result?.plain_text ?? 'Check the final result and the parameterization carefully.',
-              ];
+              ),
+            ]
+          : [
+              entry.objective
+                ?? asMathContent(
+                  'Understand the target pattern in the example before copying the algebra.',
+                ),
+              entry.final_result ?? asMathContent('Check the final result and the parameterization carefully.'),
+            ];
 
     const coreTechniques =
       entry.entity_type === 'technique'
@@ -89,24 +95,28 @@ export function EntryPage() {
             body: item.description,
           }));
 
-    const mistakes =
+    const mistakes: MathContent[] =
       entry.entity_type === 'technique'
-        ? (entry.failure_modes ?? []).map((item) => item.plain_text)
+        ? (entry.failure_modes ?? [])
         : [
-            'Using the headline statement without checking the exact hypotheses.',
-            'Skipping the linked prerequisite entry before trying to apply the result in a problem.',
+            asMathContent('Using the headline statement without checking the exact hypotheses.'),
+            asMathContent(
+              'Skipping the linked prerequisite entry before trying to apply the result in a problem.',
+            ),
           ];
 
     const examplePrompt =
       entry.entity_type === 'example'
-        ? readMathContent(entry.prompt)
-        : relatedEntries.find((item) => item.type === 'example')?.description
-          ?? 'Use the linked example or problem to stress-test this idea in a concrete setting.';
+        ? entry.prompt
+        : asMathContent(
+            relatedEntries.find((item) => item.type === 'example')?.description
+              ?? 'Use the linked example or problem to stress-test this idea in a concrete setting.',
+          );
 
-    const exampleSolution =
+    const exampleSolution: MathContent[] =
       entry.entity_type === 'example'
-        ? [entry.final_result?.plain_text ?? 'Open the example solution for the full worked argument.']
-        : relatedEntries.slice(0, 2).map((item) => item.title);
+        ? [entry.final_result ?? asMathContent('Open the example solution for the full worked argument.')]
+        : relatedEntries.slice(0, 2).map((item) => asMathContent(item.title));
 
     return {
       title:
@@ -127,7 +137,7 @@ export function EntryPage() {
       subjectRoute: resolved ? `/subjects/${resolved.subject.id}` : '/subjects',
       topicName: resolved?.topic.name ?? 'Topic',
       topicRoute: resolved ? `/topics/${resolved.topic.id}` : '/subjects',
-      statement,
+      statementContent,
       formulas,
       proofTitle: entry.entity_type === 'technique' ? 'Method Steps' : entry.entity_type === 'example' ? 'Worked Example Notes' : 'Proof Outline',
       proofSteps,
@@ -245,8 +255,8 @@ export function EntryPage() {
 
             <section id="statement" className="space-y-6 scroll-mt-24">
               <SectionTitle title={`${detail.typeLabel} Statement`} />
-              <div className="rounded-[8px] border border-base-600 bg-base-900/40 p-6 text-base leading-8 text-text-300">
-                {detail.statement}
+              <div className="rounded-[8px] border border-base-600 bg-base-900/40 p-6 text-base text-text-300">
+                <MathContentView content={detail.statementContent} />
               </div>
               {detail.formulas.length > 0 ? (
                 <div className="grid gap-4 md:grid-cols-3">
@@ -255,9 +265,7 @@ export function EntryPage() {
                       <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-text-500">
                         Formula {index + 1}
                       </div>
-                      <div className="mt-3 text-center font-serif text-lg italic text-text-200">
-                        {formula}
-                      </div>
+                      <LatexBlock latex={formula} className="mt-3 text-center text-text-200" />
                     </Surface>
                   ))}
                 </div>
@@ -277,9 +285,11 @@ export function EntryPage() {
               </button>
               {proofOpen ? (
                 <div className="border-t border-base-600 px-6 py-5">
-                  <ol className="space-y-3 text-sm leading-6 text-text-300">
+                  <ol className="space-y-3 text-sm text-text-300">
                     {detail.proofSteps.map((step) => (
-                      <li key={step}>{step}</li>
+                      <li key={step.plain_text}>
+                        <MathContentView content={step} />
+                      </li>
                     ))}
                   </ol>
                 </div>
@@ -312,9 +322,11 @@ export function EntryPage() {
                 </div>
                 <div>
                   <div className="text-lg font-bold text-rose-300">Common Mistakes</div>
-                  <ul className="mt-3 space-y-2 text-sm leading-6 text-text-300">
+                  <ul className="mt-3 space-y-2 text-sm text-text-300">
                     {detail.mistakes.map((mistake) => (
-                      <li key={mistake}>{mistake}</li>
+                      <li key={mistake.plain_text}>
+                        <MathContentView content={mistake} />
+                      </li>
                     ))}
                   </ul>
                 </div>
@@ -324,13 +336,15 @@ export function EntryPage() {
             <section id="example-problem" className="space-y-6 scroll-mt-24">
               <SectionTitle title="Example Surface" />
               <Surface className="p-8">
-                <p className="text-base leading-8 text-text-200">{detail.examplePrompt}</p>
+                <MathContentView content={detail.examplePrompt} className="text-base text-text-200" />
                 {solutionOpen ? (
                   <div className="mt-6 rounded-[8px] border border-success-500/30 bg-success-900/15 p-5">
                     <div className="text-sm font-bold uppercase tracking-[0.18em] text-success-400">Solution</div>
-                    <ol className="mt-4 space-y-3 text-sm leading-6 text-text-300">
+                    <ol className="mt-4 space-y-3 text-sm text-text-300">
                       {detail.exampleSolution.map((step) => (
-                        <li key={step}>{step}</li>
+                        <li key={step.plain_text}>
+                          <MathContentView content={step} />
+                        </li>
                       ))}
                     </ol>
                     <button

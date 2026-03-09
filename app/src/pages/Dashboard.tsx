@@ -16,6 +16,7 @@ import {
   UploadCloud,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { LatexBlock } from '../components/content/MathContentView';
 import {
   AppTopNav,
   InitialAvatar,
@@ -337,13 +338,13 @@ export function Dashboard() {
                             </span>
                             <span className="text-xs text-text-500">{entry.updatedLabel}</span>
                           </div>
-                          <h3 className="mt-3 text-xl font-bold text-text-100">{entry.title}</h3>
-                          <p className="mt-2 text-sm leading-6 text-text-400">{entry.description}</p>
-                          {entry.formula ? (
-                            <div className="mt-4 rounded-[4px] bg-base-600/70 px-4 py-3 text-center font-serif text-base italic text-text-200">
-                              {entry.formula}
-                            </div>
-                          ) : null}
+                        <h3 className="mt-3 text-xl font-bold text-text-100">{entry.title}</h3>
+                        <p className="mt-2 text-sm leading-6 text-text-400">{entry.description}</p>
+                        {entry.formula ? (
+                          <div className="mt-4 rounded-[4px] bg-base-600/70 px-4 py-3 text-center text-text-200">
+                            <LatexBlock latex={entry.formula} />
+                          </div>
+                        ) : null}
                           <div className="mt-4 flex items-center gap-2 text-xs text-text-500">
                             <Search className="h-3.5 w-3.5" />
                             {entry.tags.slice(0, 2).join(' • ') || 'No tags'}

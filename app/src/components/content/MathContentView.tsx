@@ -7,14 +7,18 @@ import { cx } from '../layout/DesignShell';
 import type { MathContent } from '../../types';
 
 const blockComponents: Components = {
-  p: ({ children }) => <p className="leading-7 text-inherit [&:not(:first-child)]:mt-4">{children}</p>,
-  ul: ({ children }) => <ul className="ml-5 list-disc space-y-2 leading-7">{children}</ul>,
-  ol: ({ children }) => <ol className="ml-5 list-decimal space-y-2 leading-7">{children}</ol>,
-  li: ({ children }) => <li className="text-inherit">{children}</li>,
+  p: ({ children }) => (
+    <p className="overflow-hidden leading-7 break-words text-inherit [&:not(:first-child)]:mt-4">
+      {children}
+    </p>
+  ),
+  ul: ({ children }) => <ul className="ml-5 list-disc space-y-2 leading-7 break-words">{children}</ul>,
+  ol: ({ children }) => <ol className="ml-5 list-decimal space-y-2 leading-7 break-words">{children}</ol>,
+  li: ({ children }) => <li className="overflow-hidden break-words text-inherit">{children}</li>,
   strong: ({ children }) => <strong className="font-semibold text-text-100">{children}</strong>,
   em: ({ children }) => <em className="italic text-text-200">{children}</em>,
   code: ({ children }) => (
-    <code className="rounded-[4px] bg-base-600/70 px-1.5 py-0.5 font-mono text-[0.95em] text-text-200">
+    <code className="rounded-[4px] bg-base-600/70 px-1.5 py-0.5 font-mono text-[0.95em] break-words text-text-200">
       {children}
     </code>
   ),
@@ -23,7 +27,7 @@ const blockComponents: Components = {
 const inlineComponents: Components = {
   p: ({ children }) => <>{children}</>,
   code: ({ children }) => (
-    <code className="rounded-[4px] bg-base-600/70 px-1.5 py-0.5 font-mono text-[0.95em] text-text-200">
+    <code className="rounded-[4px] bg-base-600/70 px-1.5 py-0.5 font-mono text-[0.95em] break-words text-text-200">
       {children}
     </code>
   ),
@@ -59,7 +63,13 @@ export function MarkdownMath({
   const Wrapper = inline ? 'span' : 'div';
 
   return (
-    <Wrapper className={cx('math-content', inline ? 'inline' : 'space-y-4', className)}>
+    <Wrapper
+      className={cx(
+        'math-content min-w-0 max-w-full overflow-visible',
+        inline ? 'inline align-baseline' : 'block space-y-4',
+        className,
+      )}
+    >
       <ReactMarkdown
         remarkPlugins={[remarkGfm, remarkMath]}
         rehypePlugins={[rehypeKatex]}

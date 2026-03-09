@@ -261,7 +261,7 @@ export function EntryPage() {
               {detail.formulas.length > 0 ? (
                 <div className="grid gap-4 md:grid-cols-3">
                   {detail.formulas.map((formula, index) => (
-                    <Surface key={formula} className="p-4">
+                    <Surface key={formula} className="min-w-0 overflow-hidden p-4">
                       <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-text-500">
                         Formula {index + 1}
                       </div>

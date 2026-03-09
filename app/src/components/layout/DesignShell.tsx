@@ -1,8 +1,10 @@
 import type { LucideIcon } from 'lucide-react';
 import { Bell, LoaderCircle, LogOut, Search, ShieldCheck, Sigma, User } from 'lucide-react';
-import type { ReactNode } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { type ReactNode, useEffect, useState } from 'react';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { useProgress } from '../../hooks/useProgress';
 import { useAuth } from '../../hooks/useAuth';
+import { getReviewQueueItems, getValidationLogs } from '../../lib/uiData';
 
 export function cx(...parts: Array<string | false | null | undefined>): string {
   return parts.filter(Boolean).join(' ');
@@ -32,11 +34,13 @@ export function SearchField({
   placeholder,
   value,
   onChange,
+  onSubmit,
   className,
 }: {
   placeholder: string;
   value?: string;
   onChange?: (value: string) => void;
+  onSubmit?: () => void;
   className?: string;
 }) {
   return (
@@ -50,30 +54,90 @@ export function SearchField({
       <input
         value={value ?? ''}
         onChange={(event) => onChange?.(event.target.value)}
-        readOnly={!onChange}
         placeholder={placeholder}
+        onKeyDown={(event) => {
+          if (event.key === 'Enter' && onSubmit) {
+            event.preventDefault();
+            onSubmit();
+          }
+        }}
         className="w-full bg-transparent text-sm text-text-200 placeholder:text-text-500 focus:outline-none"
       />
+      {onSubmit ? (
+        <button
+          type="button"
+          onClick={onSubmit}
+          className="ml-3 inline-flex h-7 items-center rounded-[4px] bg-primary-500 px-2 text-[11px] font-bold uppercase tracking-[0.14em] text-white transition-colors hover:bg-primary-400"
+        >
+          Go
+        </button>
+      ) : null}
     </div>
   );
 }
 
-interface TopNavItem {
-  label: string;
-  to: string;
+interface NotificationItem {
+  id: string;
+  title: string;
+  detail: string;
+  to?: string;
+  tone: 'blue' | 'amber' | 'rose';
 }
 
-export const APP_NAV_ITEMS: TopNavItem[] = [
-  { label: 'Dashboard', to: '/' },
-  { label: 'Subjects', to: '/subjects' },
-  { label: 'Search', to: '/search' },
-  { label: 'Review Queue', to: '/review-queue' },
-  { label: 'Progress', to: '/progress' },
-  { label: 'Import', to: '/import' },
-];
+function getSectionLabel(pathname: string) {
+  if (pathname === '/') {
+    return 'Dashboard';
+  }
+  if (pathname === '/subjects') {
+    return 'Subjects';
+  }
+  if (pathname.startsWith('/subjects/')) {
+    return 'Subject Overview';
+  }
+  if (pathname.startsWith('/topics/')) {
+    return 'Topic';
+  }
+  if (pathname.startsWith('/entries/')) {
+    return 'Entry';
+  }
+  if (pathname.startsWith('/problems/')) {
+    return 'Problem';
+  }
+  if (pathname === '/search') {
+    return 'Search';
+  }
+  if (pathname === '/review-queue') {
+    return 'Review Queue';
+  }
+  if (pathname === '/study') {
+    return 'Study Mode';
+  }
+  if (pathname === '/progress') {
+    return 'Progress';
+  }
+  if (pathname === '/login') {
+    return 'Authentication';
+  }
+  if (pathname === '/import') {
+    return 'Import Workspace';
+  }
+  if (pathname === '/errors') {
+    return 'Validation Feed';
+  }
+  return 'Knowledge Base';
+}
+
+function notificationToneClass(tone: NotificationItem['tone']) {
+  if (tone === 'rose') {
+    return 'border-rose-500/25 bg-rose-950/20 text-rose-300';
+  }
+  if (tone === 'amber') {
+    return 'border-warning-500/25 bg-warning-900/15 text-warning-400';
+  }
+  return 'border-primary-500/25 bg-primary-900/20 text-primary-300';
+}
 
 export function TopNavShell({
-  navItems,
   searchPlaceholder,
   searchValue,
   onSearchChange,
@@ -81,7 +145,6 @@ export function TopNavShell({
   className,
   contentClassName,
 }: {
-  navItems: TopNavItem[];
   searchPlaceholder: string;
   searchValue?: string;
   onSearchChange?: (value: string) => void;
@@ -89,8 +152,70 @@ export function TopNavShell({
   className?: string;
   contentClassName?: string;
 }) {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { state } = useProgress();
   const { isConfigured, isLoading, user, isAdmin, signOut } = useAuth();
-  const visibleNavItems = navItems.filter((item) => item.to !== '/import' || isAdmin);
+  const [draftQuery, setDraftQuery] = useState(searchValue ?? '');
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const sectionLabel = getSectionLabel(location.pathname);
+  const reviewQueue = getReviewQueueItems(state);
+  const validationLogs = getValidationLogs();
+
+  useEffect(() => {
+    setDraftQuery(searchValue ?? '');
+  }, [searchValue]);
+
+  useEffect(() => {
+    setNotificationsOpen(false);
+  }, [location.pathname, location.search]);
+
+  const notifications: NotificationItem[] = [];
+
+  if (reviewQueue.length > 0) {
+    notifications.push({
+      id: 'review',
+      title: 'Review queue',
+      detail: `${reviewQueue.length} item${reviewQueue.length === 1 ? '' : 's'} scheduled for review.`,
+      to: '/review-queue',
+      tone: reviewQueue.some((item) => item.tone === 'rose') ? 'rose' : 'amber',
+    });
+  }
+
+  if (isAdmin && validationLogs.length > 0) {
+    notifications.push({
+      id: 'validation',
+      title: 'Validation issues',
+      detail: `${validationLogs.length} schema issue${validationLogs.length === 1 ? '' : 's'} detected in content/.`,
+      to: '/errors',
+      tone: 'rose',
+    });
+  }
+
+  if (isConfigured && !isLoading && !user) {
+    notifications.push({
+      id: 'auth',
+      title: 'Sign in available',
+      detail: 'Sign in to sync progress and unlock admin tools.',
+      to: '/login',
+      tone: 'blue',
+    });
+  }
+
+  const handleSearchSubmit = () => {
+    const normalizedQuery = draftQuery.trim();
+    const params = new URLSearchParams();
+    const activeType = location.pathname === '/search' ? new URLSearchParams(location.search).get('type') : null;
+
+    if (normalizedQuery) {
+      params.set('q', normalizedQuery);
+    }
+    if (activeType && activeType !== 'all') {
+      params.set('type', activeType);
+    }
+
+    navigate(`/search${params.toString() ? `?${params.toString()}` : ''}`);
+  };
 
   return (
     <header
@@ -105,37 +230,77 @@ export function TopNavShell({
           contentClassName,
         )}
       >
-        <div className="flex items-center gap-8">
-          <BrandLockup compact />
-          <nav className="hidden items-center gap-6 lg:flex">
-            {visibleNavItems.map((item) => (
-              <NavLink
-                key={item.label}
-                to={item.to}
-                className={({ isActive }) =>
-                  cx(
-                    'text-sm font-medium transition-colors',
-                    isActive ? 'text-text-200' : 'text-text-400 hover:text-text-200',
-                  )
-                }
-              >
-                {item.label}
-              </NavLink>
-            ))}
-          </nav>
+        <div className="flex min-w-0 items-center gap-8">
+          <BrandLockup compact subtitle={sectionLabel} />
         </div>
         <div className="flex min-w-0 items-center gap-4">
           <SearchField
             placeholder={searchPlaceholder}
-            value={searchValue}
-            onChange={onSearchChange}
+            value={draftQuery}
+            onChange={(value) => {
+              setDraftQuery(value);
+              onSearchChange?.(value);
+            }}
+            onSubmit={handleSearchSubmit}
             className="hidden sm:flex sm:w-[280px]"
           />
           {actions ?? (
             <div className="flex items-center gap-2">
-              <button className="hidden h-10 w-10 items-center justify-center rounded-[4px] border border-base-500 bg-base-600 text-text-300 transition-colors hover:text-text-100 sm:flex">
-                <Bell className="h-4 w-4" />
-              </button>
+              <div className="relative hidden sm:block">
+                <button
+                  type="button"
+                  onClick={() => setNotificationsOpen((previous) => !previous)}
+                  aria-expanded={notificationsOpen}
+                  className="flex h-10 w-10 items-center justify-center rounded-[4px] border border-base-500 bg-base-600 text-text-300 transition-colors hover:text-text-100"
+                >
+                  <Bell className="h-4 w-4" />
+                  {notifications.length > 0 ? (
+                    <span className="absolute right-1.5 top-1.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-primary-500 px-1 text-[10px] font-bold text-white">
+                      {notifications.length}
+                    </span>
+                  ) : null}
+                </button>
+                {notificationsOpen ? (
+                  <div className="absolute right-0 top-12 z-40 w-[320px] rounded-[8px] border border-base-600 bg-base-800 p-3 shadow-[0_18px_40px_rgba(0,0,0,0.32)]">
+                    <div className="mb-3 flex items-center justify-between">
+                      <div className="text-sm font-semibold text-text-100">Notifications</div>
+                      <span className="text-xs text-text-500">{notifications.length}</span>
+                    </div>
+                    {notifications.length === 0 ? (
+                      <div className="rounded-[8px] border border-base-600 bg-base-900/50 px-3 py-4 text-sm text-text-400">
+                        No notifications right now.
+                      </div>
+                    ) : (
+                      <div className="space-y-2">
+                        {notifications.map((notification) =>
+                          notification.to ? (
+                            <Link
+                              key={notification.id}
+                              to={notification.to}
+                              onClick={() => setNotificationsOpen(false)}
+                              className={cx(
+                                'block rounded-[8px] border px-3 py-3 transition-colors hover:border-base-500',
+                                notificationToneClass(notification.tone),
+                              )}
+                            >
+                              <div className="text-sm font-semibold">{notification.title}</div>
+                              <div className="mt-1 text-xs leading-5 text-current/80">{notification.detail}</div>
+                            </Link>
+                          ) : (
+                            <div
+                              key={notification.id}
+                              className={cx('rounded-[8px] border px-3 py-3', notificationToneClass(notification.tone))}
+                            >
+                              <div className="text-sm font-semibold">{notification.title}</div>
+                              <div className="mt-1 text-xs leading-5 text-current/80">{notification.detail}</div>
+                            </div>
+                          ),
+                        )}
+                      </div>
+                    )}
+                  </div>
+                ) : null}
+              </div>
               {!isConfigured ? (
                 <span className="inline-flex h-10 items-center rounded-[8px] border border-base-500 bg-base-600/60 px-3 text-xs font-semibold uppercase tracking-[0.16em] text-text-400">
                   Offline
@@ -201,7 +366,6 @@ export function AppTopNav({
 }) {
   return (
     <TopNavShell
-      navItems={APP_NAV_ITEMS}
       searchPlaceholder={searchPlaceholder}
       searchValue={searchValue}
       onSearchChange={onSearchChange}

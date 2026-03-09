@@ -152,7 +152,10 @@ export function TrainingPage() {
               <div className="rounded-[8px] border border-dashed border-base-500 bg-base-900/60 p-8">
                 {revealed ? (
                   <div className="space-y-5">
-                    <MathContentView content={revealContent} className="font-serif text-2xl italic text-primary-400" />
+                    <MathContentView
+                      content={revealContent}
+                      className="font-serif text-2xl leading-relaxed italic text-primary-400"
+                    />
                     <p className="text-sm leading-7 text-text-300">
                       Rate how well you recalled or reconstructed the key fact before revealing it.
                     </p>

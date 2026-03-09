@@ -22,7 +22,7 @@ export function ValidationErrorsPage() {
               Import and Schema Diagnostics
             </h1>
             <p className="mt-2 max-w-3xl text-base text-text-400">
-              When the repo has no real validation failures, this screen holds the same visual treatment as the import design and shows representative warnings instead of an empty shell.
+              This screen lists the actual diagnostics emitted from the authored content graph and import validation pipeline.
             </p>
           </div>
         </div>
@@ -37,7 +37,7 @@ export function ValidationErrorsPage() {
             <div className="mt-3 text-3xl font-black text-warning-500">{warningCount}</div>
           </Surface>
           <Surface className="p-5">
-            <div className="text-xs uppercase tracking-[0.16em] text-text-500">Checked files</div>
+            <div className="text-xs uppercase tracking-[0.16em] text-text-500">Logged issues</div>
             <div className="mt-3 text-3xl font-black text-text-100">
               {logs.length}
             </div>

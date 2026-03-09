@@ -1,29 +1,26 @@
 import { CheckCircle2, FileJson, Play, UploadCloud, XCircle } from 'lucide-react';
-import { useState } from 'react';
-import { AppTopNav, SearchField, SidebarNavLink, Surface } from '../components/layout/DesignShell';
+import { useRef, useState, type ChangeEvent, type DragEvent } from 'react';
+import { Link } from 'react-router-dom';
+import { AppTopNav, SidebarNavLink, Surface } from '../components/layout/DesignShell';
 import { validateImportedPayload } from '../lib/loader';
-import { getCatalogItems, getImportPreviewRows, getValidationLogs, getKnowledgeEntity } from '../lib/uiData';
+import { getImportPreviewRows } from '../lib/uiData';
 
 export function ImportPage() {
-  const firstCatalogItem = getCatalogItems()[0];
-  const sampleEntity = firstCatalogItem ? getKnowledgeEntity(firstCatalogItem.id) : null;
-  const [jsonContent, setJsonContent] = useState(
-    sampleEntity ? JSON.stringify(sampleEntity, null, 2) : '{\n  "entity_type": "definition"\n}',
-  );
-  const [validationState, setValidationState] = useState(() => {
-    const initialLogs = getValidationLogs();
-    return {
-      logs: initialLogs,
-      previewRows: getImportPreviewRows(),
-      validCount: getCatalogItems().length,
-      warningCount: 0,
-      errorCount: initialLogs.filter((log) => log.level === 'error').length,
-    };
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [jsonContent, setJsonContent] = useState('');
+  const [selectedFileName, setSelectedFileName] = useState<string | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [validationState, setValidationState] = useState({
+    logs: [] as Array<{ level: 'error' | 'warning'; message: string }>,
+    previewRows: [] as ReturnType<typeof getImportPreviewRows>,
+    validCount: 0,
+    warningCount: 0,
+    errorCount: 0,
   });
 
-  const handleValidate = () => {
+  const runValidation = (rawContent: string) => {
     try {
-      const parsed = JSON.parse(jsonContent);
+      const parsed = JSON.parse(rawContent);
       const result = validateImportedPayload(parsed);
       const logs = result.errors.flatMap((entry) =>
         entry.errors.map((error) => ({
@@ -32,22 +29,80 @@ export function ImportPage() {
         })),
       );
 
-      setValidationState({
+      return {
         logs,
         previewRows: getImportPreviewRows(result.entries),
         validCount: result.entries.length,
         warningCount: 0,
         errorCount: logs.length,
-      });
+      };
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Invalid JSON.';
-      setValidationState({
+      return {
         logs: [{ level: 'error' as const, message }],
         previewRows: [],
         validCount: 0,
         warningCount: 0,
         errorCount: 1,
+      };
+    }
+  };
+
+  const handleValidate = () => {
+    setValidationState(runValidation(jsonContent));
+  };
+
+  const handleFile = async (file: File) => {
+    const isJsonFile =
+      file.name.toLowerCase().endsWith('.json')
+      || file.type === 'application/json'
+      || file.type === 'text/json'
+      || file.type === '';
+
+    if (!isJsonFile) {
+      setSelectedFileName(file.name);
+      setValidationState({
+        logs: [{ level: 'error', message: `Unsupported file type for ${file.name}. Please use a JSON file.` }],
+        previewRows: [],
+        validCount: 0,
+        warningCount: 0,
+        errorCount: 1,
       });
+      return;
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+      setSelectedFileName(file.name);
+      setValidationState({
+        logs: [{ level: 'error', message: `${file.name} exceeds the 10MB upload limit.` }],
+        previewRows: [],
+        validCount: 0,
+        warningCount: 0,
+        errorCount: 1,
+      });
+      return;
+    }
+
+    const text = await file.text();
+    setSelectedFileName(file.name);
+    setJsonContent(text);
+    setValidationState(runValidation(text));
+  };
+
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      void handleFile(file);
+    }
+    event.target.value = '';
+  };
+
+  const handleDrop = (event: DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    setIsDragging(false);
+    const file = event.dataTransfer.files?.[0];
+    if (file) {
+      void handleFile(file);
     }
   };
 
@@ -75,7 +130,9 @@ export function ImportPage() {
                 <h1 className="text-2xl font-bold text-text-100">Import &amp; Validation</h1>
                 <p className="mt-1 text-sm text-text-500">Upload JSON, validate structure, and inspect the parsed preview.</p>
               </div>
-              <SearchField placeholder="Search imports..." className="hidden w-[320px] md:flex" />
+              <div className="rounded-full border border-base-500 bg-base-600/60 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-text-400">
+                Local validation only
+              </div>
             </div>
           </div>
 
@@ -85,28 +142,69 @@ export function ImportPage() {
                 <div className="mb-4 text-sm font-semibold uppercase tracking-[0.16em] text-text-500">
                   File Upload
                 </div>
-                <div className="flex min-h-[320px] flex-col items-center justify-center rounded-[12px] border-2 border-dashed border-base-500 bg-base-950/70 p-8 text-center">
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept=".json,application/json"
+                  onChange={handleInputChange}
+                  className="hidden"
+                />
+                <div
+                  onDragEnter={(event) => {
+                    event.preventDefault();
+                    setIsDragging(true);
+                  }}
+                  onDragOver={(event) => {
+                    event.preventDefault();
+                    setIsDragging(true);
+                  }}
+                  onDragLeave={(event) => {
+                    event.preventDefault();
+                    if (event.currentTarget === event.target) {
+                      setIsDragging(false);
+                    }
+                  }}
+                  onDrop={handleDrop}
+                  className={`flex min-h-[320px] flex-col items-center justify-center rounded-[12px] border-2 border-dashed bg-base-950/70 p-8 text-center transition-colors ${
+                    isDragging ? 'border-primary-400 bg-primary-900/10' : 'border-base-500'
+                  }`}
+                >
                   <UploadCloud className="h-10 w-10 text-primary-400" />
                   <h2 className="mt-5 text-lg font-semibold text-text-100">Drag and drop JSON files here</h2>
                   <p className="mt-2 text-sm text-text-500">Maximum file size: 10MB</p>
-                  <button className="mt-6 h-11 rounded-[8px] bg-primary-500 px-6 text-sm font-bold text-white shadow-[0_10px_20px_rgba(20,75,184,0.2)] transition-colors hover:bg-primary-400">
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="mt-6 h-11 rounded-[8px] bg-primary-500 px-6 text-sm font-bold text-white shadow-[0_10px_20px_rgba(20,75,184,0.2)] transition-colors hover:bg-primary-400"
+                  >
                     Browse Files
                   </button>
+                  <div className="mt-4 text-xs text-text-500">
+                    {selectedFileName ? `Loaded: ${selectedFileName}` : 'No file selected yet.'}
+                  </div>
                 </div>
               </Surface>
 
               <Surface className="overflow-hidden">
                 <div className="border-b border-base-600 bg-base-900/70 px-4 py-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-mono text-text-500">input.json</span>
-                    <button className="text-text-400 transition-colors hover:text-text-200">
+                    <span className="text-xs font-mono text-text-500">{selectedFileName ?? 'draft.json'}</span>
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                      className="text-text-400 transition-colors hover:text-text-200"
+                    >
                       <FileJson className="h-4 w-4" />
                     </button>
                   </div>
                 </div>
                 <textarea
                   value={jsonContent}
-                  onChange={(event) => setJsonContent(event.target.value)}
+                  onChange={(event) => {
+                    setJsonContent(event.target.value);
+                    setSelectedFileName(null);
+                  }}
+                  placeholder="Paste JSON here or load a .json file to validate it."
                   className="min-h-[320px] w-full resize-none bg-base-950/70 p-5 font-mono text-sm text-text-300 focus:outline-none"
                   spellCheck={false}
                 />
@@ -196,48 +294,59 @@ export function ImportPage() {
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-base-600/60">
-                        {validationState.previewRows.map((row) => (
-                          <tr key={row.entryId} className="bg-base-900/20">
-                            <td className="px-6 py-4 font-mono text-primary-400">{row.entryId}</td>
-                            <td className="px-6 py-4 text-sm text-text-300">{row.topic}</td>
-                            <td className="px-6 py-4">
-                              <div className="flex gap-1">
-                                {Array.from({ length: 5 }).map((_, index) => (
-                                  <span
-                                    key={index}
-                                    className={`h-2 w-1.5 rounded-sm ${
-                                      index < row.difficulty ? 'bg-primary-500' : 'bg-base-500'
-                                    }`}
-                                  />
-                                ))}
-                              </div>
-                            </td>
-                            <td className="px-6 py-4 text-sm text-text-300">{row.concept}</td>
-                            <td className="px-6 py-4 text-right">
-                              <span
-                                className={`inline-flex items-center gap-1 rounded-[4px] px-2 py-1 text-xs font-bold ${
-                                  row.status === 'Valid'
-                                    ? 'bg-success-900/20 text-success-400'
-                                    : 'bg-warning-900/20 text-warning-500'
-                                }`}
-                              >
-                                {row.status === 'Valid' ? <CheckCircle2 className="h-3 w-3" /> : null}
-                                {row.status}
-                              </span>
+                        {validationState.previewRows.length > 0 ? (
+                          validationState.previewRows.map((row) => (
+                            <tr key={row.entryId} className="bg-base-900/20">
+                              <td className="px-6 py-4 font-mono text-primary-400">{row.entryId}</td>
+                              <td className="px-6 py-4 text-sm text-text-300">{row.topic}</td>
+                              <td className="px-6 py-4">
+                                <div className="flex gap-1">
+                                  {Array.from({ length: 5 }).map((_, index) => (
+                                    <span
+                                      key={index}
+                                      className={`h-2 w-1.5 rounded-sm ${
+                                        index < row.difficulty ? 'bg-primary-500' : 'bg-base-500'
+                                      }`}
+                                    />
+                                  ))}
+                                </div>
+                              </td>
+                              <td className="px-6 py-4 text-sm text-text-300">{row.concept}</td>
+                              <td className="px-6 py-4 text-right">
+                                <span
+                                  className={`inline-flex items-center gap-1 rounded-[4px] px-2 py-1 text-xs font-bold ${
+                                    row.status === 'Valid'
+                                      ? 'bg-success-900/20 text-success-400'
+                                      : 'bg-warning-900/20 text-warning-500'
+                                  }`}
+                                >
+                                  {row.status === 'Valid' ? <CheckCircle2 className="h-3 w-3" /> : null}
+                                  {row.status}
+                                </span>
+                              </td>
+                            </tr>
+                          ))
+                        ) : (
+                          <tr className="bg-base-900/20">
+                            <td colSpan={5} className="px-6 py-8 text-center text-sm text-text-500">
+                              No valid entries loaded yet.
                             </td>
                           </tr>
-                        ))}
+                        )}
                       </tbody>
                     </table>
                   </div>
                 </Surface>
               </div>
 
-              <div className="flex justify-end gap-4 border-t border-base-600 pt-6">
-                <button className="text-sm font-medium text-text-400">Discard Draft</button>
-                <button className="rounded-[8px] border border-base-500 bg-base-900/50 px-6 py-2.5 text-sm font-bold text-text-500">
-                  Confirm Import (Local-first pipeline)
-                </button>
+              <div className="flex flex-col gap-3 border-t border-base-600 pt-6 text-sm text-text-500 sm:flex-row sm:items-center sm:justify-between">
+                <p>
+                  This workspace validates imported JSON locally. Browser actions do not write into
+                  `content/`.
+                </p>
+                <Link to="/errors" className="font-semibold text-primary-400">
+                  Open validation feed
+                </Link>
               </div>
             </div>
           </div>

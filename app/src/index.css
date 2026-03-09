@@ -53,6 +53,55 @@ body {
   min-height: 100vh;
 }
 
+.math-content {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.math-content > :first-child {
+  margin-top: 0;
+}
+
+.math-content > :last-child {
+  margin-bottom: 0;
+}
+
+.math-content .katex {
+  max-width: 100%;
+  line-height: 1.45;
+}
+
+.math-content .katex-display {
+  display: block;
+  max-width: 100%;
+  margin: 0.9rem 0;
+  padding: 0.35rem 0.1rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.math-content .katex-display > .katex {
+  display: inline-block;
+  min-width: max-content;
+  padding-bottom: 0.1rem;
+}
+
+.math-content .katex-display::-webkit-scrollbar {
+  height: 6px;
+}
+
+.math-content .katex-display::-webkit-scrollbar-thumb {
+  background: var(--color-base-500);
+  border-radius: 999px;
+}
+
+.math-content .katex-html {
+  white-space: nowrap;
+}
+
 /* Custom scrollbar for dark theme */
 ::-webkit-scrollbar {
   width: 8px;

@@ -1,4 +1,5 @@
 import { CalendarClock, Play, Sparkles } from 'lucide-react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AppTopNav, SidebarNavLink, Surface } from '../components/layout/DesignShell';
 import { useProgress } from '../hooks/useProgress';
@@ -27,6 +28,7 @@ function toneClass(tone: 'rose' | 'amber' | 'emerald') {
 export function ReviewQueuePage() {
   const { state } = useProgress();
   const queue = getReviewQueueItems(state);
+  const [activeTab, setActiveTab] = useState('all');
   const queuedSubjectCount = new Set(
     queue
       .map((item) => getCatalogItem(item.entryId)?.subjectId)
@@ -36,7 +38,7 @@ export function ReviewQueuePage() {
     (record) => record.occurred_at.slice(0, 10) === new Date().toISOString().slice(0, 10),
   ).length;
   const tabs = [
-    `All Items (${queue.length})`,
+    { value: 'all', label: `All Items (${queue.length})` },
     ...Array.from(
       new Set(
         queue
@@ -44,8 +46,15 @@ export function ReviewQueuePage() {
           .filter(Boolean)
           .map((item) => item!.subjectId),
       ),
-    ).map((subjectId) => `${subjectId.replace(/-/g, ' ')} (${queue.filter((item) => getCatalogItem(item.entryId)?.subjectId === subjectId).length})`),
+    ).map((subjectId) => ({
+      value: subjectId,
+      label: `${subjectId.replace(/-/g, ' ')} (${queue.filter((item) => getCatalogItem(item.entryId)?.subjectId === subjectId).length})`,
+    })),
   ];
+  const selectedTab = tabs.some((tab) => tab.value === activeTab) ? activeTab : 'all';
+  const visibleQueue = selectedTab === 'all'
+    ? queue
+    : queue.filter((item) => getCatalogItem(item.entryId)?.subjectId === selectedTab);
 
   return (
     <div className="min-h-screen bg-base-700 text-text-100">
@@ -101,7 +110,7 @@ export function ReviewQueuePage() {
                   </h1>
                   <div className="mt-2 flex items-center gap-2 text-base text-text-400">
                     <CalendarClock className="h-4 w-4 text-primary-400" />
-                    {queue.length} items scheduled for spaced repetition
+                    {visibleQueue.length} of {queue.length} items scheduled for spaced repetition
                   </div>
                 </div>
                 <Link
@@ -113,27 +122,26 @@ export function ReviewQueuePage() {
                 </Link>
               </div>
               <div className="flex flex-wrap gap-6 border-b border-base-600">
-                {tabs.map(
-                  (tab, index) => (
-                    <button
-                      key={tab}
-                      type="button"
-                      className={`border-b-2 pb-4 text-sm font-bold ${
-                        index === 0
-                          ? 'border-primary-500 text-primary-400'
-                          : 'border-transparent text-text-500 transition-colors hover:text-text-300'
-                      }`}
-                    >
-                      {tab}
-                    </button>
-                  ),
-                )}
+                {tabs.map((tab) => (
+                  <button
+                    key={tab.value}
+                    type="button"
+                    onClick={() => setActiveTab(tab.value)}
+                    className={`border-b-2 pb-4 text-sm font-bold ${
+                      selectedTab === tab.value
+                        ? 'border-primary-500 text-primary-400'
+                        : 'border-transparent text-text-500 transition-colors hover:text-text-300'
+                    }`}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
               </div>
             </div>
           </div>
 
           <div className="mx-auto flex w-full max-w-[1024px] flex-col gap-4 px-6 py-8">
-            {queue.map((item) => {
+            {visibleQueue.map((item) => {
               const entry = getCatalogItem(item.entryId);
               if (!entry) {
                 return null;
@@ -181,12 +189,16 @@ export function ReviewQueuePage() {
               );
             })}
 
-            {queue.length === 0 ? (
+            {visibleQueue.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-16 text-center opacity-70">
                 <Sparkles className="h-14 w-14 text-text-400" />
-                <h3 className="mt-6 text-3xl font-bold text-text-200">Queue clear</h3>
+                <h3 className="mt-6 text-3xl font-bold text-text-200">
+                  {queue.length === 0 ? 'Queue clear' : 'No items in this filter'}
+                </h3>
                 <p className="mt-3 max-w-md text-sm leading-6 text-text-500">
-                  Your local review schedule has no due items right now. Run a study session or solve a problem to generate the next review wave.
+                  {queue.length === 0
+                    ? 'Your local review schedule has no due items right now. Run a study session or solve a problem to generate the next review wave.'
+                    : 'Switch tabs or add more reviewed content to populate this subject-specific queue.'}
                 </p>
               </div>
             ) : null}

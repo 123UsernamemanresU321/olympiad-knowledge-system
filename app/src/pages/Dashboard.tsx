@@ -9,7 +9,6 @@ import {
   LibraryBig,
   Medal,
   Search,
-  Settings2,
   Sparkles,
   Target,
   TrendingUp,
@@ -23,6 +22,7 @@ import {
   SidebarNavLink,
   Surface,
 } from '../components/layout/DesignShell';
+import { useAuth } from '../hooks/useAuth';
 import { useProgress } from '../hooks/useProgress';
 import { getCatalogItems, getReviewQueueItems, getSubjects } from '../lib/uiData';
 
@@ -56,6 +56,7 @@ function RingStat({
 }
 
 export function Dashboard() {
+  const { isAdmin } = useAuth();
   const { state } = useProgress();
   const subjects = getSubjects();
   const catalogItems = getCatalogItems();
@@ -124,13 +125,16 @@ export function Dashboard() {
       to: featuredSubject ? `/subjects/${featuredSubject.id}` : '/subjects',
       icon: Compass,
     },
-    {
+  ];
+
+  if (isAdmin) {
+    quickActions.push({
       title: 'Import New Content',
       description: 'Validate and preview fresh JSON entries.',
       to: '/import',
       icon: UploadCloud,
-    },
-  ];
+    });
+  }
 
   return (
     <div className="min-h-screen bg-base-700 text-text-100">
@@ -181,7 +185,7 @@ export function Dashboard() {
             <SidebarNavLink to="/subjects" label="Subjects" icon={BookOpen} />
             <SidebarNavLink to="/progress" label="Progress" icon={TrendingUp} />
             <SidebarNavLink to="/review-queue" label="Review Queue" icon={CalendarClock} />
-            <SidebarNavLink to="/import" label="Import" icon={UploadCloud} />
+            {isAdmin ? <SidebarNavLink to="/import" label="Import" icon={UploadCloud} /> : null}
           </nav>
 
           <div className="flex-1 px-4 py-6">
@@ -206,14 +210,8 @@ export function Dashboard() {
             )}
           </div>
 
-          <div className="border-t border-base-600 p-4">
-            <button className="flex w-full items-center justify-between rounded-[8px] border border-base-600 bg-base-900/50 px-4 py-3 text-sm font-medium text-text-300 transition-colors hover:text-text-100">
-              <span className="flex items-center gap-3">
-                <Settings2 className="h-4 w-4" />
-                Settings
-              </span>
-              <ChevronRight className="h-4 w-4 text-text-500" />
-            </button>
+          <div className="border-t border-base-600 p-4 text-xs uppercase tracking-[0.16em] text-text-500">
+            {isAdmin ? 'Admin tools available in import workspace' : 'Sign in as admin to access import tools'}
           </div>
         </aside>
 
@@ -341,7 +339,7 @@ export function Dashboard() {
                         <h3 className="mt-3 text-xl font-bold text-text-100">{entry.title}</h3>
                         <p className="mt-2 text-sm leading-6 text-text-400">{entry.description}</p>
                         {entry.formula ? (
-                          <div className="mt-4 rounded-[4px] bg-base-600/70 px-4 py-3 text-center text-text-200">
+                          <div className="mt-4 min-w-0 overflow-hidden rounded-[4px] bg-base-600/70 px-4 py-3 text-center text-text-200">
                             <LatexBlock latex={entry.formula} />
                           </div>
                         ) : null}

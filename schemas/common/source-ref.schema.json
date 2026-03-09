@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://olympiad.local/schemas/common/source-ref.schema.json",
+  "title": "Source Reference",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "source_kind": {
+      "$ref": "../enums/enums.schema.json#/$defs/source_kind"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "year": {
+      "type": "integer",
+      "minimum": 1800
+    },
+    "round": {
+      "type": "string",
+      "minLength": 1
+    },
+    "problem_code": {
+      "type": "string",
+      "minLength": 1
+    },
+    "url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "citation_text": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "source_kind"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "source_kind": {
+            "const": "contest"
+          }
+        },
+        "required": [
+          "source_kind"
+        ]
+      },
+      "then": {
+        "required": [
+          "name"
+        ]
+      }
+    }
+  ]
+}

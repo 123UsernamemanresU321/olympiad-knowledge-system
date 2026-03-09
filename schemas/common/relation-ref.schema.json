@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://olympiad.local/schemas/common/relation-ref.schema.json",
+  "title": "Relation Reference",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "relation": {
+      "$ref": "../enums/enums.schema.json#/$defs/relation_type"
+    },
+    "target": {
+      "$ref": "./entity-ref.schema.json"
+    },
+    "note": {
+      "$ref": "./math-content.schema.json"
+    }
+  },
+  "required": [
+    "relation",
+    "target"
+  ]
+}

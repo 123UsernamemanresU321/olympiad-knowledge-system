@@ -1,0 +1,73 @@
+{
+  "id": "sol.nt.gcd-sum-product",
+  "entity_type": "solution",
+  "schema_version": "1.0.0",
+  "status": "published",
+  "target_ref": {
+    "entity_type": "problem",
+    "id": "prob.nt.gcd-sum-product"
+  },
+  "solution_kind": "full",
+  "solution_status": "complete",
+  "body": {
+    "source_format": "markdown",
+    "plain_text": "The Euclidean algorithm gives 252 = 1*198 + 54, 198 = 3*54 + 36, 54 = 1*36 + 18, 36 = 2*18. So gcd(252,198)=18. Reverse the chain: 18 = 54 - 36 = 54 - (198 - 3*54) = 4*54 - 198 = 4*(252 - 198) - 198 = 4*252 - 5*198.",
+    "markdown": "The Euclidean algorithm gives $252 = 198 + 54$, $198 = 3\\cdot54 + 36$, and $54 = 36 + 18$. So $\\gcd(252,198)=18$. Reverse the chain: $18 = 54 - 36 = 54 - (198 - 3\\cdot54) = 4\\cdot54 - 198 = 4(252 - 198) - 198 = 4\\cdot252 - 5\\cdot198$."
+  },
+  "tracking_profile": {
+    "is_trackable": false,
+    "mastery_weight": 0,
+    "review_priority": "low",
+    "completion_criteria": ["understand"],
+    "estimated_effort_minutes": 9
+  },
+  "title": "Full Solution",
+  "step_blocks": [
+    {
+      "index": 1,
+      "heading": "Find the gcd",
+      "content": {
+        "source_format": "markdown",
+        "plain_text": "Use repeated division until the last nonzero remainder appears.",
+        "markdown": "Use repeated division until the last nonzero remainder appears."
+      },
+      "uses_refs": [
+        {
+          "entity_type": "technique",
+          "id": "tech.nt.euclidean-algorithm"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "heading": "Back-substitute",
+      "content": {
+        "source_format": "markdown",
+        "plain_text": "Replace each remainder by earlier expressions until only 252 and 198 remain.",
+        "markdown": "Replace each remainder by earlier expressions until only $252$ and $198$ remain."
+      },
+      "uses_refs": [
+        {
+          "entity_type": "theorem",
+          "id": "thm.nt.bezout-identity"
+        }
+      ]
+    }
+  ],
+  "final_answer": {
+    "source_format": "dual",
+    "plain_text": "The gcd is 18, and one coefficient pair is (4,-5).",
+    "markdown": "The gcd is $18$, and one coefficient pair is $(4,-5)$.",
+    "latex": "\\gcd(252,198)=18,\\ (x,y)=(4,-5)"
+  },
+  "used_definition_ids": ["def.nt.divisibility"],
+  "used_theorem_ids": ["thm.nt.bezout-identity"],
+  "used_technique_ids": ["tech.nt.euclidean-algorithm"],
+  "is_official": false,
+  "audit": {
+    "created_at": "2026-03-09T08:07:00Z",
+    "updated_at": "2026-03-09T08:07:00Z",
+    "created_by": "seed.bot",
+    "updated_by": "seed.bot"
+  }
+}

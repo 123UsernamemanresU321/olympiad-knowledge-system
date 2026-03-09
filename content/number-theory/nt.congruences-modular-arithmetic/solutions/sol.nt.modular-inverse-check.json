@@ -1,0 +1,72 @@
+{
+  "id": "sol.nt.modular-inverse-check",
+  "entity_type": "solution",
+  "schema_version": "1.0.0",
+  "status": "published",
+  "target_ref": {
+    "entity_type": "example",
+    "id": "ex.nt.modular-inverse-check"
+  },
+  "solution_kind": "full",
+  "solution_status": "complete",
+  "body": {
+    "source_format": "markdown",
+    "plain_text": "Check small multiples of 7 modulo 20: 7, 14, 21. Since 21 ≡ 1 mod 20, the inverse is 3.",
+    "markdown": "Check small multiples of $7$ modulo $20$: $7$, $14$, $21$. Since $21 \\equiv 1 \\pmod{20}$, the inverse is $3$."
+  },
+  "tracking_profile": {
+    "is_trackable": false,
+    "mastery_weight": 0,
+    "review_priority": "low",
+    "completion_criteria": ["understand"],
+    "estimated_effort_minutes": 6
+  },
+  "title": "Worked Solution",
+  "step_blocks": [
+    {
+      "index": 1,
+      "heading": "Check invertibility",
+      "content": {
+        "source_format": "markdown",
+        "plain_text": "Because gcd(7,20)=1, an inverse exists modulo 20.",
+        "markdown": "Because $\\gcd(7,20)=1$, an inverse exists modulo $20$."
+      },
+      "uses_refs": [
+        {
+          "entity_type": "definition",
+          "id": "def.nt.congruence-modulo-n"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "heading": "Locate the residue",
+      "content": {
+        "source_format": "markdown",
+        "plain_text": "The third multiple 21 leaves remainder 1, so 3 is the inverse.",
+        "markdown": "The third multiple $21$ leaves remainder $1$, so $3$ is the inverse."
+      },
+      "uses_refs": [
+        {
+          "entity_type": "technique",
+          "id": "tech.nt.reduce-modulo-structure"
+        }
+      ]
+    }
+  ],
+  "final_answer": {
+    "source_format": "dual",
+    "plain_text": "x ≡ 3 mod 20.",
+    "markdown": "$x \\equiv 3 \\pmod{20}$.",
+    "latex": "x\\equiv 3 \\pmod{20}"
+  },
+  "used_definition_ids": ["def.nt.congruence-modulo-n"],
+  "used_technique_ids": ["tech.nt.reduce-modulo-structure"],
+  "is_official": false,
+  "audit": {
+    "created_at": "2026-03-09T08:15:00Z",
+    "updated_at": "2026-03-09T08:15:00Z",
+    "created_by": "seed.bot",
+    "updated_by": "seed.bot"
+  }
+}

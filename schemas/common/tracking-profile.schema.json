@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://olympiad.local/schemas/common/tracking-profile.schema.json",
+  "title": "Tracking Profile",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "is_trackable": {
+      "type": "boolean"
+    },
+    "mastery_weight": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "review_priority": {
+      "$ref": "../enums/enums.schema.json#/$defs/review_priority"
+    },
+    "completion_criteria": {
+      "type": "array",
+      "items": {
+        "$ref": "../enums/enums.schema.json#/$defs/completion_criterion"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "estimated_effort_minutes": {
+      "type": "integer",
+      "minimum": 1
+    }
+  },
+  "required": [
+    "is_trackable",
+    "mastery_weight",
+    "review_priority",
+    "completion_criteria",
+    "estimated_effort_minutes"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "is_trackable": {
+            "const": true
+          }
+        },
+        "required": [
+          "is_trackable"
+        ]
+      },
+      "then": {
+        "properties": {
+          "mastery_weight": {
+            "exclusiveMinimum": 0
+          }
+        }
+      }
+    }
+  ]
+}

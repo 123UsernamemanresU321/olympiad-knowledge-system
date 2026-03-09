@@ -1,0 +1,161 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://olympiad.local/schemas/entities/problem.schema.json",
+  "title": "Problem",
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Practice or contest problem.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^prob\\.(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+    },
+    "entity_type": {
+      "const": "problem"
+    },
+    "schema_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "status": {
+      "$ref": "../enums/enums.schema.json#/$defs/content_status"
+    },
+    "primary_topic_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "short_label": {
+      "type": "string",
+      "minLength": 1
+    },
+    "statement": {
+      "$ref": "../common/math-content.schema.json"
+    },
+    "problem_kind": {
+      "$ref": "../enums/enums.schema.json#/$defs/problem_kind"
+    },
+    "expected_response_kind": {
+      "$ref": "../enums/enums.schema.json#/$defs/expected_response_kind"
+    },
+    "difficulty": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 7
+    },
+    "tracking_profile": {
+      "$ref": "../common/tracking-profile.schema.json"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "secondary_topic_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+      },
+      "uniqueItems": true
+    },
+    "source": {
+      "$ref": "../common/source-ref.schema.json"
+    },
+    "used_definition_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^def\\.(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+      },
+      "uniqueItems": true
+    },
+    "used_theorem_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^thm\\.(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+      },
+      "uniqueItems": true
+    },
+    "expected_technique_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^tech\\.(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+      },
+      "uniqueItems": true
+    },
+    "hint_blocks": {
+      "type": "array",
+      "items": {
+        "$ref": "../common/math-content.schema.json"
+      }
+    },
+    "solution_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^sol\\.(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+      },
+      "uniqueItems": true
+    },
+    "time_estimate_minutes": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "answer_key": {
+      "$ref": "../common/math-content.schema.json"
+    },
+    "is_original": {
+      "type": "boolean"
+    },
+    "relation_refs": {
+      "type": "array",
+      "items": {
+        "$ref": "../common/relation-ref.schema.json"
+      }
+    },
+    "audit": {
+      "$ref": "../common/audit-meta.schema.json"
+    }
+  },
+  "required": [
+    "id",
+    "entity_type",
+    "schema_version",
+    "status",
+    "primary_topic_ids",
+    "short_label",
+    "statement",
+    "problem_kind",
+    "expected_response_kind",
+    "difficulty",
+    "tracking_profile",
+    "audit"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "problem_kind": {
+            "const": "proof"
+          }
+        },
+        "required": [
+          "problem_kind"
+        ]
+      },
+      "then": {
+        "properties": {
+          "expected_response_kind": {
+            "const": "proof"
+          }
+        }
+      }
+    }
+  ]
+}

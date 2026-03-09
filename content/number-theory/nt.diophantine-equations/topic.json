@@ -1,0 +1,44 @@
+{
+  "id": "nt.diophantine-equations",
+  "entity_type": "topic",
+  "schema_version": "1.0.0",
+  "status": "published",
+  "subject_id": "number-theory",
+  "name": "Diophantine Equations",
+  "slug": "diophantine-equations",
+  "level": "core",
+  "display_order": 3,
+  "summary": {
+    "source_format": "markdown",
+    "plain_text": "Start with linear Diophantine equations, solvability criteria, and parameterization of integer solutions.",
+    "markdown": "Start with linear Diophantine equations, solvability criteria, and parameterization of integer solutions."
+  },
+  "learning_objectives": [
+    "Recognize when gcd divisibility decides solvability immediately.",
+    "Produce one integer solution and then parameterize the full family.",
+    "Apply nonnegativity or bounding constraints after the general solution is found."
+  ],
+  "tracking_profile": {
+    "is_trackable": true,
+    "mastery_weight": 0.95,
+    "review_priority": "high",
+    "completion_criteria": ["understand", "apply", "solve", "review"],
+    "estimated_effort_minutes": 42
+  },
+  "prerequisite_topic_ids": [
+    "nt.divisibility-gcd-prime-factorization",
+    "nt.congruences-modular-arithmetic"
+  ],
+  "related_topic_ids": ["nt.congruence-obstructions"],
+  "definition_ids": ["def.nt.linear-diophantine-equation"],
+  "theorem_ids": ["thm.nt.linear-diophantine-solvability"],
+  "technique_ids": ["tech.nt.solve-linear-diophantine-via-gcd"],
+  "example_ids": ["ex.nt.linear-diophantine-parametrization"],
+  "problem_ids": ["prob.nt.nonnegative-solutions-4x-7y-59"],
+  "audit": {
+    "created_at": "2026-03-09T08:20:00Z",
+    "updated_at": "2026-03-09T08:20:00Z",
+    "created_by": "seed.bot",
+    "updated_by": "seed.bot"
+  }
+}

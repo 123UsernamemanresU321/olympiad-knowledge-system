@@ -1,0 +1,83 @@
+{
+  "id": "tech.nt.euclidean-algorithm",
+  "entity_type": "technique",
+  "schema_version": "1.0.0",
+  "status": "published",
+  "technique_kind": "number-theoretic",
+  "primary_topic_ids": ["nt.divisibility-gcd-prime-factorization"],
+  "name": "Euclidean Algorithm Back-Substitution",
+  "slug": "euclidean-algorithm-back-substitution",
+  "summary": {
+    "source_format": "markdown",
+    "plain_text": "Compute gcd values quickly, then reverse the remainder chain to produce a usable linear combination.",
+    "markdown": "Compute gcd values quickly, then reverse the remainder chain to produce a usable linear combination."
+  },
+  "trigger_conditions": [
+    {
+      "source_format": "markdown",
+      "plain_text": "A problem asks for gcd(a,b), a divisibility certificate, or explicit integers x and y with ax + by = d.",
+      "markdown": "A problem asks for $\\gcd(a,b)$, a divisibility certificate, or explicit integers $x$ and $y$ with $ax + by = d$."
+    }
+  ],
+  "method_steps": [
+    {
+      "source_format": "markdown",
+      "plain_text": "Apply repeated division until the remainder is zero.",
+      "markdown": "Apply repeated division until the remainder is zero."
+    },
+    {
+      "source_format": "markdown",
+      "plain_text": "Mark the last nonzero remainder as the gcd.",
+      "markdown": "Mark the last nonzero remainder as the gcd."
+    },
+    {
+      "source_format": "markdown",
+      "plain_text": "Reverse each equation to rewrite that remainder in terms of the original inputs.",
+      "markdown": "Reverse each equation to rewrite that remainder in terms of the original inputs."
+    }
+  ],
+  "tracking_profile": {
+    "is_trackable": true,
+    "mastery_weight": 0.8,
+    "review_priority": "high",
+    "completion_criteria": ["understand", "apply", "solve", "review"],
+    "estimated_effort_minutes": 22
+  },
+  "prerequisite_refs": [
+    {
+      "entity_type": "definition",
+      "id": "def.nt.divisibility"
+    }
+  ],
+  "used_definition_ids": ["def.nt.divisibility"],
+  "used_theorem_ids": ["thm.nt.bezout-identity"],
+  "example_ids": ["ex.nt.gcd-linear-combination"],
+  "problem_ids": ["prob.nt.gcd-sum-product"],
+  "failure_modes": [
+    {
+      "source_format": "markdown",
+      "plain_text": "Stopping at the first small remainder instead of the last nonzero remainder.",
+      "markdown": "Stopping at the first small remainder instead of the last nonzero remainder."
+    },
+    {
+      "source_format": "markdown",
+      "plain_text": "Back-substituting without preserving signs carefully.",
+      "markdown": "Back-substituting without preserving signs carefully."
+    }
+  ],
+  "relation_refs": [
+    {
+      "relation": "exemplifies",
+      "target": {
+        "entity_type": "example",
+        "id": "ex.nt.gcd-linear-combination"
+      }
+    }
+  ],
+  "audit": {
+    "created_at": "2026-03-09T08:03:00Z",
+    "updated_at": "2026-03-09T08:03:00Z",
+    "created_by": "seed.bot",
+    "updated_by": "seed.bot"
+  }
+}

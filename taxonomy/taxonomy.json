@@ -1,0 +1,790 @@
+{
+  "schema_version": "1.0.0",
+  "name": "Olympiad Mathematics Canonical Taxonomy",
+  "file_name": "taxonomy.json",
+  "subjects": [
+    {
+      "id": "number-theory",
+      "name": "Number Theory",
+      "nav_order": 1,
+      "learning_order": 3,
+      "topics": [
+        {
+          "id": "nt.divisibility-gcd-prime-factorization",
+          "slug": "divisibility-gcd-prime-factorization",
+          "name": "Divisibility, GCD, and Prime Factorization",
+          "level": "core",
+          "display_order": 1,
+          "subtopics": [
+            { "id": "nt.divisibility", "name": "Divisibility and linear combinations", "display_order": 1 },
+            { "id": "nt.gcd-lcm", "name": "Greatest common divisor and least common multiple", "display_order": 2 },
+            { "id": "nt.euclidean-algorithm", "name": "Euclidean algorithm", "display_order": 3 },
+            { "id": "nt.bezout-identity", "name": "Bézout's identity", "display_order": 4 },
+            { "id": "nt.fundamental-theorem-arithmetic", "name": "Fundamental theorem of arithmetic", "display_order": 5 },
+            { "id": "nt.exact-divisibility-basics", "name": "Prime exponents and exact divisibility", "display_order": 6 }
+          ]
+        },
+        {
+          "id": "nt.congruences-modular-arithmetic",
+          "slug": "congruences-modular-arithmetic",
+          "name": "Congruences and Modular Arithmetic",
+          "level": "core",
+          "display_order": 2,
+          "subtopics": [
+            { "id": "nt.residue-classes", "name": "Residue classes", "display_order": 1 },
+            { "id": "nt.modular-inverses", "name": "Modular inverses", "display_order": 2 },
+            { "id": "nt.linear-congruences", "name": "Linear congruences", "display_order": 3 },
+            { "id": "nt.chinese-remainder-theorem", "name": "Chinese remainder theorem", "display_order": 4 },
+            { "id": "nt.fermat-little-theorem", "name": "Fermat's little theorem", "display_order": 5 },
+            { "id": "nt.euler-theorem", "name": "Euler's theorem", "display_order": 6 }
+          ]
+        },
+        {
+          "id": "nt.diophantine-equations",
+          "slug": "diophantine-equations",
+          "name": "Diophantine Equations",
+          "level": "core",
+          "display_order": 3,
+          "subtopics": [
+            { "id": "nt.linear-diophantine", "name": "Linear Diophantine equations", "display_order": 1 },
+            { "id": "nt.factorization-methods", "name": "Factorization methods", "display_order": 2 },
+            { "id": "nt.congruence-obstructions", "name": "Congruence obstructions", "display_order": 3 },
+            { "id": "nt.bounding-diophantine", "name": "Bounding arguments", "display_order": 4 },
+            { "id": "nt.infinite-descent-diophantine", "name": "Infinite descent", "display_order": 5 },
+            { "id": "nt.symmetric-substitution-forms", "name": "Symmetric and substitution-based forms", "display_order": 6 }
+          ]
+        },
+        {
+          "id": "nt.arithmetic-functions",
+          "slug": "arithmetic-functions",
+          "name": "Arithmetic Functions",
+          "level": "extension",
+          "display_order": 4,
+          "subtopics": [
+            { "id": "nt.divisor-count-function", "name": "Divisor-count function", "display_order": 1 },
+            { "id": "nt.divisor-sum-function", "name": "Divisor-sum function", "display_order": 2 },
+            { "id": "nt.euler-totient-function", "name": "Euler totient function", "display_order": 3 },
+            { "id": "nt.multiplicative-functions", "name": "Multiplicative functions", "display_order": 4 },
+            { "id": "nt.mobius-function-inversion", "name": "Möbius function and inversion", "display_order": 5 }
+          ]
+        },
+        {
+          "id": "nt.orders-primitive-roots-exponential-congruences",
+          "slug": "orders-primitive-roots-exponential-congruences",
+          "name": "Orders, Primitive Roots, and Exponential Congruences",
+          "level": "extension",
+          "display_order": 5,
+          "subtopics": [
+            { "id": "nt.multiplicative-order", "name": "Multiplicative order", "display_order": 1 },
+            { "id": "nt.units-cyclic-structure", "name": "Cyclic structure of units", "display_order": 2 },
+            { "id": "nt.primitive-roots", "name": "Primitive roots", "display_order": 3 },
+            { "id": "nt.exponential-congruences", "name": "Exponential congruences", "display_order": 4 },
+            { "id": "nt.modular-periodicity", "name": "Periodicity modulo n", "display_order": 5 }
+          ]
+        },
+        {
+          "id": "nt.valuations-exponent-lifting",
+          "slug": "valuations-exponent-lifting",
+          "name": "Valuations and Exponent Lifting",
+          "level": "extension",
+          "display_order": 6,
+          "subtopics": [
+            { "id": "nt.p-adic-valuation", "name": "p-adic valuation", "display_order": 1 },
+            { "id": "nt.exact-divisibility", "name": "Exact divisibility", "display_order": 2 },
+            { "id": "nt.lte", "name": "Lifting-the-Exponent lemma", "display_order": 3 },
+            { "id": "nt.factor-exponent-comparison", "name": "Factor-exponent comparison", "display_order": 4 },
+            { "id": "nt.valuation-divisibility-chains", "name": "Valuation-based divisibility chains", "display_order": 5 }
+          ]
+        },
+        {
+          "id": "nt.quadratic-residues-reciprocity",
+          "slug": "quadratic-residues-reciprocity",
+          "name": "Quadratic Residues and Reciprocity",
+          "level": "specialized",
+          "display_order": 7,
+          "subtopics": [
+            { "id": "nt.quadratic-residues", "name": "Quadratic residues", "display_order": 1 },
+            { "id": "nt.legendre-symbol", "name": "Legendre symbol", "display_order": 2 },
+            { "id": "nt.euler-criterion", "name": "Euler's criterion", "display_order": 3 },
+            { "id": "nt.quadratic-reciprocity", "name": "Quadratic reciprocity", "display_order": 4 },
+            { "id": "nt.supplementary-laws", "name": "Supplementary laws", "display_order": 5 }
+          ]
+        },
+        {
+          "id": "nt.integer-sequences-base-representations",
+          "slug": "integer-sequences-base-representations",
+          "name": "Integer Sequences and Base Representations",
+          "level": "specialized",
+          "display_order": 8,
+          "subtopics": [
+            { "id": "nt.base-b-representation", "name": "Base-b representation", "display_order": 1 },
+            { "id": "nt.digit-sums-carries", "name": "Digit sums and carry arguments", "display_order": 2 },
+            { "id": "nt.periodicity-digit-processes", "name": "Periodicity in digit processes", "display_order": 3 },
+            { "id": "nt.recurrence-defined-integer-sequences", "name": "Recurrence-defined integer sequences", "display_order": 4 },
+            { "id": "nt.modular-sequence-behavior", "name": "Modular behavior of sequences", "display_order": 5 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "algebra",
+      "name": "Algebra",
+      "nav_order": 2,
+      "learning_order": 2,
+      "topics": [
+        {
+          "id": "alg.expressions-identities-factorization",
+          "slug": "expressions-identities-factorization",
+          "name": "Expressions, Identities, and Factorization",
+          "level": "core",
+          "display_order": 1,
+          "subtopics": [
+            { "id": "alg.standard-identities", "name": "Standard algebraic identities", "display_order": 1 },
+            { "id": "alg.factorization-patterns", "name": "Factorization patterns", "display_order": 2 },
+            { "id": "alg.telescoping-expressions", "name": "Telescoping expressions", "display_order": 3 },
+            { "id": "alg.rational-expression-manipulation", "name": "Rational expression manipulation", "display_order": 4 },
+            { "id": "alg.symmetric-expansion-regrouping", "name": "Symmetric expansion and regrouping", "display_order": 5 }
+          ]
+        },
+        {
+          "id": "alg.equations-systems",
+          "slug": "equations-systems",
+          "name": "Equations and Systems",
+          "level": "core",
+          "display_order": 2,
+          "subtopics": [
+            { "id": "alg.linear-quadratic-equations", "name": "Linear and quadratic equations", "display_order": 1 },
+            { "id": "alg.substitution-elimination", "name": "Substitution and elimination", "display_order": 2 },
+            { "id": "alg.symmetric-systems", "name": "Symmetric systems", "display_order": 3 },
+            { "id": "alg.vieta-system-solving", "name": "Vieta-based system solving", "display_order": 4 },
+            { "id": "alg.root-admissibility", "name": "Root constraints and admissibility", "display_order": 5 }
+          ]
+        },
+        {
+          "id": "alg.polynomials",
+          "slug": "polynomials",
+          "name": "Polynomials",
+          "level": "core",
+          "display_order": 3,
+          "subtopics": [
+            { "id": "alg.remainder-theorem", "name": "Remainder theorem", "display_order": 1 },
+            { "id": "alg.factor-theorem", "name": "Factor theorem", "display_order": 2 },
+            { "id": "alg.root-multiplicity", "name": "Root multiplicity", "display_order": 3 },
+            { "id": "alg.coefficient-comparison", "name": "Coefficient comparison", "display_order": 4 },
+            { "id": "alg.interpolation", "name": "Interpolation", "display_order": 5 },
+            { "id": "alg.vieta-formulas", "name": "Vieta's formulas", "display_order": 6 }
+          ]
+        },
+        {
+          "id": "alg.inequalities",
+          "slug": "inequalities",
+          "name": "Inequalities",
+          "level": "core",
+          "display_order": 4,
+          "subtopics": [
+            { "id": "alg.am-gm", "name": "AM-GM inequality", "display_order": 1 },
+            { "id": "alg.cauchy-schwarz", "name": "Cauchy-Schwarz inequality", "display_order": 2 },
+            { "id": "alg.rearrangement-chebyshev", "name": "Rearrangement and Chebyshev inequalities", "display_order": 3 },
+            { "id": "alg.jensen-convexity", "name": "Jensen's inequality and convexity", "display_order": 4 },
+            { "id": "alg.homogenization-normalization", "name": "Homogenization and normalization", "display_order": 5 },
+            { "id": "alg.equality-case-analysis", "name": "Equality-case analysis", "display_order": 6 }
+          ]
+        },
+        {
+          "id": "alg.sequences-recurrences",
+          "slug": "sequences-recurrences",
+          "name": "Sequences and Recurrences",
+          "level": "extension",
+          "display_order": 5,
+          "subtopics": [
+            { "id": "alg.arithmetic-geometric-sequences", "name": "Arithmetic and geometric sequences", "display_order": 1 },
+            { "id": "alg.linear-recurrences", "name": "Linear recurrences", "display_order": 2 },
+            { "id": "alg.characteristic-polynomial-method", "name": "Characteristic-polynomial method", "display_order": 3 },
+            { "id": "alg.finite-differences", "name": "Finite differences", "display_order": 4 },
+            { "id": "alg.telescoping-recurrences", "name": "Telescoping in recurrences", "display_order": 5 },
+            { "id": "alg.periodicity-invariants-sequences", "name": "Periodicity and invariants", "display_order": 6 }
+          ]
+        },
+        {
+          "id": "alg.functional-equations",
+          "slug": "functional-equations",
+          "name": "Functional Equations",
+          "level": "extension",
+          "display_order": 6,
+          "subtopics": [
+            { "id": "alg.substitution-iteration-fe", "name": "Substitution and iteration", "display_order": 1 },
+            { "id": "alg.injectivity-surjectivity-fe", "name": "Injectivity and surjectivity", "display_order": 2 },
+            { "id": "alg.fixed-points-involutions", "name": "Fixed points and involutions", "display_order": 3 },
+            { "id": "alg.additive-multiplicative-patterns", "name": "Additive and multiplicative patterns", "display_order": 4 },
+            { "id": "alg.polynomial-type-fe", "name": "Polynomial-type functional equations", "display_order": 5 }
+          ]
+        },
+        {
+          "id": "alg.symmetric-cyclic-homogeneous-algebra",
+          "slug": "symmetric-cyclic-homogeneous-algebra",
+          "name": "Symmetric, Cyclic, and Homogeneous Algebra",
+          "level": "extension",
+          "display_order": 7,
+          "subtopics": [
+            { "id": "alg.symmetric-polynomials", "name": "Symmetric polynomials", "display_order": 1 },
+            { "id": "alg.cyclic-sums-products", "name": "Cyclic sums and products", "display_order": 2 },
+            { "id": "alg.homogeneous-forms", "name": "Homogeneous forms", "display_order": 3 },
+            { "id": "alg.uvw-method", "name": "uvw method", "display_order": 4 },
+            { "id": "alg.mixing-variables", "name": "Mixing variables", "display_order": 5 }
+          ]
+        },
+        {
+          "id": "alg.complex-numbers",
+          "slug": "complex-numbers",
+          "name": "Complex Numbers",
+          "level": "specialized",
+          "display_order": 8,
+          "subtopics": [
+            { "id": "alg.complex-algebra", "name": "Algebra of complex numbers", "display_order": 1 },
+            { "id": "alg.polar-form", "name": "Polar form", "display_order": 2 },
+            { "id": "alg.roots-of-unity", "name": "Roots of unity", "display_order": 3 },
+            { "id": "alg.polynomial-factorization-complex", "name": "Polynomial factorization over C", "display_order": 4 },
+            { "id": "alg.complex-plane-geometry", "name": "Geometric interpretation in the plane", "display_order": 5 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "combinatorics",
+      "name": "Combinatorics",
+      "nav_order": 3,
+      "learning_order": 4,
+      "topics": [
+        {
+          "id": "comb.counting-principles-bijections",
+          "slug": "counting-principles-bijections",
+          "name": "Counting Principles and Bijections",
+          "level": "core",
+          "display_order": 1,
+          "subtopics": [
+            { "id": "comb.sum-product-rule", "name": "Sum rule and product rule", "display_order": 1 },
+            { "id": "comb.complementary-counting", "name": "Complementary counting", "display_order": 2 },
+            { "id": "comb.bijections", "name": "Bijections", "display_order": 3 },
+            { "id": "comb.double-counting", "name": "Double counting", "display_order": 4 },
+            { "id": "comb.counting-under-symmetry", "name": "Counting under symmetry", "display_order": 5 }
+          ]
+        },
+        {
+          "id": "comb.pigeonhole-principle",
+          "slug": "pigeonhole-principle",
+          "name": "Pigeonhole Principle",
+          "level": "core",
+          "display_order": 2,
+          "subtopics": [
+            { "id": "comb.basic-pigeonhole", "name": "Basic pigeonhole principle", "display_order": 1 },
+            { "id": "comb.generalized-pigeonhole", "name": "Generalized pigeonhole principle", "display_order": 2 },
+            { "id": "comb.density-arguments", "name": "Density arguments", "display_order": 3 },
+            { "id": "comb.collision-arguments", "name": "Collision arguments", "display_order": 4 },
+            { "id": "comb.geometric-pigeonhole", "name": "Geometric pigeonhole applications", "display_order": 5 }
+          ]
+        },
+        {
+          "id": "comb.graph-theory",
+          "slug": "graph-theory",
+          "name": "Graph Theory",
+          "level": "core",
+          "display_order": 3,
+          "subtopics": [
+            { "id": "comb.degrees-handshake", "name": "Degrees and handshake lemma", "display_order": 1 },
+            { "id": "comb.paths-cycles-connectivity", "name": "Paths, cycles, and connectivity", "display_order": 2 },
+            { "id": "comb.trees", "name": "Trees", "display_order": 3 },
+            { "id": "comb.bipartite-graphs", "name": "Bipartite graphs", "display_order": 4 },
+            { "id": "comb.matchings", "name": "Matchings", "display_order": 5 },
+            { "id": "comb.planarity-basics", "name": "Planarity basics", "display_order": 6 }
+          ]
+        },
+        {
+          "id": "comb.inclusion-exclusion-set-systems",
+          "slug": "inclusion-exclusion-set-systems",
+          "name": "Inclusion-Exclusion and Set Systems",
+          "level": "extension",
+          "display_order": 4,
+          "subtopics": [
+            { "id": "comb.inclusion-exclusion", "name": "Inclusion-exclusion principle", "display_order": 1 },
+            { "id": "comb.intersections-families", "name": "Intersections of families", "display_order": 2 },
+            { "id": "comb.union-size-control", "name": "Union-size control", "display_order": 3 },
+            { "id": "comb.antichains-sperner", "name": "Antichains and Sperner-type ideas", "display_order": 4 },
+            { "id": "comb.incidence-counting", "name": "Incidence counting", "display_order": 5 }
+          ]
+        },
+        {
+          "id": "comb.recursive-extremal-enumeration",
+          "slug": "recursive-extremal-enumeration",
+          "name": "Recursive and Extremal Enumeration",
+          "level": "extension",
+          "display_order": 5,
+          "subtopics": [
+            { "id": "comb.recursive-decomposition", "name": "Recursive decomposition", "display_order": 1 },
+            { "id": "comb.recurrence-based-counting", "name": "Recurrence-based counting", "display_order": 2 },
+            { "id": "comb.extremal-counting", "name": "Extremal counting arguments", "display_order": 3 },
+            { "id": "comb.catalan-type-structures", "name": "Catalan-type structures", "display_order": 4 },
+            { "id": "comb.constructive-enumeration", "name": "Constructive enumeration", "display_order": 5 }
+          ]
+        },
+        {
+          "id": "comb.colorings-ramsey-structural",
+          "slug": "colorings-ramsey-structural",
+          "name": "Colorings, Ramsey Theory, and Structural Arguments",
+          "level": "extension",
+          "display_order": 6,
+          "subtopics": [
+            { "id": "comb.coloring-arguments", "name": "Coloring arguments", "display_order": 1 },
+            { "id": "comb.monochromatic-structures", "name": "Monochromatic structures", "display_order": 2 },
+            { "id": "comb.ramsey-type-statements", "name": "Ramsey-type statements", "display_order": 3 },
+            { "id": "comb.parity-colorings", "name": "Parity colorings", "display_order": 4 },
+            { "id": "comb.structural-contradiction-coloring", "name": "Structural contradiction through coloring", "display_order": 5 }
+          ]
+        },
+        {
+          "id": "comb.combinatorial-games-processes",
+          "slug": "combinatorial-games-processes",
+          "name": "Combinatorial Games and Processes",
+          "level": "specialized",
+          "display_order": 7,
+          "subtopics": [
+            { "id": "comb.winning-strategy-analysis", "name": "Winning strategy analysis", "display_order": 1 },
+            { "id": "comb.strategy-stealing", "name": "Strategy stealing", "display_order": 2 },
+            { "id": "comb.invariants-move-processes", "name": "Invariants in move processes", "display_order": 3 },
+            { "id": "comb.parity-in-games", "name": "Parity arguments in games", "display_order": 4 },
+            { "id": "comb.termination-reachability", "name": "Termination and reachability", "display_order": 5 }
+          ]
+        },
+        {
+          "id": "comb.probabilistic-method",
+          "slug": "probabilistic-method",
+          "name": "Probabilistic Method",
+          "level": "specialized",
+          "display_order": 8,
+          "subtopics": [
+            { "id": "comb.linearity-of-expectation", "name": "Linearity of expectation", "display_order": 1 },
+            { "id": "comb.random-constructions", "name": "Random constructions", "display_order": 2 },
+            { "id": "comb.positive-probability-existence", "name": "Existence by positive probability", "display_order": 3 },
+            { "id": "comb.alteration-method", "name": "Alteration method", "display_order": 4 },
+            { "id": "comb.first-moment-bounds", "name": "First-moment bounds", "display_order": 5 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "geometry",
+      "name": "Geometry",
+      "nav_order": 4,
+      "learning_order": 5,
+      "topics": [
+        {
+          "id": "geo.angles-lines-basic-configurations",
+          "slug": "angles-lines-basic-configurations",
+          "name": "Angles, Lines, and Basic Configurations",
+          "level": "core",
+          "display_order": 1,
+          "subtopics": [
+            { "id": "geo.parallel-lines-transversals", "name": "Parallel lines and transversals", "display_order": 1 },
+            { "id": "geo.angle-chasing", "name": "Angle chasing", "display_order": 2 },
+            { "id": "geo.collinearity-concurrency-basics", "name": "Collinearity and concurrency basics", "display_order": 3 },
+            { "id": "geo.cevians-transversals", "name": "Cevians and transversals", "display_order": 4 },
+            { "id": "geo.quadrilateral-polygon-angle-structure", "name": "Quadrilateral and polygon angle structure", "display_order": 5 }
+          ]
+        },
+        {
+          "id": "geo.triangles-centers",
+          "slug": "triangles-centers",
+          "name": "Triangles and Triangle Centers",
+          "level": "core",
+          "display_order": 2,
+          "subtopics": [
+            { "id": "geo.medians-altitudes-angle-bisectors", "name": "Medians, altitudes, and angle bisectors", "display_order": 1 },
+            { "id": "geo.classical-centers", "name": "Circumcenter, incenter, centroid, orthocenter", "display_order": 2 },
+            { "id": "geo.ceva-theorem", "name": "Ceva's theorem", "display_order": 3 },
+            { "id": "geo.menelaus-theorem", "name": "Menelaus's theorem", "display_order": 4 },
+            { "id": "geo.euler-line", "name": "Euler line", "display_order": 5 },
+            { "id": "geo.nine-point-circle", "name": "Nine-point circle", "display_order": 6 }
+          ]
+        },
+        {
+          "id": "geo.circles-cyclic-configurations",
+          "slug": "circles-cyclic-configurations",
+          "name": "Circles and Cyclic Configurations",
+          "level": "core",
+          "display_order": 3,
+          "subtopics": [
+            { "id": "geo.inscribed-angles", "name": "Inscribed angles", "display_order": 1 },
+            { "id": "geo.cyclic-quadrilaterals", "name": "Cyclic quadrilaterals", "display_order": 2 },
+            { "id": "geo.tangents-chords", "name": "Tangents and chords", "display_order": 3 },
+            { "id": "geo.power-of-a-point", "name": "Power of a point", "display_order": 4 },
+            { "id": "geo.radical-axis-basics", "name": "Radical axis basics", "display_order": 5 }
+          ]
+        },
+        {
+          "id": "geo.similarity-ratios-homothety",
+          "slug": "similarity-ratios-homothety",
+          "name": "Similarity, Ratios, and Homothety",
+          "level": "core",
+          "display_order": 4,
+          "subtopics": [
+            { "id": "geo.similar-triangles", "name": "Similar triangles", "display_order": 1 },
+            { "id": "geo.ratio-chasing", "name": "Ratio chasing", "display_order": 2 },
+            { "id": "geo.homothety", "name": "Homothety", "display_order": 3 },
+            { "id": "geo.spiral-similarity", "name": "Spiral similarity", "display_order": 4 },
+            { "id": "geo.mass-points", "name": "Mass points", "display_order": 5 }
+          ]
+        },
+        {
+          "id": "geo.lengths-areas-metric-relations",
+          "slug": "lengths-areas-metric-relations",
+          "name": "Lengths, Areas, and Metric Relations",
+          "level": "extension",
+          "display_order": 5,
+          "subtopics": [
+            { "id": "geo.area-methods", "name": "Area methods", "display_order": 1 },
+            { "id": "geo.heron-formula", "name": "Heron's formula", "display_order": 2 },
+            { "id": "geo.stewart-theorem", "name": "Stewart's theorem", "display_order": 3 },
+            { "id": "geo.ptolemy-theorem", "name": "Ptolemy's theorem", "display_order": 4 },
+            { "id": "geo.metric-inequalities", "name": "Metric inequalities in geometry", "display_order": 5 }
+          ]
+        },
+        {
+          "id": "geo.transformations-euclidean",
+          "slug": "transformations-euclidean",
+          "name": "Transformations in Euclidean Geometry",
+          "level": "extension",
+          "display_order": 6,
+          "subtopics": [
+            { "id": "geo.reflections", "name": "Reflections", "display_order": 1 },
+            { "id": "geo.rotations", "name": "Rotations", "display_order": 2 },
+            { "id": "geo.translations", "name": "Translations", "display_order": 3 },
+            { "id": "geo.composition-transformations", "name": "Composition of transformations", "display_order": 4 },
+            { "id": "geo.isometries-congruence-structure", "name": "Isometries and congruence structure", "display_order": 5 }
+          ]
+        },
+        {
+          "id": "geo.coordinate-vector-methods",
+          "slug": "coordinate-vector-methods",
+          "name": "Coordinate and Vector Methods",
+          "level": "extension",
+          "display_order": 7,
+          "subtopics": [
+            { "id": "geo.cartesian-coordinates", "name": "Cartesian coordinates", "display_order": 1 },
+            { "id": "geo.equation-line", "name": "Equation of a line", "display_order": 2 },
+            { "id": "geo.equation-circle", "name": "Equation of a circle", "display_order": 3 },
+            { "id": "geo.vector-dot-product", "name": "Vector dot product", "display_order": 4 },
+            { "id": "geo.affine-parameter-methods", "name": "Affine parameter methods", "display_order": 5 }
+          ]
+        },
+        {
+          "id": "geo.trigonometric-methods",
+          "slug": "trigonometric-methods",
+          "name": "Trigonometric Methods",
+          "level": "extension",
+          "display_order": 8,
+          "subtopics": [
+            { "id": "geo.sine-law", "name": "Sine law", "display_order": 1 },
+            { "id": "geo.cosine-law", "name": "Cosine law", "display_order": 2 },
+            { "id": "geo.trigonometric-area-formulas", "name": "Trigonometric area formulas", "display_order": 3 },
+            { "id": "geo.trigonometric-ceva", "name": "Trigonometric Ceva", "display_order": 4 },
+            { "id": "geo.trigonometric-menelaus", "name": "Trigonometric Menelaus", "display_order": 5 }
+          ]
+        },
+        {
+          "id": "geo.inversion-advanced-circle-methods",
+          "slug": "inversion-advanced-circle-methods",
+          "name": "Inversion and Advanced Circle Methods",
+          "level": "specialized",
+          "display_order": 9,
+          "subtopics": [
+            { "id": "geo.inversion-basics", "name": "Inversion basics", "display_order": 1 },
+            { "id": "geo.images-lines-circles", "name": "Images of lines and circles", "display_order": 2 },
+            { "id": "geo.inversion-power-point", "name": "Inversion with power of a point", "display_order": 3 },
+            { "id": "geo.coaxal-systems", "name": "Coaxal systems", "display_order": 4 },
+            { "id": "geo.inversion-homothety", "name": "Inversion with homothety", "display_order": 5 }
+          ]
+        },
+        {
+          "id": "geo.projective-affine-geometry",
+          "slug": "projective-affine-geometry",
+          "name": "Projective and Affine Geometry",
+          "level": "specialized",
+          "display_order": 10,
+          "subtopics": [
+            { "id": "geo.affine-invariants", "name": "Affine invariants", "display_order": 1 },
+            { "id": "geo.projective-transformations", "name": "Projective transformations", "display_order": 2 },
+            { "id": "geo.harmonic-division", "name": "Harmonic division", "display_order": 3 },
+            { "id": "geo.cross-ratio", "name": "Cross-ratio", "display_order": 4 },
+            { "id": "geo.complete-quadrilateral-quadrangle", "name": "Complete quadrilateral and quadrangle", "display_order": 5 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "meta-techniques",
+      "name": "Meta-Techniques",
+      "nav_order": 5,
+      "learning_order": 1,
+      "topics": [
+        {
+          "id": "meta.proof-methods",
+          "slug": "proof-methods",
+          "name": "Proof Methods",
+          "level": "core",
+          "display_order": 1,
+          "subtopics": [
+            { "id": "meta.direct-proof", "name": "Direct proof", "display_order": 1 },
+            { "id": "meta.contrapositive", "name": "Contrapositive", "display_order": 2 },
+            { "id": "meta.contradiction", "name": "Contradiction", "display_order": 3 },
+            { "id": "meta.induction", "name": "Mathematical induction", "display_order": 4 },
+            { "id": "meta.infinite-descent", "name": "Infinite descent", "display_order": 5 },
+            { "id": "meta.construction-counterexample", "name": "Construction and counterexample", "display_order": 6 }
+          ]
+        },
+        {
+          "id": "meta.structural-simplification-normalization",
+          "slug": "structural-simplification-normalization",
+          "name": "Structural Simplification and Normalization",
+          "level": "core",
+          "display_order": 2,
+          "subtopics": [
+            { "id": "meta.wlog", "name": "Without loss of generality", "display_order": 1 },
+            { "id": "meta.symmetry-recognition", "name": "Symmetry recognition", "display_order": 2 },
+            { "id": "meta.cyclic-order-recognition", "name": "Cyclic order recognition", "display_order": 3 },
+            { "id": "meta.change-of-variables", "name": "Change of variables", "display_order": 4 },
+            { "id": "meta.normalization", "name": "Normalization", "display_order": 5 },
+            { "id": "meta.canonical-form-selection", "name": "Canonical form selection", "display_order": 6 }
+          ]
+        },
+        {
+          "id": "meta.extremal-invariant-monovariant",
+          "slug": "extremal-invariant-monovariant",
+          "name": "Extremal, Invariant, and Monovariant Methods",
+          "level": "core",
+          "display_order": 3,
+          "subtopics": [
+            { "id": "meta.extremal-principle", "name": "Extremal principle", "display_order": 1 },
+            { "id": "meta.invariants", "name": "Invariants", "display_order": 2 },
+            { "id": "meta.monovariants", "name": "Monovariants", "display_order": 3 },
+            { "id": "meta.potential-functions", "name": "Potential functions", "display_order": 4 },
+            { "id": "meta.termination-arguments", "name": "Termination arguments", "display_order": 5 }
+          ]
+        },
+        {
+          "id": "meta.bounding-estimation",
+          "slug": "bounding-estimation",
+          "name": "Bounding and Estimation",
+          "level": "core",
+          "display_order": 4,
+          "subtopics": [
+            { "id": "meta.upper-lower-bounds", "name": "Upper and lower bounds", "display_order": 1 },
+            { "id": "meta.equality-cases", "name": "Equality cases", "display_order": 2 },
+            { "id": "meta.relaxation-strengthening", "name": "Relaxation and strengthening", "display_order": 3 },
+            { "id": "meta.order-of-magnitude-checks", "name": "Order-of-magnitude checks", "display_order": 4 },
+            { "id": "meta.bounding-auxiliary-quantities", "name": "Bounding by auxiliary quantities", "display_order": 5 }
+          ]
+        },
+        {
+          "id": "meta.representation-transformation-strategies",
+          "slug": "representation-transformation-strategies",
+          "name": "Representation and Transformation Strategies",
+          "level": "extension",
+          "display_order": 5,
+          "subtopics": [
+            { "id": "meta.algebraization", "name": "Algebraization of non-algebraic problems", "display_order": 1 },
+            { "id": "meta.geometrization", "name": "Geometrization of algebraic problems", "display_order": 2 },
+            { "id": "meta.graph-representation", "name": "Graph representation", "display_order": 3 },
+            { "id": "meta.coordinate-encoding", "name": "Coordinate encoding", "display_order": 4 },
+            { "id": "meta.auxiliary-construction-selection", "name": "Auxiliary construction selection", "display_order": 5 }
+          ]
+        }
+      ]
+    }
+  ],
+  "prerequisite_edges": [
+    { "from": "meta.proof-methods", "to": "alg.expressions-identities-factorization" },
+    { "from": "meta.proof-methods", "to": "nt.divisibility-gcd-prime-factorization" },
+    { "from": "meta.proof-methods", "to": "comb.counting-principles-bijections" },
+    { "from": "meta.proof-methods", "to": "geo.angles-lines-basic-configurations" },
+
+    { "from": "meta.structural-simplification-normalization", "to": "alg.equations-systems" },
+    { "from": "meta.structural-simplification-normalization", "to": "alg.inequalities" },
+    { "from": "meta.structural-simplification-normalization", "to": "nt.diophantine-equations" },
+    { "from": "meta.structural-simplification-normalization", "to": "geo.similarity-ratios-homothety" },
+
+    { "from": "meta.extremal-invariant-monovariant", "to": "comb.combinatorial-games-processes" },
+    { "from": "meta.extremal-invariant-monovariant", "to": "comb.colorings-ramsey-structural" },
+    { "from": "meta.extremal-invariant-monovariant", "to": "alg.sequences-recurrences" },
+    { "from": "meta.extremal-invariant-monovariant", "to": "nt.integer-sequences-base-representations" },
+
+    { "from": "meta.bounding-estimation", "to": "alg.inequalities" },
+    { "from": "meta.bounding-estimation", "to": "nt.diophantine-equations" },
+    { "from": "meta.bounding-estimation", "to": "geo.lengths-areas-metric-relations" },
+
+    { "from": "meta.representation-transformation-strategies", "to": "geo.coordinate-vector-methods" },
+    { "from": "meta.representation-transformation-strategies", "to": "alg.functional-equations" },
+    { "from": "meta.representation-transformation-strategies", "to": "comb.graph-theory" },
+
+    { "from": "nt.divisibility-gcd-prime-factorization", "to": "nt.congruences-modular-arithmetic" },
+    { "from": "nt.divisibility-gcd-prime-factorization", "to": "nt.diophantine-equations" },
+    { "from": "nt.divisibility-gcd-prime-factorization", "to": "nt.arithmetic-functions" },
+    { "from": "nt.divisibility-gcd-prime-factorization", "to": "nt.valuations-exponent-lifting" },
+    { "from": "nt.divisibility-gcd-prime-factorization", "to": "nt.integer-sequences-base-representations" },
+    { "from": "nt.congruences-modular-arithmetic", "to": "nt.diophantine-equations" },
+    { "from": "nt.congruences-modular-arithmetic", "to": "nt.orders-primitive-roots-exponential-congruences" },
+    { "from": "nt.congruences-modular-arithmetic", "to": "nt.quadratic-residues-reciprocity" },
+    { "from": "nt.congruences-modular-arithmetic", "to": "nt.integer-sequences-base-representations" },
+    { "from": "nt.arithmetic-functions", "to": "nt.orders-primitive-roots-exponential-congruences" },
+    { "from": "nt.orders-primitive-roots-exponential-congruences", "to": "nt.quadratic-residues-reciprocity" },
+
+    { "from": "alg.expressions-identities-factorization", "to": "alg.equations-systems" },
+    { "from": "alg.expressions-identities-factorization", "to": "alg.polynomials" },
+    { "from": "alg.expressions-identities-factorization", "to": "alg.inequalities" },
+    { "from": "alg.expressions-identities-factorization", "to": "alg.sequences-recurrences" },
+    { "from": "alg.expressions-identities-factorization", "to": "alg.symmetric-cyclic-homogeneous-algebra" },
+    { "from": "alg.equations-systems", "to": "alg.functional-equations" },
+    { "from": "alg.polynomials", "to": "alg.functional-equations" },
+    { "from": "alg.polynomials", "to": "alg.complex-numbers" },
+    { "from": "alg.polynomials", "to": "alg.sequences-recurrences" },
+    { "from": "alg.symmetric-cyclic-homogeneous-algebra", "to": "alg.inequalities" },
+
+    { "from": "comb.counting-principles-bijections", "to": "comb.pigeonhole-principle" },
+    { "from": "comb.counting-principles-bijections", "to": "comb.inclusion-exclusion-set-systems" },
+    { "from": "comb.counting-principles-bijections", "to": "comb.recursive-extremal-enumeration" },
+    { "from": "comb.counting-principles-bijections", "to": "comb.probabilistic-method" },
+    { "from": "comb.pigeonhole-principle", "to": "comb.colorings-ramsey-structural" },
+    { "from": "comb.graph-theory", "to": "comb.colorings-ramsey-structural" },
+    { "from": "comb.graph-theory", "to": "comb.combinatorial-games-processes" },
+    { "from": "comb.inclusion-exclusion-set-systems", "to": "comb.probabilistic-method" },
+
+    { "from": "geo.angles-lines-basic-configurations", "to": "geo.triangles-centers" },
+    { "from": "geo.angles-lines-basic-configurations", "to": "geo.circles-cyclic-configurations" },
+    { "from": "geo.angles-lines-basic-configurations", "to": "geo.similarity-ratios-homothety" },
+    { "from": "geo.triangles-centers", "to": "geo.lengths-areas-metric-relations" },
+    { "from": "geo.triangles-centers", "to": "geo.transformations-euclidean" },
+    { "from": "geo.triangles-centers", "to": "geo.trigonometric-methods" },
+    { "from": "geo.similarity-ratios-homothety", "to": "geo.lengths-areas-metric-relations" },
+    { "from": "geo.similarity-ratios-homothety", "to": "geo.transformations-euclidean" },
+    { "from": "geo.similarity-ratios-homothety", "to": "geo.coordinate-vector-methods" },
+    { "from": "geo.circles-cyclic-configurations", "to": "geo.inversion-advanced-circle-methods" },
+    { "from": "geo.transformations-euclidean", "to": "geo.inversion-advanced-circle-methods" },
+    { "from": "geo.coordinate-vector-methods", "to": "geo.projective-affine-geometry" }
+  ],
+  "cross_topic_links": [
+    {
+      "from": "nt.diophantine-equations",
+      "to": "alg.inequalities",
+      "reason": "Bounding integer solutions frequently depends on inequality arguments."
+    },
+    {
+      "from": "nt.congruences-modular-arithmetic",
+      "to": "alg.polynomials",
+      "reason": "Polynomial values modulo n are a standard bridge between algebra and number theory."
+    },
+    {
+      "from": "nt.valuations-exponent-lifting",
+      "to": "alg.polynomials",
+      "reason": "Root multiplicity and factor multiplicity often parallel valuation arguments."
+    },
+    {
+      "from": "nt.arithmetic-functions",
+      "to": "comb.counting-principles-bijections",
+      "reason": "Divisor-count and totient identities are often proved by combinatorial counting."
+    },
+    {
+      "from": "nt.integer-sequences-base-representations",
+      "to": "alg.sequences-recurrences",
+      "reason": "Integer sequences often admit both modular and recurrence viewpoints."
+    },
+    {
+      "from": "alg.functional-equations",
+      "to": "meta.proof-methods",
+      "reason": "Functional equations rely heavily on contradiction, induction, and structural case splitting."
+    },
+    {
+      "from": "alg.inequalities",
+      "to": "meta.bounding-estimation",
+      "reason": "Bounding techniques are often the hidden engine behind olympiad inequalities."
+    },
+    {
+      "from": "alg.symmetric-cyclic-homogeneous-algebra",
+      "to": "meta.structural-simplification-normalization",
+      "reason": "Normalization and symmetry recognition are central to cyclic and homogeneous problems."
+    },
+    {
+      "from": "alg.complex-numbers",
+      "to": "geo.coordinate-vector-methods",
+      "reason": "Complex coordinates in the plane give a direct algebraic model of geometry."
+    },
+    {
+      "from": "comb.pigeonhole-principle",
+      "to": "geo.lengths-areas-metric-relations",
+      "reason": "Geometric pigeonhole arguments appear in distance, area, and partition problems."
+    },
+    {
+      "from": "comb.graph-theory",
+      "to": "meta.representation-transformation-strategies",
+      "reason": "Many non-graph problems become cleaner after graph encoding."
+    },
+    {
+      "from": "comb.colorings-ramsey-structural",
+      "to": "nt.congruences-modular-arithmetic",
+      "reason": "Coloring classes often mirror residue classes and parity partitions."
+    },
+    {
+      "from": "comb.recursive-extremal-enumeration",
+      "to": "alg.sequences-recurrences",
+      "reason": "Recursive counting naturally links to recurrence solving."
+    },
+    {
+      "from": "comb.combinatorial-games-processes",
+      "to": "meta.extremal-invariant-monovariant",
+      "reason": "Process problems are usually best indexed by invariants or monovariants."
+    },
+    {
+      "from": "comb.probabilistic-method",
+      "to": "alg.inequalities",
+      "reason": "Expectation and variance estimates often reduce to algebraic inequalities."
+    },
+    {
+      "from": "geo.similarity-ratios-homothety",
+      "to": "alg.expressions-identities-factorization",
+      "reason": "Ratio chasing is often simplified by algebraic identity rewriting."
+    },
+    {
+      "from": "geo.circles-cyclic-configurations",
+      "to": "geo.inversion-advanced-circle-methods",
+      "reason": "Inversion is the natural advanced continuation of cyclic geometry."
+    },
+    {
+      "from": "geo.trigonometric-methods",
+      "to": "alg.polynomials",
+      "reason": "Trigonometric identities often convert geometry into polynomial or algebraic form."
+    },
+    {
+      "from": "geo.coordinate-vector-methods",
+      "to": "alg.complex-numbers",
+      "reason": "Complex numbers are an alternate analytic geometry language."
+    },
+    {
+      "from": "geo.projective-affine-geometry",
+      "to": "geo.triangles-centers",
+      "reason": "Projective and affine methods often generalize Ceva-Menelaus-center phenomena."
+    }
+  ],
+  "naming_conventions": {
+    "subject_names": "Title Case standard domain names only",
+    "topic_names": "Title Case noun phrases using standard mathematical terminology",
+    "subtopic_names": "Specific canonical concepts, theorems, or methods",
+    "subject_ids": "lowercase kebab-case",
+    "topic_ids": "namespace prefix plus lowercase kebab-case slug",
+    "allowed_topic_levels": ["core", "extension", "specialized"],
+    "ordering_fields": ["nav_order", "learning_order", "display_order"],
+    "rules": [
+      "Use one concept family per topic.",
+      "Avoid duplicate aliases as separate canonical topics.",
+      "Store prerequisites as directed edges.",
+      "Store cross-links separately from prerequisites.",
+      "Avoid pedagogy labels such as beginner or advanced in canonical names."
+    ]
+  }
+}

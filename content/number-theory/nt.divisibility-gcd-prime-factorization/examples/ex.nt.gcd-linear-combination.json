@@ -1,0 +1,44 @@
+{
+  "id": "ex.nt.gcd-linear-combination",
+  "entity_type": "example",
+  "schema_version": "1.0.0",
+  "status": "published",
+  "example_kind": "worked-example",
+  "primary_topic_id": "nt.divisibility-gcd-prime-factorization",
+  "title": "Express gcd(84, 30) as a Linear Combination",
+  "slug": "express-gcd-84-30-as-linear-combination",
+  "prompt": {
+    "source_format": "markdown",
+    "plain_text": "Use the Euclidean algorithm to compute gcd(84,30) and then write it in the form 84x + 30y.",
+    "markdown": "Use the Euclidean algorithm to compute $\\gcd(84,30)$ and then write it in the form $84x + 30y$."
+  },
+  "solution_id": "sol.nt.gcd-linear-combination",
+  "tracking_profile": {
+    "is_trackable": true,
+    "mastery_weight": 0.5,
+    "review_priority": "normal",
+    "completion_criteria": ["understand", "apply", "review"],
+    "estimated_effort_minutes": 10
+  },
+  "objective": {
+    "source_format": "markdown",
+    "plain_text": "Turn a gcd computation into a Bézout certificate without skipping the reverse substitutions.",
+    "markdown": "Turn a gcd computation into a Bézout certificate without skipping the reverse substitutions."
+  },
+  "used_definition_ids": ["def.nt.divisibility"],
+  "used_theorem_ids": ["thm.nt.bezout-identity"],
+  "used_technique_ids": ["tech.nt.euclidean-algorithm"],
+  "related_problem_ids": ["prob.nt.gcd-sum-product"],
+  "final_result": {
+    "source_format": "dual",
+    "plain_text": "gcd(84,30) = 6 = 3*84 - 8*30.",
+    "markdown": "$\\gcd(84,30)=6=3\\cdot 84-8\\cdot 30$.",
+    "latex": "\\gcd(84,30)=6=3\\cdot84-8\\cdot30"
+  },
+  "audit": {
+    "created_at": "2026-03-09T08:04:00Z",
+    "updated_at": "2026-03-09T08:04:00Z",
+    "created_by": "seed.bot",
+    "updated_by": "seed.bot"
+  }
+}

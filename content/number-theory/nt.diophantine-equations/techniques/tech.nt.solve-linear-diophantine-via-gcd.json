@@ -1,0 +1,81 @@
+{
+  "id": "tech.nt.solve-linear-diophantine-via-gcd",
+  "entity_type": "technique",
+  "schema_version": "1.0.0",
+  "status": "published",
+  "technique_kind": "number-theoretic",
+  "primary_topic_ids": ["nt.diophantine-equations"],
+  "name": "Solve a Linear Diophantine Equation via gcd",
+  "slug": "solve-linear-diophantine-equation-via-gcd",
+  "summary": {
+    "source_format": "markdown",
+    "plain_text": "Check divisibility by gcd(a,b), find one solution with Bézout, then parameterize the family of all integer solutions.",
+    "markdown": "Check divisibility by $\\gcd(a,b)$, find one solution with Bézout, then parameterize the family of all integer solutions."
+  },
+  "trigger_conditions": [
+    {
+      "source_format": "markdown",
+      "plain_text": "The problem asks for integer solutions to ax + by = c or asks whether they exist.",
+      "markdown": "The problem asks for integer solutions to $ax + by = c$ or asks whether they exist."
+    }
+  ],
+  "method_steps": [
+    {
+      "source_format": "markdown",
+      "plain_text": "Compute d = gcd(a,b) and test whether d divides c.",
+      "markdown": "Compute $d=\\gcd(a,b)$ and test whether $d$ divides $c$."
+    },
+    {
+      "source_format": "markdown",
+      "plain_text": "Use Bézout to find one solution to ax + by = d and scale it by c/d.",
+      "markdown": "Use Bézout to find one solution to $ax + by = d$ and scale it by $c/d$."
+    },
+    {
+      "source_format": "markdown",
+      "plain_text": "Add the homogeneous family x = x0 + (b/d)t, y = y0 - (a/d)t.",
+      "markdown": "Add the homogeneous family $x = x_0 + (b/d)t$, $y = y_0 - (a/d)t$."
+    },
+    {
+      "source_format": "markdown",
+      "plain_text": "Impose positivity or bounding conditions only after the general family is written.",
+      "markdown": "Impose positivity or bounding conditions only after the general family is written."
+    }
+  ],
+  "tracking_profile": {
+    "is_trackable": true,
+    "mastery_weight": 0.82,
+    "review_priority": "high",
+    "completion_criteria": ["understand", "apply", "solve", "review"],
+    "estimated_effort_minutes": 22
+  },
+  "prerequisite_refs": [
+    {
+      "entity_type": "definition",
+      "id": "def.nt.linear-diophantine-equation"
+    },
+    {
+      "entity_type": "theorem",
+      "id": "thm.nt.bezout-identity"
+    }
+  ],
+  "used_definition_ids": ["def.nt.linear-diophantine-equation"],
+  "used_theorem_ids": [
+    "thm.nt.bezout-identity",
+    "thm.nt.linear-diophantine-solvability"
+  ],
+  "example_ids": ["ex.nt.linear-diophantine-parametrization"],
+  "problem_ids": ["prob.nt.nonnegative-solutions-4x-7y-59"],
+  "failure_modes": [
+    {
+      "source_format": "markdown",
+      "plain_text": "Forgetting to divide the step sizes by gcd(a,b) in the general solution.",
+      "markdown": "Forgetting to divide the step sizes by $\\gcd(a,b)$ in the general solution."
+    }
+  ],
+  "audit": {
+    "created_at": "2026-03-09T08:23:00Z",
+    "updated_at": "2026-03-09T08:23:00Z",
+    "created_by": "seed.bot",
+    "updated_by": "seed.bot"
+  }
+}

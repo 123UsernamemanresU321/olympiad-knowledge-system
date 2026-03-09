@@ -1,0 +1,220 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://olympiad.local/schemas/entities/mastery-profile.schema.json",
+  "title": "Mastery Profile",
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Aggregated learner mastery state for a target entity.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^mastery\\.[a-z0-9-]+$"
+    },
+    "entity_type": {
+      "const": "mastery_profile"
+    },
+    "schema_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "learner_id": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9._:-]{3,100}$"
+    },
+    "target_ref": {
+      "$ref": "../common/entity-ref.schema.json"
+    },
+    "mastery_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "mastery_level": {
+      "$ref": "../enums/enums.schema.json#/$defs/mastery_level"
+    },
+    "confidence_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "evidence_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "computed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "last_interacted_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "supporting_progress_record_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^prog\\.[a-z0-9-]+$"
+      },
+      "uniqueItems": true
+    },
+    "review_schedule_id": {
+      "type": "string",
+      "pattern": "^rev\\.[a-z0-9-]+$"
+    },
+    "weak_ref_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "strong_ref_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "coverage_snapshot": {
+      "type": "object",
+      "description": "Aggregate coverage data, especially useful for topic-level mastery.",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "covered": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "ratio": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        },
+        "required": [
+          "covered",
+          "total",
+          "ratio"
+        ]
+      }
+    },
+    "recommended_next_actions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "notes": {
+      "$ref": "../common/math-content.schema.json"
+    },
+    "audit": {
+      "$ref": "../common/audit-meta.schema.json"
+    }
+  },
+  "required": [
+    "id",
+    "entity_type",
+    "schema_version",
+    "learner_id",
+    "target_ref",
+    "mastery_score",
+    "mastery_level",
+    "confidence_score",
+    "evidence_count",
+    "computed_at",
+    "last_interacted_at",
+    "audit"
+  ],
+  "allOf": [
+    {
+      "oneOf": [
+        {
+          "properties": {
+            "mastery_level": {
+              "const": "unseen"
+            },
+            "mastery_score": {
+              "minimum": 0,
+              "exclusiveMaximum": 0.05
+            }
+          }
+        },
+        {
+          "properties": {
+            "mastery_level": {
+              "const": "exposed"
+            },
+            "mastery_score": {
+              "minimum": 0.05,
+              "exclusiveMaximum": 0.25
+            }
+          }
+        },
+        {
+          "properties": {
+            "mastery_level": {
+              "const": "developing"
+            },
+            "mastery_score": {
+              "minimum": 0.25,
+              "exclusiveMaximum": 0.5
+            }
+          }
+        },
+        {
+          "properties": {
+            "mastery_level": {
+              "const": "functional"
+            },
+            "mastery_score": {
+              "minimum": 0.5,
+              "exclusiveMaximum": 0.7
+            }
+          }
+        },
+        {
+          "properties": {
+            "mastery_level": {
+              "const": "proficient"
+            },
+            "mastery_score": {
+              "minimum": 0.7,
+              "exclusiveMaximum": 0.85
+            }
+          }
+        },
+        {
+          "properties": {
+            "mastery_level": {
+              "const": "mastered"
+            },
+            "mastery_score": {
+              "minimum": 0.85,
+              "exclusiveMaximum": 0.97
+            }
+          }
+        },
+        {
+          "properties": {
+            "mastery_level": {
+              "const": "retained"
+            },
+            "mastery_score": {
+              "minimum": 0.97,
+              "maximum": 1.0
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

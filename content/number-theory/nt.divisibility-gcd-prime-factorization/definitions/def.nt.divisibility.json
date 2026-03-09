@@ -1,0 +1,42 @@
+{
+  "id": "def.nt.divisibility",
+  "entity_type": "definition",
+  "schema_version": "1.0.0",
+  "status": "published",
+  "definition_kind": "definition",
+  "primary_topic_id": "nt.divisibility-gcd-prime-factorization",
+  "term": "Divisibility",
+  "slug": "divisibility",
+  "statement": {
+    "source_format": "dual",
+    "plain_text": "For integers a and b with a not equal to 0, we say a divides b if there exists an integer k such that b = ak.",
+    "markdown": "For integers $a$ and $b$ with $a \\neq 0$, we say $a$ divides $b$ if there exists an integer $k$ such that $b = ak$.",
+    "latex": "a \\mid b \\iff \\exists k \\in \\mathbb{Z} \\text{ such that } b = ak."
+  },
+  "tracking_profile": {
+    "is_trackable": true,
+    "mastery_weight": 0.6,
+    "review_priority": "normal",
+    "completion_criteria": ["read", "understand", "restate", "apply"],
+    "estimated_effort_minutes": 12
+  },
+  "related_theorem_ids": ["thm.nt.bezout-identity"],
+  "related_technique_ids": ["tech.nt.euclidean-algorithm"],
+  "example_ids": ["ex.nt.gcd-linear-combination"],
+  "problem_ids": ["prob.nt.gcd-sum-product"],
+  "relation_refs": [
+    {
+      "relation": "related-to",
+      "target": {
+        "entity_type": "technique",
+        "id": "tech.nt.euclidean-algorithm"
+      }
+    }
+  ],
+  "audit": {
+    "created_at": "2026-03-09T08:01:00Z",
+    "updated_at": "2026-03-09T08:01:00Z",
+    "created_by": "seed.bot",
+    "updated_by": "seed.bot"
+  }
+}

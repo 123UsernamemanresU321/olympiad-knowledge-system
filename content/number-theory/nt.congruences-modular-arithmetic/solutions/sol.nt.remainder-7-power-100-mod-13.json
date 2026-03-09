@@ -1,0 +1,73 @@
+{
+  "id": "sol.nt.remainder-7-power-100-mod-13",
+  "entity_type": "solution",
+  "schema_version": "1.0.0",
+  "status": "published",
+  "target_ref": {
+    "entity_type": "problem",
+    "id": "prob.nt.remainder-7-power-100-mod-13"
+  },
+  "solution_kind": "full",
+  "solution_status": "complete",
+  "body": {
+    "source_format": "markdown",
+    "plain_text": "By Fermat's little theorem, 7^12 ≡ 1 mod 13. Since 100 = 8*12 + 4, we get 7^100 ≡ (7^12)^8 * 7^4 ≡ 7^4 mod 13. Now 7^2 = 49 ≡ 10 mod 13, so 7^4 ≡ 10^2 = 100 ≡ 9 mod 13.",
+    "markdown": "By Fermat's little theorem, $7^{12} \\equiv 1 \\pmod{13}$. Since $100 = 8\\cdot12 + 4$, we get $7^{100} \\equiv (7^{12})^8 7^4 \\equiv 7^4 \\pmod{13}$. Now $7^2 = 49 \\equiv 10 \\pmod{13}$, so $7^4 \\equiv 10^2 = 100 \\equiv 9 \\pmod{13}$."
+  },
+  "tracking_profile": {
+    "is_trackable": false,
+    "mastery_weight": 0,
+    "review_priority": "low",
+    "completion_criteria": ["understand"],
+    "estimated_effort_minutes": 7
+  },
+  "title": "Full Solution",
+  "step_blocks": [
+    {
+      "index": 1,
+      "heading": "Reduce the exponent",
+      "content": {
+        "source_format": "markdown",
+        "plain_text": "Use Fermat's little theorem to replace powers of 7^12 by 1 modulo 13.",
+        "markdown": "Use Fermat's little theorem to replace powers of $7^{12}$ by $1$ modulo $13$."
+      },
+      "uses_refs": [
+        {
+          "entity_type": "theorem",
+          "id": "thm.nt.fermat-little-theorem"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "heading": "Finish with a short computation",
+      "content": {
+        "source_format": "markdown",
+        "plain_text": "Compute 7^4 modulo 13 directly and simplify.",
+        "markdown": "Compute $7^4$ modulo $13$ directly and simplify."
+      },
+      "uses_refs": [
+        {
+          "entity_type": "technique",
+          "id": "tech.nt.reduce-modulo-structure"
+        }
+      ]
+    }
+  ],
+  "final_answer": {
+    "source_format": "dual",
+    "plain_text": "The remainder is 9.",
+    "markdown": "The remainder is $9$.",
+    "latex": "9"
+  },
+  "used_definition_ids": ["def.nt.congruence-modulo-n"],
+  "used_theorem_ids": ["thm.nt.fermat-little-theorem"],
+  "used_technique_ids": ["tech.nt.reduce-modulo-structure"],
+  "is_official": false,
+  "audit": {
+    "created_at": "2026-03-09T08:17:00Z",
+    "updated_at": "2026-03-09T08:17:00Z",
+    "created_by": "seed.bot",
+    "updated_by": "seed.bot"
+  }
+}

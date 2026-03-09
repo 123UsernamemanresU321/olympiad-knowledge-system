@@ -1,0 +1,70 @@
+{
+  "id": "thm.nt.bezout-identity",
+  "entity_type": "theorem",
+  "schema_version": "1.0.0",
+  "status": "published",
+  "theorem_kind": "theorem",
+  "primary_topic_id": "nt.divisibility-gcd-prime-factorization",
+  "title": "Bézout Identity",
+  "slug": "bezout-identity",
+  "statement": {
+    "source_format": "dual",
+    "plain_text": "For integers a and b not both zero, there exist integers x and y such that ax + by = gcd(a,b).",
+    "markdown": "For integers $a$ and $b$ not both zero, there exist integers $x$ and $y$ such that $ax + by = \\gcd(a,b)$.",
+    "latex": "\\exists x,y \\in \\mathbb{Z} \\text{ with } ax + by = \\gcd(a,b)."
+  },
+  "proof_status": "outline",
+  "tracking_profile": {
+    "is_trackable": true,
+    "mastery_weight": 0.9,
+    "review_priority": "high",
+    "completion_criteria": ["understand", "restate", "prove", "apply"],
+    "estimated_effort_minutes": 24
+  },
+  "conclusion": {
+    "source_format": "markdown",
+    "plain_text": "Every gcd can be written as an integer linear combination of the original numbers.",
+    "markdown": "Every gcd can be written as an integer linear combination of the original numbers."
+  },
+  "proof_outline_steps": [
+    {
+      "source_format": "markdown",
+      "plain_text": "Run the Euclidean algorithm until the last nonzero remainder appears.",
+      "markdown": "Run the Euclidean algorithm until the last nonzero remainder appears."
+    },
+    {
+      "source_format": "markdown",
+      "plain_text": "That final remainder is gcd(a,b) by the standard divisibility argument.",
+      "markdown": "That final remainder is $\\gcd(a,b)$ by the standard divisibility argument."
+    },
+    {
+      "source_format": "markdown",
+      "plain_text": "Reverse the substitutions in the Euclidean algorithm to rewrite the gcd in terms of a and b.",
+      "markdown": "Reverse the substitutions in the Euclidean algorithm to rewrite the gcd in terms of $a$ and $b$."
+    },
+    {
+      "source_format": "markdown",
+      "plain_text": "The resulting coefficients give the desired linear combination.",
+      "markdown": "The resulting coefficients give the desired linear combination."
+    }
+  ],
+  "used_definition_ids": ["def.nt.divisibility"],
+  "used_technique_ids": ["tech.nt.euclidean-algorithm"],
+  "example_ids": ["ex.nt.gcd-linear-combination"],
+  "problem_ids": ["prob.nt.gcd-sum-product"],
+  "relation_refs": [
+    {
+      "relation": "solved-by",
+      "target": {
+        "entity_type": "technique",
+        "id": "tech.nt.euclidean-algorithm"
+      }
+    }
+  ],
+  "audit": {
+    "created_at": "2026-03-09T08:02:00Z",
+    "updated_at": "2026-03-09T08:02:00Z",
+    "created_by": "seed.bot",
+    "updated_by": "seed.bot"
+  }
+}

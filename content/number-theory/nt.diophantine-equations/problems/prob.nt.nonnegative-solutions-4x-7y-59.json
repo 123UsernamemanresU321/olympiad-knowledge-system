@@ -1,0 +1,71 @@
+{
+  "id": "prob.nt.nonnegative-solutions-4x-7y-59",
+  "entity_type": "problem",
+  "schema_version": "1.0.0",
+  "status": "published",
+  "primary_topic_ids": ["nt.diophantine-equations"],
+  "short_label": "NT Core Problem 3",
+  "statement": {
+    "source_format": "markdown",
+    "plain_text": "Find all nonnegative integer solutions to 4x + 7y = 59.",
+    "markdown": "Find all nonnegative integer solutions to $4x + 7y = 59$."
+  },
+  "problem_kind": "proof",
+  "expected_response_kind": "proof",
+  "difficulty": 4,
+  "tracking_profile": {
+    "is_trackable": true,
+    "mastery_weight": 0.8,
+    "review_priority": "high",
+    "completion_criteria": ["solve", "review"],
+    "estimated_effort_minutes": 18
+  },
+  "title": "Nonnegative Linear Diophantine Solutions",
+  "source": {
+    "source_kind": "derived",
+    "name": "Olympiad KB Seed Set",
+    "citation_text": "Core Diophantine drill"
+  },
+  "used_definition_ids": ["def.nt.linear-diophantine-equation"],
+  "used_theorem_ids": [
+    "thm.nt.bezout-identity",
+    "thm.nt.linear-diophantine-solvability"
+  ],
+  "expected_technique_ids": ["tech.nt.solve-linear-diophantine-via-gcd"],
+  "hint_blocks": [
+    {
+      "source_format": "markdown",
+      "plain_text": "First solve the equation in all integers, not just nonnegative ones.",
+      "markdown": "First solve the equation in all integers, not just nonnegative ones."
+    },
+    {
+      "source_format": "markdown",
+      "plain_text": "After you write the general solution, use x >= 0 and y >= 0 to bound the parameter.",
+      "markdown": "After you write the general solution, use $x \\ge 0$ and $y \\ge 0$ to bound the parameter."
+    }
+  ],
+  "solution_ids": ["sol.nt.nonnegative-solutions-4x-7y-59"],
+  "time_estimate_minutes": 16,
+  "answer_key": {
+    "source_format": "dual",
+    "plain_text": "The nonnegative solutions are (6,5) and (13,1).",
+    "markdown": "The nonnegative solutions are $(6,5)$ and $(13,1)$.",
+    "latex": "(6,5),(13,1)"
+  },
+  "is_original": true,
+  "relation_refs": [
+    {
+      "relation": "solved-by",
+      "target": {
+        "entity_type": "technique",
+        "id": "tech.nt.solve-linear-diophantine-via-gcd"
+      }
+    }
+  ],
+  "audit": {
+    "created_at": "2026-03-09T08:26:00Z",
+    "updated_at": "2026-03-09T08:26:00Z",
+    "created_by": "seed.bot",
+    "updated_by": "seed.bot"
+  }
+}

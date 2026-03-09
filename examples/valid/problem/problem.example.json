@@ -1,0 +1,38 @@
+{
+  "id": "prob.nt.sum-two-squares-mod4",
+  "entity_type": "problem",
+  "schema_version": "1.0.0",
+  "status": "published",
+  "primary_topic_ids": [
+    "nt.congruences-modular-arithmetic"
+  ],
+  "short_label": "No integer solution mod 4",
+  "statement": {
+    "source_format": "markdown",
+    "plain_text": "Prove that x^2 + y^2 = 3 has no integer solutions.",
+    "markdown": "Prove that $x^2 + y^2 = 3$ has no integer solutions."
+  },
+  "problem_kind": "proof",
+  "expected_response_kind": "proof",
+  "difficulty": 2,
+  "tracking_profile": {
+    "is_trackable": true,
+    "mastery_weight": 0.8,
+    "review_priority": "normal",
+    "completion_criteria": [
+      "read",
+      "understand",
+      "apply"
+    ],
+    "estimated_effort_minutes": 20
+  },
+  "solution_ids": [
+    "sol.nt.sum-two-squares-mod4"
+  ],
+  "audit": {
+    "created_at": "2026-03-08T10:00:00Z",
+    "updated_at": "2026-03-08T10:05:00Z",
+    "created_by": "system.seed",
+    "updated_by": "system.seed"
+  }
+}

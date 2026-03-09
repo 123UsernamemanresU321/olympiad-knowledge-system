@@ -1,0 +1,48 @@
+{
+  "id": "tech.nt.modular-obstruction",
+  "entity_type": "technique",
+  "schema_version": "1.0.0",
+  "status": "published",
+  "technique_kind": "number-theoretic",
+  "primary_topic_ids": [
+    "nt.congruences-modular-arithmetic"
+  ],
+  "name": "Modular Obstruction",
+  "slug": "modular-obstruction",
+  "summary": {
+    "source_format": "markdown",
+    "plain_text": "Show impossibility by reducing modulo a carefully chosen integer.",
+    "markdown": "Show impossibility by reducing modulo a carefully chosen integer."
+  },
+  "trigger_conditions": [
+    {
+      "source_format": "markdown",
+      "plain_text": "The problem asks whether an integer equation has solutions.",
+      "markdown": "The problem asks whether an integer equation has solutions."
+    }
+  ],
+  "method_steps": [
+    {
+      "source_format": "markdown",
+      "plain_text": "Choose a modulus that compresses the relevant residue classes.",
+      "markdown": "Choose a modulus that compresses the relevant residue classes."
+    }
+  ],
+  "tracking_profile": {
+    "is_trackable": true,
+    "mastery_weight": 0.8,
+    "review_priority": "normal",
+    "completion_criteria": [
+      "read",
+      "understand",
+      "apply"
+    ],
+    "estimated_effort_minutes": 20
+  },
+  "audit": {
+    "created_at": "2026-03-08T10:00:00Z",
+    "updated_at": "2026-03-08T10:05:00Z",
+    "created_by": "system.seed",
+    "updated_by": "system.seed"
+  }
+}

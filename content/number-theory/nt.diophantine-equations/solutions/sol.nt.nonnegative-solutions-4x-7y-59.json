@@ -1,0 +1,76 @@
+{
+  "id": "sol.nt.nonnegative-solutions-4x-7y-59",
+  "entity_type": "solution",
+  "schema_version": "1.0.0",
+  "status": "published",
+  "target_ref": {
+    "entity_type": "problem",
+    "id": "prob.nt.nonnegative-solutions-4x-7y-59"
+  },
+  "solution_kind": "full",
+  "solution_status": "complete",
+  "body": {
+    "source_format": "markdown",
+    "plain_text": "Modulo 7, the equation gives 4x ≡ 3 mod 7, so x ≡ 6 mod 7. Write x = 6 + 7t. Substituting gives y = 5 - 4t. The nonnegative constraints force t = 0 or 1, producing (6,5) and (13,1).",
+    "markdown": "Modulo $7$, the equation gives $4x \\equiv 3 \\pmod 7$, so $x \\equiv 6 \\pmod 7$. Write $x = 6 + 7t$. Substituting gives $y = 5 - 4t$. The nonnegative constraints force $t = 0$ or $1$, producing $(6,5)$ and $(13,1)$."
+  },
+  "tracking_profile": {
+    "is_trackable": false,
+    "mastery_weight": 0,
+    "review_priority": "low",
+    "completion_criteria": ["understand"],
+    "estimated_effort_minutes": 8
+  },
+  "title": "Full Solution",
+  "step_blocks": [
+    {
+      "index": 1,
+      "heading": "Solve modulo 7",
+      "content": {
+        "source_format": "markdown",
+        "plain_text": "Use congruence arithmetic to isolate the residue class of x.",
+        "markdown": "Use congruence arithmetic to isolate the residue class of $x$."
+      },
+      "uses_refs": [
+        {
+          "entity_type": "technique",
+          "id": "tech.nt.reduce-modulo-structure"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "heading": "Impose nonnegativity",
+      "content": {
+        "source_format": "markdown",
+        "plain_text": "Substitute x = 6 + 7t and bound the resulting expression for y.",
+        "markdown": "Substitute $x = 6 + 7t$ and bound the resulting expression for $y$."
+      },
+      "uses_refs": [
+        {
+          "entity_type": "technique",
+          "id": "tech.nt.solve-linear-diophantine-via-gcd"
+        }
+      ]
+    }
+  ],
+  "final_answer": {
+    "source_format": "dual",
+    "plain_text": "The nonnegative solutions are (6,5) and (13,1).",
+    "markdown": "The nonnegative solutions are $(6,5)$ and $(13,1)$.",
+    "latex": "(6,5),(13,1)"
+  },
+  "used_definition_ids": ["def.nt.linear-diophantine-equation"],
+  "used_theorem_ids": ["thm.nt.linear-diophantine-solvability"],
+  "used_technique_ids": [
+    "tech.nt.reduce-modulo-structure",
+    "tech.nt.solve-linear-diophantine-via-gcd"
+  ],
+  "is_official": false,
+  "audit": {
+    "created_at": "2026-03-09T08:27:00Z",
+    "updated_at": "2026-03-09T08:27:00Z",
+    "created_by": "seed.bot",
+    "updated_by": "seed.bot"
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "id": "prob.nt.gcd-sum-product",
+  "entity_type": "problem",
+  "schema_version": "1.0.0",
+  "status": "published",
+  "primary_topic_ids": ["nt.divisibility-gcd-prime-factorization"],
+  "short_label": "NT Core Problem 1",
+  "statement": {
+    "source_format": "markdown",
+    "plain_text": "Compute gcd(252,198), and find integers x and y such that 252x + 198y = gcd(252,198).",
+    "markdown": "Compute $\\gcd(252,198)$, and find integers $x$ and $y$ such that $252x + 198y = \\gcd(252,198)$."
+  },
+  "problem_kind": "short-answer",
+  "expected_response_kind": "integer",
+  "difficulty": 2,
+  "tracking_profile": {
+    "is_trackable": true,
+    "mastery_weight": 0.7,
+    "review_priority": "high",
+    "completion_criteria": ["solve", "review"],
+    "estimated_effort_minutes": 15
+  },
+  "title": "GCD from a Linear Combination",
+  "source": {
+    "source_kind": "derived",
+    "name": "Olympiad KB Seed Set",
+    "citation_text": "Core divisibility exercise"
+  },
+  "used_definition_ids": ["def.nt.divisibility"],
+  "used_theorem_ids": ["thm.nt.bezout-identity"],
+  "expected_technique_ids": ["tech.nt.euclidean-algorithm"],
+  "hint_blocks": [
+    {
+      "source_format": "markdown",
+      "plain_text": "Start with the Euclidean algorithm rather than guessing coefficients.",
+      "markdown": "Start with the Euclidean algorithm rather than guessing coefficients."
+    },
+    {
+      "source_format": "markdown",
+      "plain_text": "After you get the gcd, substitute backward until only 252 and 198 remain.",
+      "markdown": "After you get the gcd, substitute backward until only $252$ and $198$ remain."
+    }
+  ],
+  "solution_ids": ["sol.nt.gcd-sum-product"],
+  "time_estimate_minutes": 12,
+  "answer_key": {
+    "source_format": "dual",
+    "plain_text": "The gcd is 18; one valid identity is 18 = 4*252 - 5*198.",
+    "markdown": "The gcd is $18$; one valid identity is $18 = 4\\cdot252 - 5\\cdot198$.",
+    "latex": "18=4\\cdot252-5\\cdot198"
+  },
+  "is_original": true,
+  "relation_refs": [
+    {
+      "relation": "solved-by",
+      "target": {
+        "entity_type": "technique",
+        "id": "tech.nt.euclidean-algorithm"
+      }
+    }
+  ],
+  "audit": {
+    "created_at": "2026-03-09T08:06:00Z",
+    "updated_at": "2026-03-09T08:06:00Z",
+    "created_by": "seed.bot",
+    "updated_by": "seed.bot"
+  }
+}

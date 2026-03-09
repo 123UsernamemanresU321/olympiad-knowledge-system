@@ -1,0 +1,40 @@
+{
+  "id": "nt.divisibility-gcd-prime-factorization",
+  "entity_type": "topic",
+  "schema_version": "1.0.0",
+  "status": "published",
+  "subject_id": "number-theory",
+  "name": "Divisibility, GCD, and Prime Factorization",
+  "slug": "divisibility-gcd-prime-factorization",
+  "level": "core",
+  "display_order": 1,
+  "summary": {
+    "source_format": "markdown",
+    "plain_text": "Build the divisibility toolkit around greatest common divisors, linear combinations, prime factorization, and the Euclidean algorithm.",
+    "markdown": "Build the divisibility toolkit around greatest common divisors, linear combinations, prime factorization, and the Euclidean algorithm."
+  },
+  "learning_objectives": [
+    "Recognize when gcd information should be rewritten as a linear combination.",
+    "Use the Euclidean algorithm quickly and reverse it to produce coefficients.",
+    "Connect divisibility language to proof structure in olympiad arguments."
+  ],
+  "tracking_profile": {
+    "is_trackable": true,
+    "mastery_weight": 0.9,
+    "review_priority": "high",
+    "completion_criteria": ["understand", "apply", "solve", "review"],
+    "estimated_effort_minutes": 40
+  },
+  "related_topic_ids": ["nt.congruences-modular-arithmetic"],
+  "definition_ids": ["def.nt.divisibility"],
+  "theorem_ids": ["thm.nt.bezout-identity"],
+  "technique_ids": ["tech.nt.euclidean-algorithm"],
+  "example_ids": ["ex.nt.gcd-linear-combination"],
+  "problem_ids": ["prob.nt.gcd-sum-product"],
+  "audit": {
+    "created_at": "2026-03-09T08:00:00Z",
+    "updated_at": "2026-03-09T08:00:00Z",
+    "created_by": "seed.bot",
+    "updated_by": "seed.bot"
+  }
+}

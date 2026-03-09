@@ -1,0 +1,42 @@
+{
+  "id": "def.nt.linear-diophantine-equation",
+  "entity_type": "definition",
+  "schema_version": "1.0.0",
+  "status": "published",
+  "definition_kind": "definition",
+  "primary_topic_id": "nt.diophantine-equations",
+  "term": "Linear Diophantine Equation",
+  "slug": "linear-diophantine-equation",
+  "statement": {
+    "source_format": "dual",
+    "plain_text": "A linear Diophantine equation in two variables is an equation of the form ax + by = c where a, b, c are integers and solutions are required to be integers.",
+    "markdown": "A linear Diophantine equation in two variables is an equation of the form $ax + by = c$ where $a,b,c$ are integers and solutions are required to be integers.",
+    "latex": "ax+by=c,\\quad a,b,c\\in\\mathbb{Z},\\ x,y\\in\\mathbb{Z}"
+  },
+  "tracking_profile": {
+    "is_trackable": true,
+    "mastery_weight": 0.6,
+    "review_priority": "normal",
+    "completion_criteria": ["read", "understand", "restate", "apply"],
+    "estimated_effort_minutes": 12
+  },
+  "related_theorem_ids": ["thm.nt.linear-diophantine-solvability"],
+  "related_technique_ids": ["tech.nt.solve-linear-diophantine-via-gcd"],
+  "example_ids": ["ex.nt.linear-diophantine-parametrization"],
+  "problem_ids": ["prob.nt.nonnegative-solutions-4x-7y-59"],
+  "relation_refs": [
+    {
+      "relation": "depends-on",
+      "target": {
+        "entity_type": "theorem",
+        "id": "thm.nt.bezout-identity"
+      }
+    }
+  ],
+  "audit": {
+    "created_at": "2026-03-09T08:21:00Z",
+    "updated_at": "2026-03-09T08:21:00Z",
+    "created_by": "seed.bot",
+    "updated_by": "seed.bot"
+  }
+}

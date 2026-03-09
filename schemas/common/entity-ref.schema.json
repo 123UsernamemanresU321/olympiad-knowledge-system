@@ -1,0 +1,212 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://olympiad.local/schemas/common/entity-ref.schema.json",
+  "title": "Entity Reference",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "entity_type": {
+      "$ref": "../enums/enums.schema.json#/$defs/entity_type"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "entity_type",
+    "id"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "entity_type": {
+            "const": "topic"
+          }
+        },
+        "required": [
+          "entity_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "id": {
+            "pattern": "^(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "entity_type": {
+            "const": "definition"
+          }
+        },
+        "required": [
+          "entity_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "id": {
+            "pattern": "^def\\.(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "entity_type": {
+            "const": "theorem"
+          }
+        },
+        "required": [
+          "entity_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "id": {
+            "pattern": "^thm\\.(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "entity_type": {
+            "const": "technique"
+          }
+        },
+        "required": [
+          "entity_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "id": {
+            "pattern": "^tech\\.(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "entity_type": {
+            "const": "example"
+          }
+        },
+        "required": [
+          "entity_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "id": {
+            "pattern": "^ex\\.(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "entity_type": {
+            "const": "problem"
+          }
+        },
+        "required": [
+          "entity_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "id": {
+            "pattern": "^prob\\.(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "entity_type": {
+            "const": "solution"
+          }
+        },
+        "required": [
+          "entity_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "id": {
+            "pattern": "^sol\\.(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "entity_type": {
+            "const": "progress_record"
+          }
+        },
+        "required": [
+          "entity_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "id": {
+            "pattern": "^prog\\.[a-z0-9-]+$"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "entity_type": {
+            "const": "review_schedule"
+          }
+        },
+        "required": [
+          "entity_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "id": {
+            "pattern": "^rev\\.[a-z0-9-]+$"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "entity_type": {
+            "const": "mastery_profile"
+          }
+        },
+        "required": [
+          "entity_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "id": {
+            "pattern": "^mastery\\.[a-z0-9-]+$"
+          }
+        }
+      }
+    }
+  ]
+}

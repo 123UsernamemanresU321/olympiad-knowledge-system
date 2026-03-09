@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://olympiad.local/schemas/entities/progress-record.schema.json",
+  "title": "Progress Record",
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Event-level learner interaction record.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^prog\\.[a-z0-9-]+$"
+    },
+    "entity_type": {
+      "const": "progress_record"
+    },
+    "schema_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "learner_id": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9._:-]{3,100}$"
+    },
+    "target_ref": {
+      "$ref": "../common/entity-ref.schema.json"
+    },
+    "interaction_type": {
+      "$ref": "../enums/enums.schema.json#/$defs/interaction_type"
+    },
+    "outcome": {
+      "$ref": "../enums/enums.schema.json#/$defs/progress_outcome"
+    },
+    "occurred_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "time_spent_seconds": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "confidence_before": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 5
+    },
+    "confidence_after": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 5
+    },
+    "mastery_delta": {
+      "type": "number",
+      "minimum": -1,
+      "maximum": 1
+    },
+    "note": {
+      "$ref": "../common/math-content.schema.json"
+    },
+    "session_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "review_schedule_id": {
+      "type": "string",
+      "pattern": "^rev\\.[a-z0-9-]+$"
+    },
+    "source_context": {
+      "type": "string",
+      "minLength": 1
+    },
+    "audit": {
+      "$ref": "../common/audit-meta.schema.json"
+    }
+  },
+  "required": [
+    "id",
+    "entity_type",
+    "schema_version",
+    "learner_id",
+    "target_ref",
+    "interaction_type",
+    "outcome",
+    "occurred_at",
+    "time_spent_seconds",
+    "audit"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "interaction_type": {
+            "enum": [
+              "attempt",
+              "solve",
+              "prove",
+              "recall"
+            ]
+          }
+        },
+        "required": [
+          "interaction_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "outcome": {
+            "not": {
+              "const": "seen"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

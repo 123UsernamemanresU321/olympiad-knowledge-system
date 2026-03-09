@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Olympiad Hub</title>
+    <script>
+      (function () {
+        const isProjectPages = window.location.hostname.endsWith('.github.io');
+        const segments = window.location.pathname.split('/').filter(Boolean);
+        const basePath = isProjectPages && segments.length > 0 ? `/${segments[0]}` : '';
+        const routePath = window.location.pathname.slice(basePath.length) || '/';
+        const search = window.location.search ? `&q=${encodeURIComponent(window.location.search.slice(1))}` : '';
+        const redirectTarget = `${basePath}/?p=${encodeURIComponent(routePath)}${search}${window.location.hash}`;
+
+        window.location.replace(redirectTarget);
+      })();
+    </script>
+  </head>
+  <body></body>
+</html>

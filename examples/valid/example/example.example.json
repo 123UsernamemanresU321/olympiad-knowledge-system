@@ -1,0 +1,33 @@
+{
+  "id": "ex.nt.mod4-square-residues",
+  "entity_type": "example",
+  "schema_version": "1.0.0",
+  "status": "published",
+  "example_kind": "worked-example",
+  "primary_topic_id": "nt.congruences-modular-arithmetic",
+  "title": "Squares modulo 4",
+  "slug": "squares-modulo-4",
+  "prompt": {
+    "source_format": "markdown",
+    "plain_text": "Determine all quadratic residues modulo 4.",
+    "markdown": "Determine all quadratic residues modulo $4$."
+  },
+  "solution_id": "sol.nt.example-squares-modulo-4",
+  "tracking_profile": {
+    "is_trackable": true,
+    "mastery_weight": 0.8,
+    "review_priority": "normal",
+    "completion_criteria": [
+      "read",
+      "understand",
+      "apply"
+    ],
+    "estimated_effort_minutes": 20
+  },
+  "audit": {
+    "created_at": "2026-03-08T10:00:00Z",
+    "updated_at": "2026-03-08T10:05:00Z",
+    "created_by": "system.seed",
+    "updated_by": "system.seed"
+  }
+}

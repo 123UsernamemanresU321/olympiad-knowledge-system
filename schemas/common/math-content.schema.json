@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://olympiad.local/schemas/common/math-content.schema.json",
+  "title": "Math Content",
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Normalized math content supporting future export to Markdown, LaTeX, and HTML.",
+  "properties": {
+    "source_format": {
+      "$ref": "../enums/enums.schema.json#/$defs/math_source_format"
+    },
+    "plain_text": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Plain text fallback and indexing source."
+    },
+    "markdown": {
+      "type": "string",
+      "description": "Markdown source with inline/block math delimiters if used."
+    },
+    "latex": {
+      "type": "string",
+      "description": "LaTeX source body or fragment."
+    },
+    "html": {
+      "type": "string",
+      "description": "Optional cached HTML export. Not source of truth."
+    },
+    "macros_used": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "display_mode": {
+      "$ref": "../enums/enums.schema.json#/$defs/math_display_mode"
+    }
+  },
+  "required": [
+    "source_format",
+    "plain_text"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "source_format": {
+            "const": "markdown"
+          }
+        },
+        "required": [
+          "source_format"
+        ]
+      },
+      "then": {
+        "required": [
+          "markdown"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "source_format": {
+            "const": "latex"
+          }
+        },
+        "required": [
+          "source_format"
+        ]
+      },
+      "then": {
+        "required": [
+          "latex"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "source_format": {
+            "const": "dual"
+          }
+        },
+        "required": [
+          "source_format"
+        ]
+      },
+      "then": {
+        "required": [
+          "markdown",
+          "latex"
+        ]
+      }
+    }
+  ]
+}

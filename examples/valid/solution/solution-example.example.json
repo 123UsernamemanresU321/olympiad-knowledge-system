@@ -1,0 +1,39 @@
+{
+  "id": "sol.nt.example-squares-modulo-4",
+  "entity_type": "solution",
+  "schema_version": "1.0.0",
+  "status": "published",
+  "target_ref": {
+    "entity_type": "example",
+    "id": "ex.nt.mod4-square-residues"
+  },
+  "solution_kind": "full",
+  "solution_status": "complete",
+  "body": {
+    "source_format": "markdown",
+    "plain_text": "Check n = 0,1,2,3 mod 4. Their squares are 0,1,0,1 mod 4.",
+    "markdown": "Check $n=0,1,2,3 \\pmod 4$. Their squares are $0,1,0,1 \\pmod 4$."
+  },
+  "tracking_profile": {
+    "is_trackable": true,
+    "mastery_weight": 0.8,
+    "review_priority": "normal",
+    "completion_criteria": [
+      "read",
+      "understand",
+      "apply"
+    ],
+    "estimated_effort_minutes": 20
+  },
+  "final_answer": {
+    "source_format": "markdown",
+    "plain_text": "The quadratic residues mod 4 are 0 and 1.",
+    "markdown": "The quadratic residues mod $4$ are $0$ and $1$."
+  },
+  "audit": {
+    "created_at": "2026-03-08T10:00:00Z",
+    "updated_at": "2026-03-08T10:05:00Z",
+    "created_by": "system.seed",
+    "updated_by": "system.seed"
+  }
+}

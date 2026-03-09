@@ -1,0 +1,238 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://olympiad.local/schemas/entities/topic.schema.json",
+  "title": "Topic",
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Canonical topic node aligned to taxonomy.json.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$",
+      "description": "Canonical topic id from taxonomy.json."
+    },
+    "entity_type": {
+      "const": "topic"
+    },
+    "schema_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "status": {
+      "$ref": "../enums/enums.schema.json#/$defs/content_status"
+    },
+    "subject_id": {
+      "$ref": "../enums/enums.schema.json#/$defs/subject_id"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 3
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "level": {
+      "$ref": "../enums/enums.schema.json#/$defs/topic_level"
+    },
+    "display_order": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "summary": {
+      "$ref": "../common/math-content.schema.json"
+    },
+    "learning_objectives": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "tracking_profile": {
+      "$ref": "../common/tracking-profile.schema.json"
+    },
+    "prerequisite_topic_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+      },
+      "uniqueItems": true
+    },
+    "related_topic_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+      },
+      "uniqueItems": true
+    },
+    "definition_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^def\\.(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+      },
+      "uniqueItems": true
+    },
+    "theorem_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^thm\\.(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+      },
+      "uniqueItems": true
+    },
+    "technique_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^tech\\.(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+      },
+      "uniqueItems": true
+    },
+    "example_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^ex\\.(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+      },
+      "uniqueItems": true
+    },
+    "problem_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^prob\\.(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+      },
+      "uniqueItems": true
+    },
+    "notation": {
+      "type": "array",
+      "items": {
+        "$ref": "../common/notation-item.schema.json"
+      }
+    },
+    "export_notes": {
+      "$ref": "../common/math-content.schema.json"
+    },
+    "audit": {
+      "$ref": "../common/audit-meta.schema.json"
+    }
+  },
+  "required": [
+    "id",
+    "entity_type",
+    "schema_version",
+    "status",
+    "subject_id",
+    "name",
+    "slug",
+    "level",
+    "display_order",
+    "summary",
+    "learning_objectives",
+    "tracking_profile",
+    "audit"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "id": {
+            "pattern": "^nt\\."
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "then": {
+        "properties": {
+          "subject_id": {
+            "const": "number-theory"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "id": {
+            "pattern": "^alg\\."
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "then": {
+        "properties": {
+          "subject_id": {
+            "const": "algebra"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "id": {
+            "pattern": "^comb\\."
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "then": {
+        "properties": {
+          "subject_id": {
+            "const": "combinatorics"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "id": {
+            "pattern": "^geo\\."
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "then": {
+        "properties": {
+          "subject_id": {
+            "const": "geometry"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "id": {
+            "pattern": "^meta\\."
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "then": {
+        "properties": {
+          "subject_id": {
+            "const": "meta-techniques"
+          }
+        }
+      }
+    }
+  ]
+}

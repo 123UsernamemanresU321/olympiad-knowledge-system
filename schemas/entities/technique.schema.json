@@ -1,0 +1,154 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://olympiad.local/schemas/entities/technique.schema.json",
+  "title": "Technique",
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Reusable olympiad method or strategy.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^tech\\.(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+    },
+    "entity_type": {
+      "const": "technique"
+    },
+    "schema_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "status": {
+      "$ref": "../enums/enums.schema.json#/$defs/content_status"
+    },
+    "technique_kind": {
+      "$ref": "../enums/enums.schema.json#/$defs/technique_kind"
+    },
+    "primary_topic_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "summary": {
+      "$ref": "../common/math-content.schema.json"
+    },
+    "trigger_conditions": {
+      "type": "array",
+      "items": {
+        "$ref": "../common/math-content.schema.json"
+      },
+      "minItems": 1
+    },
+    "method_steps": {
+      "type": "array",
+      "items": {
+        "$ref": "../common/math-content.schema.json"
+      },
+      "minItems": 1
+    },
+    "tracking_profile": {
+      "$ref": "../common/tracking-profile.schema.json"
+    },
+    "prerequisite_refs": {
+      "type": "array",
+      "items": {
+        "$ref": "../common/entity-ref.schema.json"
+      },
+      "uniqueItems": true
+    },
+    "failure_modes": {
+      "type": "array",
+      "items": {
+        "$ref": "../common/math-content.schema.json"
+      }
+    },
+    "used_definition_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^def\\.(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+      },
+      "uniqueItems": true
+    },
+    "used_theorem_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^thm\\.(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+      },
+      "uniqueItems": true
+    },
+    "example_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^ex\\.(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+      },
+      "uniqueItems": true
+    },
+    "problem_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^prob\\.(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+      },
+      "uniqueItems": true
+    },
+    "relation_refs": {
+      "type": "array",
+      "items": {
+        "$ref": "../common/relation-ref.schema.json"
+      }
+    },
+    "audit": {
+      "$ref": "../common/audit-meta.schema.json"
+    }
+  },
+  "required": [
+    "id",
+    "entity_type",
+    "schema_version",
+    "status",
+    "technique_kind",
+    "primary_topic_ids",
+    "name",
+    "slug",
+    "summary",
+    "trigger_conditions",
+    "method_steps",
+    "tracking_profile",
+    "audit"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "technique_kind": {
+            "const": "hybrid"
+          }
+        },
+        "required": [
+          "technique_kind"
+        ]
+      },
+      "then": {
+        "properties": {
+          "primary_topic_ids": {
+            "minItems": 2
+          }
+        }
+      }
+    }
+  ]
+}

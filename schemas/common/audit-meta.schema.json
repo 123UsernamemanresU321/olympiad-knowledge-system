@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://olympiad.local/schemas/common/audit-meta.schema.json",
+  "title": "Audit Meta",
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Audit fields for entity creation and update. Cross-field chronological checks should also be enforced at the application or database layer.",
+  "properties": {
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Creation timestamp."
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last update timestamp."
+    },
+    "created_by": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9._:-]{3,100}$",
+      "description": "Stable actor id."
+    },
+    "updated_by": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9._:-]{3,100}$",
+      "description": "Stable actor id."
+    }
+  },
+  "required": [
+    "created_at",
+    "updated_at",
+    "created_by",
+    "updated_by"
+  ]
+}

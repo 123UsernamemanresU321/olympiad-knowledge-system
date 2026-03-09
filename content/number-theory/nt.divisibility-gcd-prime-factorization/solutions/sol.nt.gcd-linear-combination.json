@@ -1,0 +1,73 @@
+{
+  "id": "sol.nt.gcd-linear-combination",
+  "entity_type": "solution",
+  "schema_version": "1.0.0",
+  "status": "published",
+  "target_ref": {
+    "entity_type": "example",
+    "id": "ex.nt.gcd-linear-combination"
+  },
+  "solution_kind": "full",
+  "solution_status": "complete",
+  "body": {
+    "source_format": "markdown",
+    "plain_text": "Run the Euclidean algorithm 84 = 2*30 + 24, 30 = 1*24 + 6, 24 = 4*6. Then reverse the steps to obtain 6 = 30 - 24 = 30 - (84 - 2*30) = 3*30 - 84.",
+    "markdown": "Run the Euclidean algorithm $84 = 2\\cdot 30 + 24$, $30 = 24 + 6$, and $24 = 4\\cdot 6$. Then reverse the steps to obtain $6 = 30 - 24 = 30 - (84 - 2\\cdot30) = 3\\cdot30 - 84$."
+  },
+  "tracking_profile": {
+    "is_trackable": false,
+    "mastery_weight": 0,
+    "review_priority": "low",
+    "completion_criteria": ["understand"],
+    "estimated_effort_minutes": 8
+  },
+  "title": "Worked Solution",
+  "step_blocks": [
+    {
+      "index": 1,
+      "heading": "Forward pass",
+      "content": {
+        "source_format": "markdown",
+        "plain_text": "Compute remainders until the gcd appears as the last nonzero remainder.",
+        "markdown": "Compute remainders until the gcd appears as the last nonzero remainder."
+      },
+      "uses_refs": [
+        {
+          "entity_type": "technique",
+          "id": "tech.nt.euclidean-algorithm"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "heading": "Reverse pass",
+      "content": {
+        "source_format": "markdown",
+        "plain_text": "Rewrite 6 using the previous equations until only 84 and 30 remain.",
+        "markdown": "Rewrite $6$ using the previous equations until only $84$ and $30$ remain."
+      },
+      "uses_refs": [
+        {
+          "entity_type": "theorem",
+          "id": "thm.nt.bezout-identity"
+        }
+      ]
+    }
+  ],
+  "final_answer": {
+    "source_format": "dual",
+    "plain_text": "One valid identity is 6 = -1*84 + 3*30.",
+    "markdown": "One valid identity is $6 = -84 + 3\\cdot 30$.",
+    "latex": "6=-84+3\\cdot30"
+  },
+  "used_definition_ids": ["def.nt.divisibility"],
+  "used_theorem_ids": ["thm.nt.bezout-identity"],
+  "used_technique_ids": ["tech.nt.euclidean-algorithm"],
+  "is_official": false,
+  "audit": {
+    "created_at": "2026-03-09T08:05:00Z",
+    "updated_at": "2026-03-09T08:05:00Z",
+    "created_by": "seed.bot",
+    "updated_by": "seed.bot"
+  }
+}

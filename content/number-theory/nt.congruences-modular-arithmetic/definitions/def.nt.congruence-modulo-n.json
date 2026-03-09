@@ -1,0 +1,42 @@
+{
+  "id": "def.nt.congruence-modulo-n",
+  "entity_type": "definition",
+  "schema_version": "1.0.0",
+  "status": "published",
+  "definition_kind": "definition",
+  "primary_topic_id": "nt.congruences-modular-arithmetic",
+  "term": "Congruence Modulo n",
+  "slug": "congruence-modulo-n",
+  "statement": {
+    "source_format": "dual",
+    "plain_text": "For integers a, b, and n with n > 0, we write a ≡ b (mod n) when n divides a - b.",
+    "markdown": "For integers $a$, $b$, and $n$ with $n>0$, we write $a \\equiv b \\pmod n$ when $n$ divides $a-b$.",
+    "latex": "a \\equiv b \\pmod n \\iff n \\mid (a-b)"
+  },
+  "tracking_profile": {
+    "is_trackable": true,
+    "mastery_weight": 0.6,
+    "review_priority": "normal",
+    "completion_criteria": ["read", "understand", "restate", "apply"],
+    "estimated_effort_minutes": 12
+  },
+  "related_theorem_ids": ["thm.nt.fermat-little-theorem"],
+  "related_technique_ids": ["tech.nt.reduce-modulo-structure"],
+  "example_ids": ["ex.nt.modular-inverse-check"],
+  "problem_ids": ["prob.nt.remainder-7-power-100-mod-13"],
+  "relation_refs": [
+    {
+      "relation": "depends-on",
+      "target": {
+        "entity_type": "definition",
+        "id": "def.nt.divisibility"
+      }
+    }
+  ],
+  "audit": {
+    "created_at": "2026-03-09T08:11:00Z",
+    "updated_at": "2026-03-09T08:11:00Z",
+    "created_by": "seed.bot",
+    "updated_by": "seed.bot"
+  }
+}

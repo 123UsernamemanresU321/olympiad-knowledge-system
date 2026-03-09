@@ -1,0 +1,197 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://olympiad.local/schemas/entities/theorem.schema.json",
+  "title": "Theorem",
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Canonical proved or referenced mathematical result.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^thm\\.(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+    },
+    "entity_type": {
+      "const": "theorem"
+    },
+    "schema_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "status": {
+      "$ref": "../enums/enums.schema.json#/$defs/content_status"
+    },
+    "theorem_kind": {
+      "$ref": "../enums/enums.schema.json#/$defs/theorem_kind"
+    },
+    "primary_topic_id": {
+      "type": "string",
+      "pattern": "^(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "statement": {
+      "$ref": "../common/math-content.schema.json"
+    },
+    "proof_status": {
+      "$ref": "../enums/enums.schema.json#/$defs/proof_status"
+    },
+    "tracking_profile": {
+      "$ref": "../common/tracking-profile.schema.json"
+    },
+    "secondary_topic_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+      },
+      "uniqueItems": true
+    },
+    "hypotheses": {
+      "type": "array",
+      "items": {
+        "$ref": "../common/math-content.schema.json"
+      }
+    },
+    "conclusion": {
+      "$ref": "../common/math-content.schema.json"
+    },
+    "notation": {
+      "type": "array",
+      "items": {
+        "$ref": "../common/notation-item.schema.json"
+      }
+    },
+    "proof": {
+      "$ref": "../common/math-content.schema.json"
+    },
+    "proof_outline_steps": {
+      "type": "array",
+      "items": {
+        "$ref": "../common/math-content.schema.json"
+      },
+      "minItems": 1
+    },
+    "parent_theorem_id": {
+      "type": "string",
+      "pattern": "^thm\\.(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+    },
+    "used_definition_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^def\\.(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+      },
+      "uniqueItems": true
+    },
+    "used_theorem_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^thm\\.(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+      },
+      "uniqueItems": true
+    },
+    "used_technique_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^tech\\.(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+      },
+      "uniqueItems": true
+    },
+    "example_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^ex\\.(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+      },
+      "uniqueItems": true
+    },
+    "problem_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^prob\\.(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+      },
+      "uniqueItems": true
+    },
+    "relation_refs": {
+      "type": "array",
+      "items": {
+        "$ref": "../common/relation-ref.schema.json"
+      }
+    },
+    "audit": {
+      "$ref": "../common/audit-meta.schema.json"
+    }
+  },
+  "required": [
+    "id",
+    "entity_type",
+    "schema_version",
+    "status",
+    "theorem_kind",
+    "primary_topic_id",
+    "title",
+    "slug",
+    "statement",
+    "proof_status",
+    "tracking_profile",
+    "audit"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "theorem_kind": {
+            "const": "corollary"
+          }
+        },
+        "required": [
+          "theorem_kind"
+        ]
+      },
+      "then": {
+        "required": [
+          "parent_theorem_id"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "proof_status": {
+            "enum": [
+              "outline",
+              "sketch",
+              "full"
+            ]
+          }
+        },
+        "required": [
+          "proof_status"
+        ]
+      },
+      "then": {
+        "anyOf": [
+          {
+            "required": [
+              "proof"
+            ]
+          },
+          {
+            "required": [
+              "proof_outline_steps"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

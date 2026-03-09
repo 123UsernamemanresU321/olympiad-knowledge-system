@@ -1,0 +1,279 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://olympiad.local/schemas/enums/enums.schema.json",
+  "title": "Olympiad Knowledge System Enums",
+  "description": "Central enum definitions for the Olympiad Mathematics knowledge system.",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "entity_type": {
+      "type": "string",
+      "enum": [
+        "topic",
+        "definition",
+        "theorem",
+        "technique",
+        "example",
+        "problem",
+        "solution",
+        "progress_record",
+        "review_schedule",
+        "mastery_profile"
+      ]
+    },
+    "content_status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "reviewed",
+        "published",
+        "archived"
+      ]
+    },
+    "topic_level": {
+      "type": "string",
+      "enum": [
+        "core",
+        "extension",
+        "specialized"
+      ]
+    },
+    "definition_kind": {
+      "type": "string",
+      "enum": [
+        "definition",
+        "notation",
+        "convention"
+      ]
+    },
+    "theorem_kind": {
+      "type": "string",
+      "enum": [
+        "theorem",
+        "lemma",
+        "corollary",
+        "proposition",
+        "claim"
+      ]
+    },
+    "proof_status": {
+      "type": "string",
+      "enum": [
+        "none",
+        "outline",
+        "sketch",
+        "full",
+        "external"
+      ]
+    },
+    "technique_kind": {
+      "type": "string",
+      "enum": [
+        "algebraic",
+        "number-theoretic",
+        "combinatorial",
+        "geometric",
+        "meta",
+        "hybrid"
+      ]
+    },
+    "example_kind": {
+      "type": "string",
+      "enum": [
+        "worked-example",
+        "illustrative",
+        "counterexample",
+        "application",
+        "edge-case"
+      ]
+    },
+    "problem_kind": {
+      "type": "string",
+      "enum": [
+        "proof",
+        "short-answer",
+        "computation",
+        "construction",
+        "existence",
+        "multiple-choice"
+      ]
+    },
+    "expected_response_kind": {
+      "type": "string",
+      "enum": [
+        "proof",
+        "integer",
+        "real-number",
+        "expression",
+        "tuple",
+        "set",
+        "construction",
+        "multiple-choice",
+        "algorithm"
+      ]
+    },
+    "solution_kind": {
+      "type": "string",
+      "enum": [
+        "full",
+        "outline",
+        "official",
+        "alternative",
+        "hint-sequence"
+      ]
+    },
+    "solution_status": {
+      "type": "string",
+      "enum": [
+        "complete",
+        "partial",
+        "sketch"
+      ]
+    },
+    "interaction_type": {
+      "type": "string",
+      "enum": [
+        "view",
+        "study",
+        "attempt",
+        "solve",
+        "review",
+        "recall",
+        "prove",
+        "annotate"
+      ]
+    },
+    "progress_outcome": {
+      "type": "string",
+      "enum": [
+        "seen",
+        "incorrect",
+        "partial",
+        "correct",
+        "mastered",
+        "forgotten",
+        "skipped"
+      ]
+    },
+    "review_algorithm": {
+      "type": "string",
+      "enum": [
+        "manual",
+        "fixed-interval",
+        "sm2",
+        "fsrs",
+        "custom-v1"
+      ]
+    },
+    "review_status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "due",
+        "completed",
+        "snoozed",
+        "suspended"
+      ]
+    },
+    "mastery_level": {
+      "type": "string",
+      "enum": [
+        "unseen",
+        "exposed",
+        "developing",
+        "functional",
+        "proficient",
+        "mastered",
+        "retained"
+      ]
+    },
+    "notation_role": {
+      "type": "string",
+      "enum": [
+        "variable",
+        "constant",
+        "function",
+        "sequence",
+        "set",
+        "operator",
+        "point",
+        "line",
+        "circle",
+        "angle"
+      ]
+    },
+    "relation_type": {
+      "type": "string",
+      "enum": [
+        "prerequisite",
+        "depends-on",
+        "generalizes",
+        "special-case-of",
+        "used-in",
+        "related-to",
+        "equivalent-to",
+        "exemplifies",
+        "solved-by"
+      ]
+    },
+    "source_kind": {
+      "type": "string",
+      "enum": [
+        "original",
+        "contest",
+        "textbook",
+        "note",
+        "derived",
+        "imported"
+      ]
+    },
+    "review_priority": {
+      "type": "string",
+      "enum": [
+        "low",
+        "normal",
+        "high",
+        "critical"
+      ]
+    },
+    "completion_criterion": {
+      "type": "string",
+      "enum": [
+        "read",
+        "understand",
+        "recall",
+        "restate",
+        "apply",
+        "prove",
+        "solve",
+        "review"
+      ]
+    },
+    "math_source_format": {
+      "type": "string",
+      "enum": [
+        "markdown",
+        "latex",
+        "dual"
+      ]
+    },
+    "math_display_mode": {
+      "type": "string",
+      "enum": [
+        "inline",
+        "block",
+        "mixed"
+      ]
+    },
+    "subject_id": {
+      "type": "string",
+      "enum": [
+        "number-theory",
+        "algebra",
+        "combinatorics",
+        "geometry",
+        "meta-techniques"
+      ]
+    }
+  }
+}

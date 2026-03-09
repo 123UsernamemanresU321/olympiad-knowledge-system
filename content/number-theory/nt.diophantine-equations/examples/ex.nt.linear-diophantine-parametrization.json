@@ -1,0 +1,47 @@
+{
+  "id": "ex.nt.linear-diophantine-parametrization",
+  "entity_type": "example",
+  "schema_version": "1.0.0",
+  "status": "published",
+  "example_kind": "worked-example",
+  "primary_topic_id": "nt.diophantine-equations",
+  "title": "Solve 18x + 30y = 6 in Integers",
+  "slug": "solve-18x-plus-30y-equals-6",
+  "prompt": {
+    "source_format": "markdown",
+    "plain_text": "Find all integer solutions to 18x + 30y = 6.",
+    "markdown": "Find all integer solutions to $18x + 30y = 6$."
+  },
+  "solution_id": "sol.nt.linear-diophantine-parametrization",
+  "tracking_profile": {
+    "is_trackable": true,
+    "mastery_weight": 0.5,
+    "review_priority": "normal",
+    "completion_criteria": ["understand", "apply", "review"],
+    "estimated_effort_minutes": 12
+  },
+  "objective": {
+    "source_format": "markdown",
+    "plain_text": "Show the full solve-and-parameterize pattern on a small example.",
+    "markdown": "Show the full solve-and-parameterize pattern on a small example."
+  },
+  "used_definition_ids": ["def.nt.linear-diophantine-equation"],
+  "used_theorem_ids": [
+    "thm.nt.bezout-identity",
+    "thm.nt.linear-diophantine-solvability"
+  ],
+  "used_technique_ids": ["tech.nt.solve-linear-diophantine-via-gcd"],
+  "related_problem_ids": ["prob.nt.nonnegative-solutions-4x-7y-59"],
+  "final_result": {
+    "source_format": "dual",
+    "plain_text": "All solutions are x = 2 + 5t and y = -1 - 3t for integers t.",
+    "markdown": "All solutions are $x = 2 + 5t$ and $y = -1 - 3t$ for integers $t$.",
+    "latex": "x=2+5t,\\ y=-1-3t,\\ t\\in\\mathbb{Z}"
+  },
+  "audit": {
+    "created_at": "2026-03-09T08:24:00Z",
+    "updated_at": "2026-03-09T08:24:00Z",
+    "created_by": "seed.bot",
+    "updated_by": "seed.bot"
+  }
+}

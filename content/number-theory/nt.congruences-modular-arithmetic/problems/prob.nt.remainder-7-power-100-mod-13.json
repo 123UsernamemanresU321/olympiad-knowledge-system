@@ -1,0 +1,68 @@
+{
+  "id": "prob.nt.remainder-7-power-100-mod-13",
+  "entity_type": "problem",
+  "schema_version": "1.0.0",
+  "status": "published",
+  "primary_topic_ids": ["nt.congruences-modular-arithmetic"],
+  "short_label": "NT Core Problem 2",
+  "statement": {
+    "source_format": "markdown",
+    "plain_text": "Find the remainder when 7^100 is divided by 13.",
+    "markdown": "Find the remainder when $7^{100}$ is divided by $13$."
+  },
+  "problem_kind": "short-answer",
+  "expected_response_kind": "integer",
+  "difficulty": 3,
+  "tracking_profile": {
+    "is_trackable": true,
+    "mastery_weight": 0.75,
+    "review_priority": "high",
+    "completion_criteria": ["solve", "review"],
+    "estimated_effort_minutes": 14
+  },
+  "title": "Large Exponent Modulo a Prime",
+  "source": {
+    "source_kind": "derived",
+    "name": "Olympiad KB Seed Set",
+    "citation_text": "Core modular arithmetic drill"
+  },
+  "used_definition_ids": ["def.nt.congruence-modulo-n"],
+  "used_theorem_ids": ["thm.nt.fermat-little-theorem"],
+  "expected_technique_ids": ["tech.nt.reduce-modulo-structure"],
+  "hint_blocks": [
+    {
+      "source_format": "markdown",
+      "plain_text": "Because 13 is prime, try reducing the exponent with Fermat's little theorem.",
+      "markdown": "Because $13$ is prime, try reducing the exponent with Fermat's little theorem."
+    },
+    {
+      "source_format": "markdown",
+      "plain_text": "Rewrite 100 in the form 12k + r.",
+      "markdown": "Rewrite $100$ in the form $12k + r$."
+    }
+  ],
+  "solution_ids": ["sol.nt.remainder-7-power-100-mod-13"],
+  "time_estimate_minutes": 10,
+  "answer_key": {
+    "source_format": "dual",
+    "plain_text": "The remainder is 9.",
+    "markdown": "The remainder is $9$.",
+    "latex": "9"
+  },
+  "is_original": true,
+  "relation_refs": [
+    {
+      "relation": "solved-by",
+      "target": {
+        "entity_type": "theorem",
+        "id": "thm.nt.fermat-little-theorem"
+      }
+    }
+  ],
+  "audit": {
+    "created_at": "2026-03-09T08:16:00Z",
+    "updated_at": "2026-03-09T08:16:00Z",
+    "created_by": "seed.bot",
+    "updated_by": "seed.bot"
+  }
+}

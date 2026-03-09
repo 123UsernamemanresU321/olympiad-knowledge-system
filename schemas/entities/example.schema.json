@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://olympiad.local/schemas/entities/example.schema.json",
+  "title": "Example",
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Worked or illustrative example attached to a concept or technique.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^ex\\.(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+    },
+    "entity_type": {
+      "const": "example"
+    },
+    "schema_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "status": {
+      "$ref": "../enums/enums.schema.json#/$defs/content_status"
+    },
+    "example_kind": {
+      "$ref": "../enums/enums.schema.json#/$defs/example_kind"
+    },
+    "primary_topic_id": {
+      "type": "string",
+      "pattern": "^(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "prompt": {
+      "$ref": "../common/math-content.schema.json"
+    },
+    "solution_id": {
+      "type": "string",
+      "pattern": "^sol\\.(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+    },
+    "tracking_profile": {
+      "$ref": "../common/tracking-profile.schema.json"
+    },
+    "objective": {
+      "$ref": "../common/math-content.schema.json"
+    },
+    "used_definition_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^def\\.(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+      },
+      "uniqueItems": true
+    },
+    "used_theorem_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^thm\\.(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+      },
+      "uniqueItems": true
+    },
+    "used_technique_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^tech\\.(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+      },
+      "uniqueItems": true
+    },
+    "related_problem_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^prob\\.(nt|alg|comb|geo|meta)\\.[a-z0-9-]+$"
+      },
+      "uniqueItems": true
+    },
+    "counterexample_to": {
+      "$ref": "../common/entity-ref.schema.json"
+    },
+    "final_result": {
+      "$ref": "../common/math-content.schema.json"
+    },
+    "audit": {
+      "$ref": "../common/audit-meta.schema.json"
+    }
+  },
+  "required": [
+    "id",
+    "entity_type",
+    "schema_version",
+    "status",
+    "example_kind",
+    "primary_topic_id",
+    "title",
+    "slug",
+    "prompt",
+    "solution_id",
+    "tracking_profile",
+    "audit"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "example_kind": {
+            "const": "counterexample"
+          }
+        },
+        "required": [
+          "example_kind"
+        ]
+      },
+      "then": {
+        "required": [
+          "counterexample_to"
+        ]
+      }
+    }
+  ]
+}

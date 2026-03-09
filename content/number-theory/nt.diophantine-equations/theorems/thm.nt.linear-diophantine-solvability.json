@@ -1,0 +1,61 @@
+{
+  "id": "thm.nt.linear-diophantine-solvability",
+  "entity_type": "theorem",
+  "schema_version": "1.0.0",
+  "status": "published",
+  "theorem_kind": "theorem",
+  "primary_topic_id": "nt.diophantine-equations",
+  "title": "Linear Diophantine Solvability Criterion",
+  "slug": "linear-diophantine-solvability-criterion",
+  "statement": {
+    "source_format": "dual",
+    "plain_text": "The equation ax + by = c has an integer solution if and only if gcd(a,b) divides c.",
+    "markdown": "The equation $ax + by = c$ has an integer solution if and only if $\\gcd(a,b)$ divides $c$.",
+    "latex": "ax+by=c \\text{ solvable in } \\mathbb{Z} \\iff \\gcd(a,b)\\mid c"
+  },
+  "proof_status": "outline",
+  "tracking_profile": {
+    "is_trackable": true,
+    "mastery_weight": 0.9,
+    "review_priority": "high",
+    "completion_criteria": ["understand", "prove", "apply", "review"],
+    "estimated_effort_minutes": 24
+  },
+  "proof_outline_steps": [
+    {
+      "source_format": "markdown",
+      "plain_text": "If ax + by = c has a solution, then every common divisor of a and b divides c.",
+      "markdown": "If $ax + by = c$ has a solution, then every common divisor of $a$ and $b$ divides $c$."
+    },
+    {
+      "source_format": "markdown",
+      "plain_text": "If gcd(a,b) divides c, write c = d*k with d = gcd(a,b).",
+      "markdown": "If $\\gcd(a,b)$ divides $c$, write $c = dk$ with $d = \\gcd(a,b)$."
+    },
+    {
+      "source_format": "markdown",
+      "plain_text": "Apply Bézout identity to d and multiply the resulting combination by k.",
+      "markdown": "Apply Bézout identity to $d$ and multiply the resulting combination by $k$."
+    }
+  ],
+  "used_definition_ids": ["def.nt.linear-diophantine-equation"],
+  "used_theorem_ids": ["thm.nt.bezout-identity"],
+  "used_technique_ids": ["tech.nt.solve-linear-diophantine-via-gcd"],
+  "example_ids": ["ex.nt.linear-diophantine-parametrization"],
+  "problem_ids": ["prob.nt.nonnegative-solutions-4x-7y-59"],
+  "relation_refs": [
+    {
+      "relation": "depends-on",
+      "target": {
+        "entity_type": "theorem",
+        "id": "thm.nt.bezout-identity"
+      }
+    }
+  ],
+  "audit": {
+    "created_at": "2026-03-09T08:22:00Z",
+    "updated_at": "2026-03-09T08:22:00Z",
+    "created_by": "seed.bot",
+    "updated_by": "seed.bot"
+  }
+}

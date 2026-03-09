@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://olympiad.local/schemas/bundles/olympiad-knowledge-system.schema.json",
+  "title": "Olympiad Knowledge System Bundle",
+  "description": "Union schema for all top-level entities in the Olympiad Mathematics knowledge system.",
+  "oneOf": [
+    {
+      "$ref": "../entities/topic.schema.json"
+    },
+    {
+      "$ref": "../entities/definition.schema.json"
+    },
+    {
+      "$ref": "../entities/theorem.schema.json"
+    },
+    {
+      "$ref": "../entities/technique.schema.json"
+    },
+    {
+      "$ref": "../entities/example.schema.json"
+    },
+    {
+      "$ref": "../entities/problem.schema.json"
+    },
+    {
+      "$ref": "../entities/solution.schema.json"
+    },
+    {
+      "$ref": "../entities/progress-record.schema.json"
+    },
+    {
+      "$ref": "../entities/review-schedule.schema.json"
+    },
+    {
+      "$ref": "../entities/mastery-profile.schema.json"
+    }
+  ]
+}

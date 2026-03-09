@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://olympiad.local/schemas/common/notation-item.schema.json",
+  "title": "Notation Item",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "symbol": {
+      "type": "string",
+      "minLength": 1
+    },
+    "role": {
+      "$ref": "../enums/enums.schema.json#/$defs/notation_role"
+    },
+    "meaning": {
+      "$ref": "./math-content.schema.json"
+    },
+    "domain": {
+      "type": "string",
+      "minLength": 1
+    },
+    "constraints": {
+      "$ref": "./math-content.schema.json"
+    }
+  },
+  "required": [
+    "symbol",
+    "role",
+    "meaning"
+  ]
+}
